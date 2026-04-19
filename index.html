@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Monitoring KKN</title>
+    <!-- Tailwind CSS untuk Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js untuk Grafik -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Custom Styles ringan */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; }
+        .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #3b82f6; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-700 text-white shadow-md w-full z-10 sticky top-0 hidden" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center font-bold text-xl">
+                    <i class="fa-solid fa-map-location-dot mr-2"></i> SIM KKN
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Status Koneksi (Admin/Kelompok) -->
+                    <div class="hidden sm:flex items-center text-xs font-medium px-2 py-1 bg-blue-800 rounded-full border border-blue-600" title="Status Koneksi Database">
+                        <i class="fa-solid fa-circle text-gray-400 text-[10px] mr-1" id="nav-conn-icon"></i> <span id="nav-conn-text">Memeriksa...</span>
+                    </div>
+                    
+                    <span id="nav-username" class="font-medium hidden sm:block"></span>
+                    <button onclick="logout()" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded-md text-sm font-medium transition duration-150">
+                        <i class="fa-solid fa-sign-out-alt"></i> Keluar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="w-full h-screen flex flex-col overflow-y-auto">
+        
+        <!-- ==============================
+             0. PUBLIC DASHBOARD (LANDING PAGE)
+        =============================== -->
+        <div id="public-page" class="hidden flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+            <!-- Hero / Sambutan -->
+            <div class="text-center mb-10 mt-6 bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
+                <!-- Status Koneksi Public -->
+                <div class="inline-flex items-center text-xs font-medium px-3 py-1 bg-gray-50 border rounded-full text-gray-600 mb-6 shadow-sm">
+                    <i class="fa-solid fa-circle text-gray-400 text-[10px] mr-2" id="pub-conn-icon"></i> <span id="pub-conn-text">Memeriksa Database...</span>
+                </div>
+                
+                <i class="fa-solid fa-map-location-dot text-blue-600 text-6xl mb-4 block"></i>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">Sistem Monitoring KKN</h1>
+                <p class="text-lg text-gray-600 mb-4">Selamat datang di portal informasi dan pelaporan Kuliah Kerja Nyata</p>
+                <div class="inline-block bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold border border-blue-100">
+                    Dikembangkan oleh : Supriyadi
+                </div>
+            </div>
+            
+            <!-- Statistik Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium uppercase">Total Kelompok</p>
+                        <p class="text-3xl font-bold text-gray-800" id="public-stat-groups">0</p>
+                    </div>
+                    <i class="fa-solid fa-users text-4xl text-blue-200"></i>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium uppercase">Laporan Masuk</p>
+                        <p class="text-3xl font-bold text-gray-800" id="public-stat-reports">0</p>
+                    </div>
+                    <i class="fa-solid fa-file-lines text-4xl text-green-200"></i>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-red-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium uppercase">Kejadian Darurat</p>
+                        <p class="text-3xl font-bold text-red-600" id="public-stat-emergencies">0</p>
+                    </div>
+                    <i class="fa-solid fa-triangle-exclamation text-4xl text-red-200"></i>
+                </div>
+            </div>
+
+            <!-- Grafik & Filter -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow p-6 lg:col-span-2">
+                    <h3 class="font-bold text-gray-700 mb-4">Grafik Laporan per Hari</h3>
+                    <canvas id="publicReportChart" width="400" height="200"></canvas>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="font-bold text-gray-700 mb-4">Filter Data</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-600">Tanggal</label>
+                            <input type="date" id="public-filter-date" class="mt-1 w-full border rounded-md p-2 text-sm" onchange="applyPublicFilters()">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600">Kelompok</label>
+                            <select id="public-filter-group" class="mt-1 w-full border rounded-md p-2 text-sm" onchange="applyPublicFilters()">
+                                <option value="">Semua Kelompok</option>
+                                <option value="kelompok1">Kelompok 1</option>
+                                <option value="kelompok2">Kelompok 2</option>
+                            </select>
+                        </div>
+                        <button onclick="resetPublicFilters()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-md text-sm transition">
+                            Reset Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Button -->
+            <div class="text-center mt-10 mb-8">
+                <button onclick="goToLogin()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg text-lg transition duration-200 flex items-center mx-auto">
+                    Masuk ke Sistem <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ==============================
+             1. LOGIN PAGE
+        =============================== -->
+        <div id="login-page" class="hidden flex-grow items-center justify-center p-4">
+            <div class="bg-white p-8 rounded-xl shadow-lg max-w-md w-full">
+                <div class="text-center mb-6">
+                    <i class="fa-solid fa-users text-blue-600 text-5xl mb-3"></i>
+                    <h2 class="text-2xl font-bold text-gray-800">Login SIM KKN</h2>
+                    <p class="text-sm text-gray-500 mt-1">Gunakan akun Kelompok atau Admin</p>
+                </div>
+                
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Username / Nama Kelompok</label>
+                        <input id="username" type="text" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Contoh: kelompok1 atau admin">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+                        <input id="password" type="password" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="••••••••">
+                    </div>
+                    <button type="submit" id="btn-login" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150">
+                        Masuk
+                    </button>
+                    <div id="login-error" class="text-red-500 text-sm text-center mt-3 hidden">Username atau Password salah!</div>
+                </form>
+
+                <!-- Info Demo -->
+                <div class="mt-6 p-4 bg-blue-50 rounded-md text-xs text-blue-800">
+                    <strong>Akun Demo:</strong><br>
+                    Admin: <code>admin</code> / <code>1234</code><br>
+                    Kelompok: <code>kelompok1</code> / <code>1234</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==============================
+             2. DASHBOARD ADMIN / DOSEN
+        =============================== -->
+        <div id="admin-page" class="hidden flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard Dosen Pembimbing</h1>
+            
+            <!-- Statistik Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium uppercase">Total Kelompok</p>
+                        <p class="text-3xl font-bold text-gray-800" id="stat-groups">0</p>
+                    </div>
+                    <i class="fa-solid fa-users text-4xl text-blue-200"></i>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium uppercase">Laporan Masuk</p>
+                        <p class="text-3xl font-bold text-gray-800" id="stat-reports">0</p>
+                    </div>
+                    <i class="fa-solid fa-file-lines text-4xl text-green-200"></i>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-red-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium uppercase">Kejadian Darurat</p>
+                        <p class="text-3xl font-bold text-red-600" id="stat-emergencies">0</p>
+                    </div>
+                    <i class="fa-solid fa-triangle-exclamation text-4xl text-red-200"></i>
+                </div>
+            </div>
+
+            <!-- Grafik & Filter -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow p-6 lg:col-span-2">
+                    <h3 class="font-bold text-gray-700 mb-4">Grafik Laporan per Hari</h3>
+                    <canvas id="reportChart" width="400" height="200"></canvas>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="font-bold text-gray-700 mb-4">Filter Data</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-600">Tanggal</label>
+                            <input type="date" id="filter-date" class="mt-1 w-full border rounded-md p-2 text-sm" onchange="applyFilters()">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600">Kelompok</label>
+                            <select id="filter-group" class="mt-1 w-full border rounded-md p-2 text-sm" onchange="applyFilters()">
+                                <option value="">Semua Kelompok</option>
+                                <option value="kelompok1">Kelompok 1</option>
+                                <option value="kelompok2">Kelompok 2</option>
+                            </select>
+                        </div>
+                        <button onclick="resetFilters()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-md text-sm transition">
+                            Reset Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabel Data -->
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="px-6 py-4 border-b flex justify-between items-center">
+                    <h3 class="font-bold text-gray-700">Daftar Laporan KKN</h3>
+                    <button id="btn-bulk-delete-admin" onclick="deleteBulkReportsAdmin()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full whitespace-nowrap">
+                        <thead class="bg-gray-50 text-gray-500 text-sm">
+                            <tr>
+                                <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdmin" onclick="toggleAllCheckboxesAdmin(this)"></th>
+                                <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
+                                <th class="px-6 py-3 text-left font-medium tracking-wider">Kelompok</th>
+                                <th class="px-6 py-3 text-left font-medium tracking-wider">Kegiatan</th>
+                                <th class="px-6 py-3 text-left font-medium tracking-wider">Status/Darurat</th>
+                                <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body" class="bg-white divide-y divide-gray-200 text-sm">
+                            <!-- Data injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==============================
+             3. DASHBOARD KELOMPOK (FORM)
+        =============================== -->
+        <div id="group-page" class="hidden flex-grow max-w-5xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Area Kelompok KKN</h1>
+            
+            <div class="grid grid-cols-1 gap-8">
+                <!-- Form Input -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="font-bold text-gray-700 mb-4" id="form-title">Buat Laporan Baru</h3>
+                    <form id="report-form" onsubmit="submitReport(event)">
+                        <input type="hidden" id="report-id" value="">
+                        
+                        <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1">Nama Kelompok</label>
+                            <input type="text" id="form-group" readonly class="w-full border rounded p-2 bg-gray-100 text-sm">
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1">Nama Korkel (Koordinator Kelompok) *</label>
+                            <input type="text" id="form-korkel" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Masukkan nama Korkel">
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1">Jumlah Anggota Aktif *</label>
+                            <input type="number" id="form-members" required min="1" class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        
+                        <div class="mb-3 p-3 border rounded bg-gray-50">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Rincian Lokasi KKN *</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">Kabupaten / Kota</label>
+                                    <input type="text" id="form-kabupaten" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Contoh: Kab. Lampung Selatan">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">Kecamatan</label>
+                                    <input type="text" id="form-kecamatan" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Contoh: Kalianda">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">Kelurahan / Desa</label>
+                                    <input type="text" id="form-desa" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Contoh: Desa Kedaton">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">Jalan / Detail Lain</label>
+                                    <input type="text" id="form-jalan" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Contoh: Jl. Mawar No. 10">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1">Tanggal Kegiatan *</label>
+                            <input type="date" id="form-date" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1">Laporan Kegiatan Harian *</label>
+                            <textarea id="form-activity" required rows="4" class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Deskripsikan kegiatan hari ini..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1 text-red-600 font-medium">Kejadian Darurat (Opsional)</label>
+                            <textarea id="form-emergency" rows="2" class="w-full border border-red-300 rounded p-2 text-sm focus:ring-2 focus:ring-red-500 outline-none bg-red-50" placeholder="Kosongkan jika tidak ada kejadian darurat"></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm text-gray-600 mb-1">Link Foto (Google Drive) *</label>
+                            <div id="photo-inputs-wrapper">
+                                <!-- Kolom input akan digenerate otomatis oleh JavaScript -->
+                            </div>
+                            <button type="button" onclick="addPhotoInput()" class="text-blue-600 hover:text-blue-800 text-sm font-medium mt-2 flex items-center transition">
+                                <i class="fa-solid fa-plus mr-1"></i> Tambah Link Foto Lainnya
+                            </button>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button type="submit" id="btn-submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm transition">
+                                Simpan Laporan
+                            </button>
+                            <button type="button" onclick="resetForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded text-sm transition">
+                                Batal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Riwayat Kelompok -->
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="px-6 py-4 border-b flex justify-between items-center">
+                        <h3 class="font-bold text-gray-700">Riwayat Laporan Anda</h3>
+                        <button id="btn-bulk-delete" onclick="deleteBulkReports()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
+                    </div>
+                    <div class="overflow-x-auto p-4">
+                        <table class="w-full whitespace-nowrap">
+                            <thead class="bg-gray-50 text-gray-500 text-sm">
+                                <tr>
+                                    <th class="px-4 py-2 w-10 text-center"><input type="checkbox" id="selectAll" onclick="toggleAllCheckboxes(this)"></th>
+                                    <th class="px-4 py-2 text-left font-medium">Tanggal</th>
+                                    <th class="px-4 py-2 text-left font-medium">Kegiatan</th>
+                                    <th class="px-4 py-2 text-center font-medium">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="group-table-body" class="bg-white divide-y divide-gray-200 text-sm">
+                                <!-- Data injected via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Lihat Detail (Admin) -->
+        <div id="detail-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6">
+                <div class="flex justify-between items-center mb-4 border-b pb-2">
+                    <h3 class="text-xl font-bold text-gray-800">Detail Laporan</h3>
+                    <button onclick="closeModal()" class="text-gray-500 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div id="modal-content" class="space-y-3 text-sm text-gray-700">
+                    <!-- Detail disisipkan via JS -->
+                </div>
+                <div class="mt-6 text-right">
+                    <button onclick="closeModal()" class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded font-medium">Tutup</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // =========================================================================
+        // PENGATURAN API GOOGLE APPS SCRIPT (GAS)
+        // =========================================================================
+        // Ganti URL ini dengan URL Web App Google Apps Script Anda nanti
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0usGakhM-ZPxkPDQkyFDAPi-DTgCsI_I6OX-uST_S8EOdxnlKCS0SpPir_eTkmnSAXQ/exec'; 
+        
+        // Mode Simulasi (Mock Mode).
+        const USE_MOCK = false; 
+
+        // =========================================================================
+        // STATE & DATA SIMULASI
+        // =========================================================================
+        let currentUser = null;
+        let adminChartInstance = null;
+        let publicChartInstance = null;
+        let reportsData = []; 
+        
+        // Data Dummy untuk Simulasi
+        const mockUsers = {
+            'admin': { username: 'admin', password: '1234', role: 'admin' },
+            'kelompok1': { username: 'kelompok1', password: '1234', role: 'kelompok', location: 'Desa Suka Maju' },
+            'kelompok2': { username: 'kelompok2', password: '1234', role: 'kelompok', location: 'Desa Suka Mundur' }
+        };
+
+        let mockReports = [
+            { id: 1, group: 'kelompok1', korkel: 'Budi Santoso', members: 5, location: 'Desa Suka Maju', date: '2023-10-01', activity: 'Pembersihan balai desa dan penyuluhan warga.', emergency: '', photo: 'https://drive.google.com/123' },
+            { id: 2, group: 'kelompok2', korkel: 'Siti Aminah', members: 6, location: 'Desa Suka Mundur', date: '2023-10-01', activity: 'Mengajar di SD Inpres.', emergency: '', photo: 'https://drive.google.com/456' },
+            { id: 3, group: 'kelompok1', korkel: 'Budi Santoso', members: 5, location: 'Desa Suka Maju', date: '2023-10-02', activity: 'Gotong royong membuat irigasi.', emergency: 'Satu anggota pingsan.', photo: 'https://drive.google.com/789' },
+        ];
+
+        // =========================================================================
+        // INITIALIZATION & ROUTING
+        // =========================================================================
+        window.onload = async () => {
+            await loadDataFromServer();
+            const session = localStorage.getItem('kkn_session');
+            if (session) {
+                currentUser = JSON.parse(session);
+                routeUser();
+            } else {
+                showPublicPage();
+            }
+        };
+
+        function showPublicPage() {
+            document.getElementById('navbar').classList.add('hidden');
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('login-page').classList.remove('flex');
+            document.getElementById('admin-page').classList.add('hidden');
+            document.getElementById('group-page').classList.add('hidden');
+            document.getElementById('public-page').classList.remove('hidden');
+            renderPublicDashboard();
+        }
+
+        function goToLogin() {
+            document.getElementById('public-page').classList.add('hidden');
+            document.getElementById('login-page').classList.remove('hidden');
+            document.getElementById('login-page').classList.add('flex');
+        }
+
+        function routeUser() {
+            document.getElementById('public-page').classList.add('hidden');
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('login-page').classList.remove('flex');
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('nav-username').innerText = `Halo, ${currentUser.username.toUpperCase()}`;
+
+            if (currentUser.role === 'admin') {
+                document.getElementById('admin-page').classList.remove('hidden');
+                document.getElementById('group-page').classList.add('hidden');
+                loadDataFromServer();
+            } else {
+                document.getElementById('admin-page').classList.add('hidden');
+                document.getElementById('group-page').classList.remove('hidden');
+                document.getElementById('form-group').value = currentUser.username;
+                loadDataFromServer();
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            const btn = document.getElementById('btn-login');
+            const errorDiv = document.getElementById('login-error');
+            
+            btn.innerHTML = '<div class="spinner mx-auto" style="width: 20px; height: 20px; border-width: 2px;"></div>';
+            errorDiv.classList.add('hidden');
+
+            try {
+                let user;
+                if (USE_MOCK) {
+                    await new Promise(r => setTimeout(r, 800));
+                    if (mockUsers[u] && mockUsers[u].password === p) user = mockUsers[u];
+                } else {
+                    const res = await fetch(`${SCRIPT_URL}?action=login&username=${u}&password=${p}&_t=${Date.now()}`);
+                    const data = await res.json();
+                    if(data.success) user = data.user;
+                }
+
+                if (user) {
+                    currentUser = { username: user.username, role: user.role };
+                    localStorage.setItem('kkn_session', JSON.stringify(currentUser));
+                    routeUser();
+                } else {
+                    errorDiv.classList.remove('hidden');
+                }
+            } catch (err) {
+                alert("Gagal terhubung ke server.");
+            } finally {
+                btn.innerHTML = 'Masuk';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('kkn_session');
+            currentUser = null;
+            document.getElementById('navbar').classList.add('hidden');
+            document.getElementById('admin-page').classList.add('hidden');
+            document.getElementById('group-page').classList.add('hidden');
+            document.getElementById('login-form').reset();
+            showPublicPage();
+        }
+
+        function setConnectionStatus(status) {
+            const navIcon = document.getElementById('nav-conn-icon');
+            const navText = document.getElementById('nav-conn-text');
+            const pubIcon = document.getElementById('pub-conn-icon');
+            const pubText = document.getElementById('pub-conn-text');
+
+            let iconClass = 'fa-solid fa-circle text-[10px] mr-1 ';
+            let pubIconClass = 'fa-solid fa-circle text-[10px] mr-2 ';
+            let text = 'Memeriksa...';
+
+            if (status === 'online') {
+                iconClass += 'text-green-400';
+                pubIconClass += 'text-green-500';
+                text = 'Terhubung';
+            } else if (status === 'offline') {
+                iconClass += 'text-red-400';
+                pubIconClass += 'text-red-500';
+                text = 'Terputus';
+            } else {
+                iconClass += 'text-gray-400';
+                pubIconClass += 'text-gray-400';
+            }
+
+            if(navIcon) navIcon.className = iconClass;
+            if(navText) navText.innerText = text;
+            if(pubIcon) pubIcon.className = pubIconClass;
+            if(pubText) pubText.innerText = text + (status === 'online' ? ' ke Database' : '');
+        }
+
+        async function loadDataFromServer() {
+            setConnectionStatus('loading');
+            try {
+                if (USE_MOCK) {
+                    reportsData = [...mockReports]; 
+                    setConnectionStatus('online');
+                } else {
+                    // CACHE-BUSTER: Tambahan '_t' dan opsi fetch no-cache agar browser TIDAK menyimpan memori versi lama!
+                    const res = await fetch(`${SCRIPT_URL}?action=getReports&_t=${new Date().getTime()}`, {
+                        cache: 'no-store' 
+                    });
+                    const data = await res.json();
+                    reportsData = data.reports;
+                    setConnectionStatus('online');
+                }
+
+                if (!currentUser) {
+                    renderPublicDashboard();
+                } else if (currentUser.role === 'admin') {
+                    renderAdminDashboard();
+                } else {
+                    renderGroupDashboard();
+                }
+            } catch (error) {
+                console.error("Gagal memuat data:", error);
+                setConnectionStatus('offline');
+            }
+        }
+
+        function renderPublicDashboard() {
+            applyPublicFilters(); 
+            const totalGroups = new Set(reportsData.map(r => r.group)).size;
+            const emergencies = reportsData.filter(r => r.emergency && r.emergency.trim() !== '').length;
+            
+            document.getElementById('public-stat-groups').innerText = totalGroups || (USE_MOCK ? 2 : 0);
+            document.getElementById('public-stat-reports').innerText = reportsData.length;
+            document.getElementById('public-stat-emergencies').innerText = emergencies;
+        }
+
+        function applyPublicFilters() {
+            const dateFilter = document.getElementById('public-filter-date').value;
+            const groupFilter = document.getElementById('public-filter-group').value;
+
+            let filtered = reportsData;
+            if (dateFilter) filtered = filtered.filter(r => r.date === dateFilter);
+            if (groupFilter) filtered = filtered.filter(r => r.group === groupFilter);
+
+            renderChart(filtered, 'publicReportChart', 'public');
+        }
+
+        function resetPublicFilters() {
+            document.getElementById('public-filter-date').value = '';
+            document.getElementById('public-filter-group').value = '';
+            applyPublicFilters();
+        }
+
+        function renderAdminDashboard() {
+            applyFilters(); 
+            const totalGroups = new Set(reportsData.map(r => r.group)).size;
+            const emergencies = reportsData.filter(r => r.emergency && r.emergency.trim() !== '').length;
+            
+            document.getElementById('stat-groups').innerText = totalGroups || (USE_MOCK ? 2 : 0);
+            document.getElementById('stat-reports').innerText = reportsData.length;
+            document.getElementById('stat-emergencies').innerText = emergencies;
+
+            renderChart(reportsData, 'reportChart', 'admin');
+        }
+
+        function renderChart(data, canvasId, type) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            const dateCounts = {};
+            data.forEach(r => { dateCounts[r.date] = (dateCounts[r.date] || 0) + 1; });
+            const labels = Object.keys(dateCounts).sort();
+            const values = labels.map(date => dateCounts[date]);
+
+            if (type === 'admin' && adminChartInstance) adminChartInstance.destroy();
+            if (type === 'public' && publicChartInstance) publicChartInstance.destroy();
+
+            const newChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Jumlah Laporan',
+                        data: values,
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                        pointRadius: 4
+                    }]
+                },
+                options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+            });
+
+            if (type === 'admin') adminChartInstance = newChart;
+            if (type === 'public') publicChartInstance = newChart;
+        }
+
+        function applyFilters() {
+            const dateFilter = document.getElementById('filter-date').value;
+            const groupFilter = document.getElementById('filter-group').value;
+
+            let filtered = reportsData;
+            if (dateFilter) filtered = filtered.filter(r => r.date === dateFilter);
+            if (groupFilter) filtered = filtered.filter(r => r.group === groupFilter);
+
+            renderAdminTable(filtered);
+        }
+
+        function resetFilters() {
+            document.getElementById('filter-date').value = '';
+            document.getElementById('filter-group').value = '';
+            applyFilters();
+        }
+
+        function renderAdminTable(data) {
+            const tbody = document.getElementById('admin-table-body');
+            tbody.innerHTML = '';
+
+            const btnBulkAdmin = document.getElementById('btn-bulk-delete-admin');
+            if (btnBulkAdmin) btnBulkAdmin.classList.add('hidden');
+            const selectAllAdmin = document.getElementById('selectAllAdmin');
+            if (selectAllAdmin) selectAllAdmin.checked = false;
+
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
+                return;
+            }
+
+            const sortedData = data.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            sortedData.forEach(report => {
+                const tr = document.createElement('tr');
+                const hasEmergency = report.emergency && report.emergency.trim() !== '';
+                
+                tr.innerHTML = `
+                    <td class="px-6 py-4 text-center">
+                        <input type="checkbox" class="row-checkbox-admin" value="${report.id}" onchange="updateBulkActionStateAdmin()">
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">${report.date}</td>
+                    <td class="px-6 py-4 font-medium text-blue-600">${report.group}</td>
+                    <td class="px-6 py-4 truncate max-w-xs" title="${report.activity}">${report.activity.substring(0,40)}...</td>
+                    <td class="px-6 py-4">
+                        ${hasEmergency 
+                            ? `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Darurat!</span>` 
+                            : `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Aman</span>`}
+                    </td>
+                    <td class="px-6 py-4 text-center space-x-2">
+                        <button onclick="viewDetail('${report.id}')" class="text-blue-500 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 p-2 rounded-full transition" title="Lihat Detail"><i class="fa-solid fa-eye"></i></button>
+                        <button type="button" onclick="deleteReport('${report.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function viewDetail(id) {
+            const r = reportsData.find(x => String(x.id) === String(id));
+            if(!r) return;
+
+            const modal = document.getElementById('detail-modal');
+            const content = document.getElementById('modal-content');
+            
+            const links = r.photo ? r.photo.split(',').filter(l => l.trim() !== '') : [];
+            const linksHtml = links.length > 0 
+                ? links.map((link, idx) => `<a href="${link.trim()}" target="_blank" class="text-blue-500 hover:underline block"><i class="fa-solid fa-link"></i> Buka Link Foto ${links.length > 1 ? (idx + 1) : ''}</a>`).join('')
+                : '-';
+            
+            content.innerHTML = `
+                <div class="grid grid-cols-3 gap-2 border-b pb-2"><div class="font-bold text-gray-600">Kelompok</div><div class="col-span-2 text-blue-600 font-semibold">${r.group} ${r.korkel ? `<span class="text-gray-500 text-sm font-normal">(Korkel: ${r.korkel})</span>` : ''}</div></div>
+                <div class="grid grid-cols-3 gap-2 border-b pb-2"><div class="font-bold text-gray-600">Tanggal</div><div class="col-span-2">${r.date}</div></div>
+                <div class="grid grid-cols-3 gap-2 border-b pb-2"><div class="font-bold text-gray-600">Lokasi</div><div class="col-span-2">${r.location} (Anggota: ${r.members})</div></div>
+                <div class="grid grid-cols-1 gap-1 border-b pb-2"><div class="font-bold text-gray-600">Kegiatan Harian</div><div class="bg-gray-50 p-2 rounded">${r.activity}</div></div>
+                ${r.emergency ? `<div class="grid grid-cols-1 gap-1 border-b pb-2"><div class="font-bold text-red-600">Kejadian Darurat!</div><div class="bg-red-50 p-2 rounded text-red-800 border border-red-200">${r.emergency}</div></div>` : ''}
+                <div class="grid grid-cols-3 gap-2 pt-2"><div class="font-bold text-gray-600">Dokumentasi</div><div class="col-span-2 space-y-1">${linksHtml}</div></div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+        }
+
+        function renderGroupDashboard() {
+            const myReports = reportsData.filter(r => r.group === currentUser.username);
+            const tbody = document.getElementById('group-table-body');
+            tbody.innerHTML = '';
+
+            const btnBulk = document.getElementById('btn-bulk-delete');
+            if (btnBulk) btnBulk.classList.add('hidden');
+            const selectAll = document.getElementById('selectAll');
+            if (selectAll) selectAll.checked = false;
+
+            if (myReports.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="px-4 py-4 text-center text-gray-500">Belum ada laporan.</td></tr>';
+                return;
+            }
+
+            const sortedData = myReports.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            sortedData.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-4 py-2 text-center">
+                        <input type="checkbox" class="row-checkbox" value="${r.id}" onchange="updateBulkActionState()">
+                    </td>
+                    <td class="px-4 py-2 whitespace-nowrap">${r.date}</td>
+                    <td class="px-4 py-2 truncate max-w-[150px]" title="${r.activity}">${r.activity.substring(0,30)}...</td>
+                    <td class="px-4 py-2 text-center space-x-2">
+                        <button type="button" onclick="editReport('${r.id}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button type="button" onclick="deleteReport('${r.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function submitReport(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit');
+            btn.innerText = 'Menyimpan...';
+            btn.disabled = true;
+
+            const id = document.getElementById('report-id').value;
+            const kab = document.getElementById('form-kabupaten').value;
+            const kec = document.getElementById('form-kecamatan').value;
+            const desa = document.getElementById('form-desa').value;
+            const jalan = document.getElementById('form-jalan').value;
+            const locationCombined = `${jalan}, Desa/Kel. ${desa}, Kec. ${kec}, ${kab}`;
+            
+            const photoInputs = document.querySelectorAll('.photo-link-input');
+            const photoLinks = Array.from(photoInputs).map(i => i.value).filter(v => v.trim() !== '').join(',');
+            
+            const payload = {
+                id: id ? parseInt(id) : Date.now(), 
+                group: currentUser.username,
+                korkel: document.getElementById('form-korkel').value,
+                members: document.getElementById('form-members').value,
+                location: locationCombined,
+                rawLocation: { kab, kec, desa, jalan },
+                date: document.getElementById('form-date').value,
+                activity: document.getElementById('form-activity').value,
+                emergency: document.getElementById('form-emergency').value,
+                photo: photoLinks
+            };
+
+            try {
+                if (USE_MOCK) {
+                    await new Promise(r => setTimeout(r, 600)); 
+                    if (id) {
+                        const idx = mockReports.findIndex(x => String(x.id) === String(id));
+                        mockReports[idx] = payload;
+                    } else {
+                        mockReports.push(payload);
+                    }
+                } else {
+                    const action = id ? 'editReport' : 'addReport';
+                    const res = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: action, data: payload }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' } 
+                    });
+                    
+                    const textRes = await res.text();
+                    let result;
+                    try { result = JSON.parse(textRes); } 
+                    catch(e) { throw new Error("Respon server salah."); }
+                    
+                    if(!result.success) throw new Error(result.error || "Gagal simpan di server");
+                }
+
+                alert("Laporan berhasil disimpan!");
+                resetForm();
+                await loadDataFromServer(); 
+
+            } catch (err) {
+                alert("Terjadi kesalahan: " + err.message);
+            } finally {
+                btn.innerText = 'Simpan Laporan';
+                btn.disabled = false;
+            }
+        }
+
+        function editReport(id) {
+            const r = reportsData.find(x => String(x.id) === String(id));
+            if(!r) return;
+
+            document.getElementById('form-title').innerText = "Edit Laporan";
+            document.getElementById('report-id').value = r.id;
+            document.getElementById('form-korkel').value = r.korkel || '';
+            document.getElementById('form-members').value = r.members;
+            
+            if (r.rawLocation) {
+                document.getElementById('form-kabupaten').value = r.rawLocation.kab || '';
+                document.getElementById('form-kecamatan').value = r.rawLocation.kec || '';
+                document.getElementById('form-desa').value = r.rawLocation.desa || '';
+                document.getElementById('form-jalan').value = r.rawLocation.jalan || '';
+            } else {
+                document.getElementById('form-kabupaten').value = '';
+                document.getElementById('form-kecamatan').value = '';
+                document.getElementById('form-desa').value = '';
+                document.getElementById('form-jalan').value = r.location || '';
+            }
+            
+            document.getElementById('form-date').value = r.date;
+            document.getElementById('form-activity').value = r.activity;
+            document.getElementById('form-emergency').value = r.emergency || '';
+            
+            const wrapper = document.getElementById('photo-inputs-wrapper');
+            if (wrapper) {
+                wrapper.innerHTML = '';
+                const links = r.photo ? r.photo.split(',') : [''];
+                if (links.length === 0) links.push('');
+                links.forEach(link => addPhotoInput(link.trim()));
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function deleteReport(id, btnElement) {
+            if(!confirm("Apakah Anda yakin ingin menghapus laporan ini?")) return;
+
+            let originalIcon = '';
+            if (btnElement) {
+                originalIcon = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                btnElement.disabled = true;
+            }
+
+            try {
+                if (USE_MOCK) {
+                    mockReports = mockReports.filter(x => String(x.id) !== String(id));
+                } else {
+                    const res = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'deleteReport', id: id }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    
+                    const textRes = await res.text();
+                    let result;
+                    try { result = JSON.parse(textRes); } 
+                    catch(e) { throw new Error("Terjadi masalah dengan koneksi Database."); }
+                    
+                    if(!result.success) throw new Error(result.error || "Akses ditolak");
+                }
+                
+                await loadDataFromServer();
+            } catch (err) {
+                alert("Gagal menghapus: " + err.message);
+                if (btnElement) {
+                    btnElement.innerHTML = originalIcon;
+                    btnElement.disabled = false;
+                }
+            }
+        }
+
+        function toggleAllCheckboxes(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+            updateBulkActionState();
+        }
+
+        function updateBulkActionState() {
+            const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+            const allCheckboxes = document.querySelectorAll('.row-checkbox');
+            const btn = document.getElementById('btn-bulk-delete');
+            const selectAll = document.getElementById('selectAll');
+
+            if (checkboxes.length > 0) {
+                btn.classList.remove('hidden');
+                btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
+            } else {
+                btn.classList.add('hidden');
+            }
+
+            if (allCheckboxes.length > 0) {
+                 selectAll.checked = checkboxes.length === allCheckboxes.length;
+            }
+        }
+
+        async function deleteBulkReports() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+            if(checkedBoxes.length === 0) return;
+            
+            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan yang dipilih?`)) return;
+
+            const btn = document.getElementById('btn-bulk-delete');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
+            btn.disabled = true;
+
+            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
+
+            try {
+                if (USE_MOCK) {
+                    mockReports = mockReports.filter(x => !idsToDelete.includes(String(x.id)));
+                } else {
+                    for (const id of idsToDelete) {
+                        const res = await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'deleteReport', id: id }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                        const textRes = await res.text();
+                        try {
+                            const result = JSON.parse(textRes);
+                            if(!result.success) console.error("Gagal menghapus ID:", id);
+                        } catch(e) {
+                             console.error("Gagal menghubungi server untuk ID:", id);
+                        }
+                    }
+                }
+                await loadDataFromServer();
+            } catch (err) {
+                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
+                btn.innerHTML = originalText;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function toggleAllCheckboxesAdmin(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox-admin');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+            updateBulkActionStateAdmin();
+        }
+
+        function updateBulkActionStateAdmin() {
+            const checkboxes = document.querySelectorAll('.row-checkbox-admin:checked');
+            const allCheckboxes = document.querySelectorAll('.row-checkbox-admin');
+            const btn = document.getElementById('btn-bulk-delete-admin');
+            const selectAll = document.getElementById('selectAllAdmin');
+
+            if (checkboxes.length > 0) {
+                btn.classList.remove('hidden');
+                btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
+            } else {
+                btn.classList.add('hidden');
+            }
+
+            if (allCheckboxes.length > 0) {
+                 selectAll.checked = checkboxes.length === allCheckboxes.length;
+            }
+        }
+
+        async function deleteBulkReportsAdmin() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox-admin:checked');
+            if(checkedBoxes.length === 0) return;
+            
+            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan KKN?`)) return;
+
+            const btn = document.getElementById('btn-bulk-delete-admin');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
+            btn.disabled = true;
+
+            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
+
+            try {
+                if (USE_MOCK) {
+                    mockReports = mockReports.filter(x => !idsToDelete.includes(String(x.id)));
+                } else {
+                    for (const id of idsToDelete) {
+                        const res = await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'deleteReport', id: id }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                        const textRes = await res.text();
+                        try {
+                            const result = JSON.parse(textRes);
+                            if(!result.success) console.error("Gagal menghapus ID:", id);
+                        } catch(e) {
+                             console.error("Gagal menghubungi server untuk ID:", id);
+                        }
+                    }
+                }
+                await loadDataFromServer();
+            } catch (err) {
+                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
+                btn.innerHTML = originalText;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('report-form').reset();
+            document.getElementById('form-group').value = currentUser.username;
+            document.getElementById('form-korkel').value = '';
+            document.getElementById('report-id').value = '';
+            document.getElementById('form-title').innerText = "Buat Laporan Baru";
+            
+            const wrapper = document.getElementById('photo-inputs-wrapper');
+            if (wrapper) {
+                wrapper.innerHTML = '';
+                addPhotoInput('');
+            }
+        }
+
+        function addPhotoInput(val = '') {
+            const wrapper = document.getElementById('photo-inputs-wrapper');
+            const inputsCount = wrapper.querySelectorAll('.photo-row').length;
+            const div = document.createElement('div');
+            div.className = 'flex space-x-2 mb-2 photo-row';
+            
+            const trashBtnVisibility = inputsCount === 0 ? 'invisible' : '';
+            
+            div.innerHTML = `
+                <input type="url" required value="${val}" class="photo-link-input w-full border rounded p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="https://drive.google.com/...">
+                <button type="button" onclick="this.parentElement.remove()" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded text-sm transition ${trashBtnVisibility}" title="Hapus Link">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            `;
+            wrapper.appendChild(div);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const wrapper = document.getElementById('photo-inputs-wrapper');
+            if(wrapper && wrapper.children.length === 0) {
+                addPhotoInput('');
+            }
+        });
+
+    </script>
+</body>
+</html>
