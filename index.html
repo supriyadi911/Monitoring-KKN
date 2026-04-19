@@ -69,24 +69,24 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500 flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-500 font-medium uppercase">Total Kelompok</p>
-                        <p class="text-3xl font-bold text-gray-800" id="public-stat-groups">0</p>
+                        <p class="text-sm text-gray-500 font-medium uppercase">Laporan Kelompok</p>
+                        <p class="text-3xl font-bold text-gray-800" id="public-stat-kelompok">0</p>
                     </div>
                     <i class="fa-solid fa-users text-4xl text-blue-200"></i>
                 </div>
+                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-purple-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium uppercase">Laporan Mahasiswa</p>
+                        <p class="text-3xl font-bold text-gray-800" id="public-stat-mahasiswa">0</p>
+                    </div>
+                    <i class="fa-solid fa-user-graduate text-4xl text-purple-200"></i>
+                </div>
                 <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500 flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-500 font-medium uppercase">Laporan Masuk</p>
-                        <p class="text-3xl font-bold text-gray-800" id="public-stat-reports">0</p>
+                        <p class="text-sm text-gray-500 font-medium uppercase">Laporan DPL</p>
+                        <p class="text-3xl font-bold text-gray-800" id="public-stat-dpl">0</p>
                     </div>
-                    <i class="fa-solid fa-file-lines text-4xl text-green-200"></i>
-                </div>
-                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-red-500 flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500 font-medium uppercase">Kejadian Darurat</p>
-                        <p class="text-3xl font-bold text-red-600" id="public-stat-emergencies">0</p>
-                    </div>
-                    <i class="fa-solid fa-triangle-exclamation text-4xl text-red-200"></i>
+                    <i class="fa-solid fa-user-tie text-4xl text-green-200"></i>
                 </div>
             </div>
 
@@ -103,15 +103,7 @@
                             <label class="block text-sm text-gray-600">Tanggal</label>
                             <input type="date" id="public-filter-date" class="mt-1 w-full border rounded-md p-2 text-sm" onchange="applyPublicFilters()">
                         </div>
-                        <div>
-                            <label class="block text-sm text-gray-600">Kelompok</label>
-                            <select id="public-filter-group" class="mt-1 w-full border rounded-md p-2 text-sm" onchange="applyPublicFilters()">
-                                <option value="">Semua Kelompok</option>
-                                <option value="kelompok1">Kelompok 1</option>
-                                <option value="kelompok2">Kelompok 2</option>
-                            </select>
-                        </div>
-                        <button onclick="resetPublicFilters()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-md text-sm transition">
+                        <button onclick="resetPublicFilters()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-md text-sm transition mt-4">
                             Reset Filter
                         </button>
                     </div>
@@ -142,15 +134,30 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Username / Nama Kelompok</label>
                         <input id="username" type="text" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Contoh: kelompok1 atau admin">
                     </div>
-                    <div class="mb-6">
+                    <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
                         <input id="password" type="password" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="••••••••">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="role">Peran (Role)</label>
+                        <select id="role" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="" disabled selected>-- Pilih Peran --</option>
+                            <option value="admin">Admin</option>
+                            <option value="kelompok">Kelompok</option>
+                            <option value="dpl">DPL</option>
+                            <option value="mahasiswa">Mahasiswa</option>
+                        </select>
                     </div>
                     <button type="submit" id="btn-login" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150">
                         Masuk
                     </button>
-                    <div id="login-error" class="text-red-500 text-sm text-center mt-3 hidden">Username atau Password salah!</div>
+                    <div id="login-error" class="text-red-500 text-sm text-center mt-3 hidden">Username, Password, atau Peran salah!</div>
                 </form>
+
+                <!-- Tombol Daftar -->
+                <div class="mt-4 text-center">
+                    <p class="text-sm text-gray-600">Belum punya akun? <button type="button" onclick="showRegisterPage()" class="text-blue-600 hover:text-blue-800 font-semibold transition">Daftar di sini</button></p>
+                </div>
 
                 <!-- Info Kontak -->
                 <div class="mt-6 p-4 bg-green-50 rounded-md text-center border border-green-100">
@@ -159,6 +166,86 @@
                         <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Hubungi via WhatsApp
                     </a>
                 </div>
+
+                <!-- Tombol Kembali -->
+                <div class="mt-6 text-center">
+                    <button type="button" onclick="showPublicPage()" class="text-gray-500 hover:text-blue-600 text-sm font-medium transition duration-150 flex items-center justify-center mx-auto">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke Beranda
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==============================
+             1.5. REGISTER PAGE (BARU)
+        =============================== -->
+        <div id="register-page" class="hidden flex-grow items-center justify-center p-4">
+            <div class="bg-white p-8 rounded-xl shadow-lg max-w-2xl w-full my-8">
+                <div class="text-center mb-6">
+                    <i class="fa-solid fa-user-plus text-blue-600 text-5xl mb-3"></i>
+                    <h2 class="text-2xl font-bold text-gray-800">Daftar Akun Baru</h2>
+                    <p class="text-sm text-gray-500 mt-1">Lengkapi data berikut untuk membuat akun SIM KKN</p>
+                </div>
+                
+                <form id="register-form" onsubmit="handleRegister(event)">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <!-- Kolom Kiri -->
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="reg-username">Username *</label>
+                            <input id="reg-username" type="text" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="reg-password">Password *</label>
+                            <input id="reg-password" type="password" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="reg-role">Peran (Role) *</label>
+                            <select id="reg-role" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="" disabled selected>-- Pilih Peran --</option>
+                                <option value="kelompok">Kelompok</option>
+                                <option value="dpl">DPL</option>
+                                <option value="mahasiswa">Mahasiswa</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="reg-namaLengkap">Nama Lengkap / Kelompok *</label>
+                            <input id="reg-namaLengkap" type="text" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <!-- Kolom Kanan -->
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="reg-nimNip">NIM / NIP (Opsional)</label>
+                            <input id="reg-nimNip" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="reg-kelompok">Kelompok KKN (Opsional)</label>
+                            <input id="reg-kelompok" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Cth: Kelompok 1">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="reg-fakultas">Fakultas (Opsional)</label>
+                            <input id="reg-fakultas" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="reg-kontak">Kontak / WA (Opsional)</label>
+                            <input id="reg-kontak" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="reg-lokasi">Lokasi KKN (Opsional)</label>
+                        <input id="reg-lokasi" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Cth: Desa Suka Maju">
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button type="submit" id="btn-register" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150">
+                            Daftar Sekarang
+                        </button>
+                        <button type="button" onclick="goToLogin()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150">
+                            Batal
+                        </button>
+                    </div>
+                    <div id="register-error" class="text-red-500 text-sm text-center mt-3 hidden">Gagal mendaftar. Silakan coba lagi!</div>
+                </form>
             </div>
         </div>
 
@@ -166,30 +253,68 @@
              2. DASHBOARD ADMIN / DOSEN
         =============================== -->
         <div id="admin-page" class="hidden flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
-            <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard Dosen Pembimbing</h1>
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard Monitor Admin</h1>
             
             <!-- Statistik Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500 flex items-center justify-between">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <!-- Baris 1: Entitas Pengguna & Darurat -->
+                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-blue-500 flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-500 font-medium uppercase">Total Kelompok</p>
-                        <p class="text-3xl font-bold text-gray-800" id="stat-groups">0</p>
+                        <p class="text-xs text-gray-500 font-medium uppercase">Total Kelompok</p>
+                        <p class="text-2xl font-bold text-gray-800" id="stat-groups">0</p>
                     </div>
-                    <i class="fa-solid fa-users text-4xl text-blue-200"></i>
+                    <i class="fa-solid fa-users text-3xl text-blue-200"></i>
                 </div>
-                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500 flex items-center justify-between">
+                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-purple-500 flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-500 font-medium uppercase">Laporan Masuk</p>
-                        <p class="text-3xl font-bold text-gray-800" id="stat-reports">0</p>
+                        <p class="text-xs text-gray-500 font-medium uppercase">Total Mahasiswa</p>
+                        <p class="text-2xl font-bold text-gray-800" id="stat-mhs">0</p>
                     </div>
-                    <i class="fa-solid fa-file-lines text-4xl text-green-200"></i>
+                    <i class="fa-solid fa-user-graduate text-3xl text-purple-200"></i>
                 </div>
-                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-red-500 flex items-center justify-between">
+                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-green-500 flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-500 font-medium uppercase">Kejadian Darurat</p>
-                        <p class="text-3xl font-bold text-red-600" id="stat-emergencies">0</p>
+                        <p class="text-xs text-gray-500 font-medium uppercase">Total DPL</p>
+                        <p class="text-2xl font-bold text-gray-800" id="stat-dpl">0</p>
                     </div>
-                    <i class="fa-solid fa-triangle-exclamation text-4xl text-red-200"></i>
+                    <i class="fa-solid fa-user-tie text-3xl text-green-200"></i>
+                </div>
+                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-red-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-500 font-medium uppercase">Kejadian Darurat</p>
+                        <p class="text-2xl font-bold text-red-600" id="stat-darurat">0</p>
+                    </div>
+                    <i class="fa-solid fa-triangle-exclamation text-3xl text-red-200"></i>
+                </div>
+                
+                <!-- Baris 2: Laporan & Keluhan -->
+                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-blue-400 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-500 font-medium uppercase">Lap. Kelompok</p>
+                        <p class="text-2xl font-bold text-gray-800" id="stat-rep-kel">0</p>
+                    </div>
+                    <i class="fa-solid fa-file-lines text-3xl text-blue-200"></i>
+                </div>
+                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-purple-400 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-500 font-medium uppercase">Lap. Mahasiswa</p>
+                        <p class="text-2xl font-bold text-gray-800" id="stat-rep-mhs">0</p>
+                    </div>
+                    <i class="fa-solid fa-file-signature text-3xl text-purple-200"></i>
+                </div>
+                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-green-400 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-500 font-medium uppercase">Lap. DPL</p>
+                        <p class="text-2xl font-bold text-gray-800" id="stat-rep-dpl">0</p>
+                    </div>
+                    <i class="fa-solid fa-file-contract text-3xl text-green-200"></i>
+                </div>
+                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-orange-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-500 font-medium uppercase">Total Keluhan</p>
+                        <p class="text-2xl font-bold text-orange-600" id="stat-keluhan">0</p>
+                    </div>
+                    <i class="fa-solid fa-comment-dots text-3xl text-orange-200"></i>
                 </div>
             </div>
 
@@ -206,30 +331,25 @@
                             <label class="block text-sm text-gray-600">Tanggal</label>
                             <input type="date" id="filter-date" class="mt-1 w-full border rounded-md p-2 text-sm" onchange="applyFilters()">
                         </div>
-                        <div>
-                            <label class="block text-sm text-gray-600">Kelompok</label>
-                            <select id="filter-group" class="mt-1 w-full border rounded-md p-2 text-sm" onchange="applyFilters()">
-                                <option value="">Semua Kelompok</option>
-                                <option value="kelompok1">Kelompok 1</option>
-                                <option value="kelompok2">Kelompok 2</option>
-                            </select>
-                        </div>
-                        <button onclick="resetFilters()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-md text-sm transition">
+                        <button onclick="resetFilters()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-md text-sm transition mt-4">
                             Reset Filter
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Tabel Data -->
-            <div class="bg-white rounded-lg shadow overflow-hidden">
-                <div class="px-6 py-4 border-b flex justify-between items-center">
-                    <h3 class="font-bold text-gray-700">Daftar Laporan KKN</h3>
-                    <button id="btn-bulk-delete-admin" onclick="deleteBulkReportsAdmin()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
+            <!-- Tabel Data Kelompok -->
+            <div class="bg-white rounded-lg shadow overflow-hidden mb-8">
+                <div class="px-6 py-4 border-b flex justify-between items-center bg-blue-50">
+                    <h3 class="font-bold text-gray-700">Daftar Laporan Kelompok</h3>
+                    <div class="flex items-center space-x-3">
+                        <button id="btn-bulk-delete-admin" onclick="deleteBulkReportsAdmin()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
+                        <button onclick="toggleTable('admin-kelompok-container', 'icon-kelompok', 'pagination-kelompok')" class="text-gray-500 hover:text-gray-800 transition" title="Sembunyikan/Tampilkan Tabel"><i id="icon-kelompok" class="fa-solid fa-chevron-up"></i></button>
+                    </div>
                 </div>
-                <div class="overflow-x-auto">
+                <div id="admin-kelompok-container" class="overflow-x-auto overflow-y-auto max-h-[600px] transition-all duration-300">
                     <table class="w-full whitespace-nowrap">
-                        <thead class="bg-gray-50 text-gray-500 text-sm">
+                        <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
                             <tr>
                                 <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdmin" onclick="toggleAllCheckboxesAdmin(this)"></th>
                                 <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
@@ -244,6 +364,60 @@
                         </tbody>
                     </table>
                 </div>
+                <!-- Pagination Kelompok -->
+                <div id="pagination-kelompok" data-active="false" class="hidden flex justify-between items-center px-6 py-3 bg-gray-50 border-t"></div>
+            </div>
+
+            <!-- Tabel Data Mahasiswa -->
+            <div class="bg-white rounded-lg shadow overflow-hidden mb-8">
+                <div class="px-6 py-4 border-b flex justify-between items-center bg-purple-50">
+                    <h3 class="font-bold text-gray-700">Daftar Laporan Mahasiswa</h3>
+                    <button onclick="toggleTable('admin-mhs-container', 'icon-mhs', 'pagination-mhs')" class="text-gray-500 hover:text-gray-800 transition" title="Sembunyikan/Tampilkan Tabel"><i id="icon-mhs" class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div id="admin-mhs-container" class="overflow-x-auto overflow-y-auto max-h-[600px] transition-all duration-300">
+                    <table class="w-full whitespace-nowrap">
+                        <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
+                            <tr>
+                                <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
+                                <th class="px-6 py-3 text-left font-medium tracking-wider">Mahasiswa</th>
+                                <th class="px-6 py-3 text-left font-medium tracking-wider">Kelompok</th>
+                                <th class="px-6 py-3 text-left font-medium tracking-wider">Rencana & Keluhan</th>
+                                <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-mhs-table-body" class="bg-white divide-y divide-gray-200 text-sm">
+                            <!-- Data injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination Mahasiswa -->
+                <div id="pagination-mhs" data-active="false" class="hidden flex justify-between items-center px-6 py-3 bg-gray-50 border-t"></div>
+            </div>
+
+            <!-- Tabel Data DPL -->
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="px-6 py-4 border-b flex justify-between items-center bg-green-50">
+                    <h3 class="font-bold text-gray-700">Daftar Laporan DPL</h3>
+                    <button onclick="toggleTable('admin-dpl-container', 'icon-dpl', 'pagination-dpl')" class="text-gray-500 hover:text-gray-800 transition" title="Sembunyikan/Tampilkan Tabel"><i id="icon-dpl" class="fa-solid fa-chevron-up"></i></button>
+                </div>
+                <div id="admin-dpl-container" class="overflow-x-auto overflow-y-auto max-h-[600px] transition-all duration-300">
+                    <table class="w-full whitespace-nowrap">
+                        <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
+                            <tr>
+                                <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
+                                <th class="px-6 py-3 text-left font-medium tracking-wider">DPL</th>
+                                <th class="px-6 py-3 text-left font-medium tracking-wider">Kategori & Kelompok</th>
+                                <th class="px-6 py-3 text-left font-medium tracking-wider">Catatan</th>
+                                <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-dpl-table-body" class="bg-white divide-y divide-gray-200 text-sm">
+                            <!-- Data injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination DPL -->
+                <div id="pagination-dpl" data-active="false" class="hidden flex justify-between items-center px-6 py-3 bg-gray-50 border-t"></div>
             </div>
         </div>
 
@@ -370,6 +544,264 @@
             </div>
         </div>
 
+        <!-- Modal Edit Biodata Mahasiswa -->
+        <div id="edit-profile-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+                <div class="flex justify-between items-center mb-4 border-b pb-2">
+                    <h3 class="text-xl font-bold text-gray-800">Edit Biodata Mahasiswa</h3>
+                    <button onclick="closeEditProfileModal()" class="text-gray-500 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <form id="edit-profile-form" onsubmit="submitEditProfile(event)">
+                    <div class="space-y-3 text-sm text-gray-700">
+                        <div>
+                            <label class="block text-gray-600 font-bold mb-1">Nama Lengkap</label>
+                            <input type="text" id="edit-prof-nama" required class="w-full border rounded p-2 focus:ring-2 focus:ring-purple-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 font-bold mb-1">NIM</label>
+                            <input type="text" id="edit-prof-nim" required class="w-full border rounded p-2 focus:ring-2 focus:ring-purple-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 font-bold mb-1">Kelompok KKN</label>
+                            <input type="text" id="edit-prof-kelompok" required class="w-full border rounded p-2 focus:ring-2 focus:ring-purple-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 font-bold mb-1">Alamat / Lokasi KKN</label>
+                            <input type="text" id="edit-prof-lokasi" required class="w-full border rounded p-2 focus:ring-2 focus:ring-purple-500 outline-none">
+                        </div>
+                    </div>
+                    <div class="mt-6 flex space-x-2">
+                        <button type="submit" id="btn-submit-profile" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded transition shadow-sm">Simpan Perubahan</button>
+                        <button type="button" onclick="closeEditProfileModal()" class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded font-medium shadow-sm">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Edit Biodata DPL -->
+        <div id="edit-profile-dpl-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+                <div class="flex justify-between items-center mb-4 border-b pb-2">
+                    <h3 class="text-xl font-bold text-gray-800">Edit Biodata DPL</h3>
+                    <button onclick="closeEditProfileDplModal()" class="text-gray-500 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <form id="edit-profile-dpl-form" onsubmit="submitEditProfileDpl(event)">
+                    <div class="space-y-3 text-sm text-gray-700">
+                        <div>
+                            <label class="block text-gray-600 font-bold mb-1">Nama Lengkap & Gelar</label>
+                            <input type="text" id="edit-prof-dpl-nama" required class="w-full border rounded p-2 focus:ring-2 focus:ring-green-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 font-bold mb-1">NIP / NIDN</label>
+                            <input type="text" id="edit-prof-dpl-nip" required class="w-full border rounded p-2 focus:ring-2 focus:ring-green-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 font-bold mb-1">Fakultas</label>
+                            <input type="text" id="edit-prof-dpl-fakultas" required class="w-full border rounded p-2 focus:ring-2 focus:ring-green-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 font-bold mb-1">Kontak / WA</label>
+                            <input type="text" id="edit-prof-dpl-kontak" required class="w-full border rounded p-2 focus:ring-2 focus:ring-green-500 outline-none">
+                        </div>
+                    </div>
+                    <div class="mt-6 flex space-x-2">
+                        <button type="submit" id="btn-submit-profile-dpl" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded transition shadow-sm">Simpan Perubahan</button>
+                        <button type="button" onclick="closeEditProfileDplModal()" class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded font-medium shadow-sm">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ==============================
+             4. DASHBOARD DPL
+        =============================== -->
+        <div id="dpl-page" class="hidden flex-grow max-w-5xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard Dosen Pembimbing Lapangan (DPL)</h1>
+            
+            <div class="grid grid-cols-1 gap-8">
+                
+                <!-- Kartu Biodata DPL -->
+                <div class="bg-white rounded-lg shadow p-6 border-t-4 border-green-500 relative">
+                    <button onclick="openEditProfileDplModal()" class="absolute top-4 right-4 text-green-500 hover:text-green-700 bg-green-50 hover:bg-green-100 p-2 rounded-full transition" title="Edit Biodata">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="bg-green-100 p-3 rounded-full text-green-600">
+                            <i class="fa-solid fa-user-tie text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-lg" id="dpl-nama">Nama Dosen</h3>
+                            <p class="text-sm text-gray-500 capitalize" id="dpl-role">DPL</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600 pr-8">
+                        <div class="flex justify-between border-b pb-1"><span>NIP/NIDN:</span> <span id="dpl-nip" class="font-medium text-gray-800">-</span></div>
+                        <div class="flex justify-between border-b pb-1"><span>Fakultas:</span> <span id="dpl-fakultas" class="font-medium text-gray-800">-</span></div>
+                        <div class="flex justify-between pb-1"><span>Kontak:</span> <span id="dpl-kontak" class="font-medium text-gray-800">-</span></div>
+                    </div>
+                </div>
+
+                <!-- Form Input Pelaporan DPL -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="font-bold text-gray-700 mb-4" id="dpl-form-title">Buat Laporan Pendampingan</h3>
+                    <form id="dpl-report-form" onsubmit="submitDplReport(event)">
+                        <input type="hidden" id="dpl-report-id" value="">
+                        
+                        <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1">Kategori Pelaporan *</label>
+                            <select id="dpl-kategori" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-green-500 outline-none">
+                                <option value="" disabled selected>-- Pilih Kategori --</option>
+                                <option value="Pembekalan">Pembekalan Kelompok</option>
+                                <option value="Pendadaran">Pendadaran Mahasiswa</option>
+                                <option value="Draft Artikel">Draft Artikel Kelompok</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1">Kelompok Bimbingan *</label>
+                            <input type="text" id="dpl-kelompok" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-green-500 outline-none" placeholder="Contoh: Kelompok 1, Kelompok 2">
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1">Tanggal *</label>
+                            <input type="date" id="dpl-tanggal" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-green-500 outline-none">
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1">Catatan / Keterangan *</label>
+                            <textarea id="dpl-catatan" required rows="3" class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-green-500 outline-none" placeholder="Tuliskan catatan pendampingan..."></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm text-gray-600 mb-1">Link File / Dokumen (Opsional)</label>
+                            <input type="url" id="dpl-link" class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-green-500 outline-none" placeholder="Link Drive Draft Artikel / Foto">
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button type="submit" id="btn-submit-dpl" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm transition">
+                                Simpan
+                            </button>
+                            <button type="button" onclick="resetDplForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded text-sm transition">
+                                Batal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Riwayat Pelaporan DPL -->
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="px-6 py-4 border-b flex justify-between items-center bg-gray-50">
+                        <h3 class="font-bold text-gray-700">Riwayat Pelaporan DPL</h3>
+                        <button id="btn-bulk-delete-dpl" onclick="deleteBulkReportsDpl()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
+                    </div>
+                    <div class="overflow-x-auto p-4">
+                        <table class="w-full whitespace-nowrap">
+                            <thead class="bg-gray-100 text-gray-600 text-sm">
+                                <tr>
+                                    <th class="px-4 py-2 w-10 text-center rounded-tl-md"><input type="checkbox" id="selectAllDpl" onclick="toggleAllCheckboxesDpl(this)"></th>
+                                    <th class="px-4 py-2 text-left font-medium">Tanggal</th>
+                                    <th class="px-4 py-2 text-left font-medium">Kategori & Kelompok</th>
+                                    <th class="px-4 py-2 text-left font-medium">Catatan</th>
+                                    <th class="px-4 py-2 text-center font-medium rounded-tr-md">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dpl-table-body" class="bg-white divide-y divide-gray-200 text-sm">
+                                <!-- Data injected via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ==============================
+             5. DASHBOARD MAHASISWA
+        =============================== -->
+        <div id="mahasiswa-page" class="hidden flex-grow max-w-5xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard Mahasiswa KKN</h1>
+            
+            <div class="grid grid-cols-1 gap-8">
+                
+                <!-- Kartu Biodata Mahasiswa -->
+                <div class="bg-white rounded-lg shadow p-6 border-t-4 border-purple-500 relative">
+                    <button onclick="openEditProfileModal()" class="absolute top-4 right-4 text-purple-500 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 p-2 rounded-full transition" title="Edit Biodata">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="bg-purple-100 p-3 rounded-full text-purple-600">
+                            <i class="fa-solid fa-user-graduate text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-lg" id="mhs-nama">Nama Mahasiswa</h3>
+                            <p class="text-sm text-gray-500 capitalize">Anggota KKN</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600 pr-8">
+                        <div class="flex justify-between border-b pb-1"><span>NIM:</span> <span id="mhs-nim" class="font-medium text-gray-800">-</span></div>
+                        <div class="flex justify-between border-b pb-1"><span>Kelompok:</span> <span id="mhs-kelompok" class="font-medium text-gray-800">-</span></div>
+                        <div class="flex justify-between pb-1"><span>Alamat KKN:</span> <span id="mhs-lokasi" class="font-medium text-gray-800 text-right w-1/2 break-words leading-tight">-</span></div>
+                    </div>
+                </div>
+
+                <!-- Form Input Pelaporan Harian -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="font-bold text-gray-700 mb-4" id="mhs-form-title">Buat Laporan Harian</h3>
+                    <form id="mhs-report-form" onsubmit="submitMahasiswaReport(event)">
+                        <input type="hidden" id="mhs-report-id" value="">
+                        
+                        <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1">Tanggal *</label>
+                            <input type="date" id="mhs-tanggal" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1">Rencana Kegiatan Harian *</label>
+                            <textarea id="mhs-rencana" required rows="3" class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-purple-500 outline-none" placeholder="Tuliskan rencana kegiatan hari ini..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1">Keluhan / Kendala (Opsional)</label>
+                            <textarea id="mhs-keluhan" rows="2" class="w-full border border-orange-300 rounded p-2 text-sm focus:ring-2 focus:ring-orange-500 outline-none bg-orange-50" placeholder="Tuliskan keluhan atau kendala jika ada..."></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm text-gray-600 mb-1">Bukti Foto Kegiatan (Link GDrive) *</label>
+                            <input type="url" id="mhs-foto" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-purple-500 outline-none" placeholder="https://drive.google.com/...">
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button type="submit" id="btn-submit-mhs" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded text-sm transition">
+                                Simpan
+                            </button>
+                            <button type="button" onclick="resetMahasiswaForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded text-sm transition">
+                                Batal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Riwayat Kegiatan Harian -->
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="px-6 py-4 border-b flex justify-between items-center bg-gray-50">
+                        <h3 class="font-bold text-gray-700">Riwayat Kegiatan Harian</h3>
+                        <button id="btn-bulk-delete-mhs" onclick="deleteBulkReportsMhs()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
+                    </div>
+                    <div class="overflow-x-auto p-4">
+                        <table class="w-full whitespace-nowrap">
+                            <thead class="bg-gray-100 text-gray-600 text-sm">
+                                <tr>
+                                    <th class="px-4 py-2 w-10 text-center rounded-tl-md"><input type="checkbox" id="selectAllMhs" onclick="toggleAllCheckboxesMhs(this)"></th>
+                                    <th class="px-4 py-2 text-left font-medium">Tanggal</th>
+                                    <th class="px-4 py-2 text-left font-medium">Rencana Kegiatan</th>
+                                    <th class="px-4 py-2 text-center font-medium">Bukti</th>
+                                    <th class="px-4 py-2 text-center font-medium rounded-tr-md">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mhs-table-body" class="bg-white divide-y divide-gray-200 text-sm">
+                                <!-- Data injected via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </main>
 
     <!-- JAVASCRIPT LOGIC -->
@@ -380,7 +812,7 @@
         // Ganti URL ini dengan URL Web App Google Apps Script Anda nanti
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0usGakhM-ZPxkPDQkyFDAPi-DTgCsI_I6OX-uST_S8EOdxnlKCS0SpPir_eTkmnSAXQ/exec'; 
         
-        // Mode Simulasi (Mock Mode).
+        // Mode Simulasi (Mock Mode). Ganti ke false jika sudah menggunakan link backend yang baru.
         const USE_MOCK = false; 
 
         // =========================================================================
@@ -390,18 +822,40 @@
         let adminChartInstance = null;
         let publicChartInstance = null;
         let reportsData = []; 
+        let dplReportsData = []; 
+        let mahasiswaReportsData = []; 
+        
+        // State Filter & Pagination Admin
+        let filteredDataKel = [];
+        let filteredDataMhs = [];
+        let filteredDataDpl = [];
+        let currentPageKel = 1;
+        let currentPageMhs = 1;
+        let currentPageDpl = 1;
+        const itemsPerPage = 15;
         
         // Data Dummy untuk Simulasi
         const mockUsers = {
             'admin': { username: 'admin', password: '1234', role: 'admin' },
             'kelompok1': { username: 'kelompok1', password: '1234', role: 'kelompok', location: 'Desa Suka Maju' },
-            'kelompok2': { username: 'kelompok2', password: '1234', role: 'kelompok', location: 'Desa Suka Mundur' }
+            'kelompok2': { username: 'kelompok2', password: '1234', role: 'kelompok', location: 'Desa Suka Mundur' },
+            'dosen1': { username: 'dosen1', password: '1234', role: 'dpl', namaLengkap: 'Dr. Supriyadi, M.Pd.', nip: '198001012005011001', fakultas: 'Tarbiyah dan Keguruan', kontak: '0823-7196-2881' },
+            'mahasiswa1': { username: 'mahasiswa1', password: '1234', role: 'mahasiswa', namaLengkap: 'Andi Saputra', nim: '1911010001', kelompok: 'Kelompok 1', lokasi: 'Desa Suka Maju, Kec. Kalianda' }
         };
 
         let mockReports = [
             { id: 1, group: 'kelompok1', korkel: 'Budi Santoso', members: 5, location: 'Desa Suka Maju', date: '2023-10-01', activity: 'Pembersihan balai desa dan penyuluhan warga.', emergency: '', photo: 'https://drive.google.com/123' },
             { id: 2, group: 'kelompok2', korkel: 'Siti Aminah', members: 6, location: 'Desa Suka Mundur', date: '2023-10-01', activity: 'Mengajar di SD Inpres.', emergency: '', photo: 'https://drive.google.com/456' },
             { id: 3, group: 'kelompok1', korkel: 'Budi Santoso', members: 5, location: 'Desa Suka Maju', date: '2023-10-02', activity: 'Gotong royong membuat irigasi.', emergency: 'Satu anggota pingsan.', photo: 'https://drive.google.com/789' },
+        ];
+
+        let mockDplReports = [
+            { id: 101, username: 'dosen1', namaLengkap: 'Dr. Supriyadi, M.Pd.', kategori: 'Pembekalan', kelompok: 'Kelompok 1, Kelompok 2', tanggal: '2023-09-25', catatan: 'Materi etika bermasyarakat dan program kerja utama tersampaikan.', link: '' },
+            { id: 102, username: 'dosen1', namaLengkap: 'Dr. Supriyadi, M.Pd.', kategori: 'Draft Artikel', kelompok: 'Kelompok 1', tanggal: '2023-10-15', catatan: 'Draft pendahuluan sudah dikirim, perlu revisi pada metodologi.', link: 'https://drive.google.com/docs' }
+        ];
+
+        let mockMahasiswaReports = [
+            { id: 201, username: 'mahasiswa1', namaLengkap: 'Andi Saputra', kelompok: 'Kelompok 1', tanggal: '2023-10-01', rencana: 'Koordinasi dengan aparat desa setempat', keluhan: '', foto: 'https://drive.google.com/photo1' }
         ];
 
         // =========================================================================
@@ -422,41 +876,66 @@
             document.getElementById('navbar').classList.add('hidden');
             document.getElementById('login-page').classList.add('hidden');
             document.getElementById('login-page').classList.remove('flex');
+            document.getElementById('register-page').classList.add('hidden');
+            document.getElementById('register-page').classList.remove('flex');
             document.getElementById('admin-page').classList.add('hidden');
             document.getElementById('group-page').classList.add('hidden');
+            document.getElementById('dpl-page').classList.add('hidden');
+            document.getElementById('mahasiswa-page').classList.add('hidden');
             document.getElementById('public-page').classList.remove('hidden');
             renderPublicDashboard();
         }
 
         function goToLogin() {
             document.getElementById('public-page').classList.add('hidden');
+            document.getElementById('register-page').classList.add('hidden');
+            document.getElementById('register-page').classList.remove('flex');
             document.getElementById('login-page').classList.remove('hidden');
             document.getElementById('login-page').classList.add('flex');
+        }
+
+        function showRegisterPage() {
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('login-page').classList.remove('flex');
+            document.getElementById('register-page').classList.remove('hidden');
+            document.getElementById('register-page').classList.add('flex');
         }
 
         function routeUser() {
             document.getElementById('public-page').classList.add('hidden');
             document.getElementById('login-page').classList.add('hidden');
             document.getElementById('login-page').classList.remove('flex');
+            document.getElementById('register-page').classList.add('hidden');
+            document.getElementById('register-page').classList.remove('flex');
             document.getElementById('navbar').classList.remove('hidden');
             document.getElementById('nav-username').innerText = `Halo, ${currentUser.username.toUpperCase()}`;
 
+            // Reset semua halaman
+            document.getElementById('admin-page').classList.add('hidden');
+            document.getElementById('group-page').classList.add('hidden');
+            document.getElementById('dpl-page').classList.add('hidden');
+            document.getElementById('mahasiswa-page').classList.add('hidden');
+
             if (currentUser.role === 'admin') {
                 document.getElementById('admin-page').classList.remove('hidden');
-                document.getElementById('group-page').classList.add('hidden');
-                loadDataFromServer();
+            } else if (currentUser.role === 'dpl') {
+                document.getElementById('dpl-page').classList.remove('hidden');
+            } else if (currentUser.role === 'mahasiswa') {
+                document.getElementById('mahasiswa-page').classList.remove('hidden');
             } else {
-                document.getElementById('admin-page').classList.add('hidden');
                 document.getElementById('group-page').classList.remove('hidden');
                 document.getElementById('form-group').value = currentUser.username;
-                loadDataFromServer();
             }
+            
+            // Pengambilan data dipusatkan di sini
+            loadDataFromServer();
         }
 
         async function handleLogin(e) {
             e.preventDefault();
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
+            const r = document.getElementById('role').value;
             const btn = document.getElementById('btn-login');
             const errorDiv = document.getElementById('login-error');
             
@@ -466,16 +945,30 @@
             try {
                 let user;
                 if (USE_MOCK) {
-                    await new Promise(r => setTimeout(r, 800));
-                    if (mockUsers[u] && mockUsers[u].password === p) user = mockUsers[u];
+                    await new Promise(res => setTimeout(res, 800));
+                    if (mockUsers[u] && mockUsers[u].password === p && mockUsers[u].role.toLowerCase() === r.toLowerCase()) {
+                        user = mockUsers[u];
+                    }
                 } else {
                     const res = await fetch(`${SCRIPT_URL}?action=login&username=${u}&password=${p}&_t=${Date.now()}`);
                     const data = await res.json();
-                    if(data.success) user = data.user;
+                    if(data.success && data.user.role.toLowerCase() === r.toLowerCase()) {
+                        user = data.user;
+                    }
                 }
 
                 if (user) {
-                    currentUser = { username: user.username, role: user.role };
+                    currentUser = { 
+                        username: user.username, 
+                        role: user.role,
+                        namaLengkap: user.namaLengkap || user.username,
+                        nip: user.nip || '-',
+                        fakultas: user.fakultas || '-',
+                        kontak: user.kontak || '-',
+                        nim: user.nim || '-', // Mengambil dari data yang sama (kolom NIM_NIP)
+                        kelompok: user.kelompok || '-',
+                        lokasi: user.lokasi || '-'
+                    };
                     localStorage.setItem('kkn_session', JSON.stringify(currentUser));
                     routeUser();
                 } else {
@@ -488,13 +981,77 @@
             }
         }
 
+        async function handleRegister(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-register');
+            const errorDiv = document.getElementById('register-error');
+            
+            btn.innerHTML = '<div class="spinner mx-auto" style="width: 20px; height: 20px; border-width: 2px;"></div>';
+            errorDiv.classList.add('hidden');
+
+            const payload = {
+                username: document.getElementById('reg-username').value,
+                password: document.getElementById('reg-password').value,
+                role: document.getElementById('reg-role').value,
+                namaLengkap: document.getElementById('reg-namaLengkap').value,
+                nip: document.getElementById('reg-nimNip').value, 
+                kelompok: document.getElementById('reg-kelompok').value,
+                fakultas: document.getElementById('reg-fakultas').value,
+                kontak: document.getElementById('reg-kontak').value,
+                lokasi: document.getElementById('reg-lokasi').value
+            };
+
+            try {
+                if (USE_MOCK) {
+                    await new Promise(res => setTimeout(res, 800));
+                    if (mockUsers[payload.username]) {
+                        throw new Error("Username sudah terdaftar!");
+                    }
+                    mockUsers[payload.username] = {
+                        ...payload,
+                        nim: payload.nip
+                    };
+                    alert("Pendaftaran berhasil! Silakan masuk menggunakan akun baru Anda.");
+                    document.getElementById('register-form').reset();
+                    goToLogin();
+                } else {
+                    const res = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'register', data: payload }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    
+                    const textRes = await res.text();
+                    let result;
+                    try { result = JSON.parse(textRes); } 
+                    catch(e) { throw new Error("Gagal merespon server."); }
+                    
+                    if(result.success) {
+                        alert("Pendaftaran berhasil! Silakan masuk menggunakan akun baru Anda.");
+                        document.getElementById('register-form').reset();
+                        goToLogin();
+                    } else {
+                        throw new Error(result.error || "Gagal mendaftar. Silakan periksa kembali.");
+                    }
+                }
+            } catch (err) {
+                errorDiv.innerText = err.message;
+                errorDiv.classList.remove('hidden');
+            } finally {
+                btn.innerHTML = 'Daftar Sekarang';
+            }
+        }
+
         function logout() {
             localStorage.removeItem('kkn_session');
             currentUser = null;
             document.getElementById('navbar').classList.add('hidden');
             document.getElementById('admin-page').classList.add('hidden');
             document.getElementById('group-page').classList.add('hidden');
+            document.getElementById('dpl-page').classList.add('hidden');
+            document.getElementById('mahasiswa-page').classList.add('hidden');
             document.getElementById('login-form').reset();
+            document.getElementById('register-form').reset();
             showPublicPage();
         }
 
@@ -532,14 +1089,25 @@
             try {
                 if (USE_MOCK) {
                     reportsData = [...mockReports]; 
+                    dplReportsData = [...mockDplReports];
+                    mahasiswaReportsData = [...mockMahasiswaReports];
                     setConnectionStatus('online');
                 } else {
-                    // CACHE-BUSTER: Tambahan '_t' dan opsi fetch no-cache agar browser TIDAK menyimpan memori versi lama!
-                    const res = await fetch(`${SCRIPT_URL}?action=getReports&_t=${new Date().getTime()}`, {
-                        cache: 'no-store' 
-                    });
-                    const data = await res.json();
-                    reportsData = data.reports;
+                    const _t = new Date().getTime();
+                    // Ambil ketiga data laporan secara bersamaan (Parallel Fetch) untuk performa lebih cepat
+                    const [res1, res2, res3] = await Promise.all([
+                        fetch(`${SCRIPT_URL}?action=getReports&_t=${_t}`, { cache: 'no-store' }),
+                        fetch(`${SCRIPT_URL}?action=getDplReports&_t=${_t}`, { cache: 'no-store' }),
+                        fetch(`${SCRIPT_URL}?action=getMahasiswaReports&_t=${_t}`, { cache: 'no-store' })
+                    ]);
+                    
+                    const data1 = await res1.json();
+                    const data2 = await res2.json();
+                    const data3 = await res3.json();
+                    
+                    reportsData = data1.reports || [];
+                    dplReportsData = data2.reports || [];
+                    mahasiswaReportsData = data3.reports || [];
                     setConnectionStatus('online');
                 }
 
@@ -547,6 +1115,20 @@
                     renderPublicDashboard();
                 } else if (currentUser.role === 'admin') {
                     renderAdminDashboard();
+                } else if (currentUser.role === 'dpl') {
+                    // Set Biodata & Tampilkan
+                    document.getElementById('dpl-nama').innerText = currentUser.namaLengkap;
+                    document.getElementById('dpl-nip').innerText = currentUser.nip;
+                    document.getElementById('dpl-fakultas').innerText = currentUser.fakultas;
+                    document.getElementById('dpl-kontak').innerText = currentUser.kontak;
+                    renderDplDashboard();
+                } else if (currentUser.role === 'mahasiswa') {
+                    // Set Biodata & Tampilkan
+                    document.getElementById('mhs-nama').innerText = currentUser.namaLengkap;
+                    document.getElementById('mhs-nim').innerText = currentUser.nim;
+                    document.getElementById('mhs-kelompok').innerText = currentUser.kelompok;
+                    document.getElementById('mhs-lokasi').innerText = currentUser.lokasi;
+                    renderMahasiswaDashboard();
                 } else {
                     renderGroupDashboard();
                 }
@@ -556,92 +1138,182 @@
             }
         }
 
+        // =========================================================================
+        // TAMPILAN DASHBOARD UMUM & ADMIN
+        // =========================================================================
+        
         function renderPublicDashboard() {
             applyPublicFilters(); 
-            const totalGroups = new Set(reportsData.map(r => r.group)).size;
-            const emergencies = reportsData.filter(r => r.emergency && r.emergency.trim() !== '').length;
-            
-            document.getElementById('public-stat-groups').innerText = totalGroups || (USE_MOCK ? 2 : 0);
-            document.getElementById('public-stat-reports').innerText = reportsData.length;
-            document.getElementById('public-stat-emergencies').innerText = emergencies;
         }
 
         function applyPublicFilters() {
             const dateFilter = document.getElementById('public-filter-date').value;
-            const groupFilter = document.getElementById('public-filter-group').value;
 
-            let filtered = reportsData;
-            if (dateFilter) filtered = filtered.filter(r => r.date === dateFilter);
-            if (groupFilter) filtered = filtered.filter(r => r.group === groupFilter);
+            let fKel = reportsData;
+            let fMhs = mahasiswaReportsData;
+            let fDpl = dplReportsData;
 
-            renderChart(filtered, 'publicReportChart', 'public');
+            if (dateFilter) {
+                fKel = fKel.filter(r => r.date === dateFilter);
+                fMhs = fMhs.filter(r => r.tanggal === dateFilter);
+                fDpl = fDpl.filter(r => r.tanggal === dateFilter);
+            }
+
+            // Update kartu statistik berdasarkan filter tanggal
+            document.getElementById('public-stat-kelompok').innerText = fKel.length;
+            document.getElementById('public-stat-mahasiswa').innerText = fMhs.length;
+            document.getElementById('public-stat-dpl').innerText = fDpl.length;
+
+            renderPublicMultiChart(fKel, fMhs, fDpl);
         }
 
         function resetPublicFilters() {
             document.getElementById('public-filter-date').value = '';
-            document.getElementById('public-filter-group').value = '';
             applyPublicFilters();
+        }
+        
+        function renderPublicMultiChart(dataKel, dataMhs, dataDpl) {
+            const ctx = document.getElementById('publicReportChart').getContext('2d');
+            
+            const counts = { kel: {}, mhs: {}, dpl: {} };
+            const allDates = new Set();
+
+            dataKel.forEach(r => { counts.kel[r.date] = (counts.kel[r.date] || 0) + 1; allDates.add(r.date); });
+            dataMhs.forEach(r => { counts.mhs[r.tanggal] = (counts.mhs[r.tanggal] || 0) + 1; allDates.add(r.tanggal); });
+            dataDpl.forEach(r => { counts.dpl[r.tanggal] = (counts.dpl[r.tanggal] || 0) + 1; allDates.add(r.tanggal); });
+
+            const labels = Array.from(allDates).sort();
+            const valKel = labels.map(d => counts.kel[d] || 0);
+            const valMhs = labels.map(d => counts.mhs[d] || 0);
+            const valDpl = labels.map(d => counts.dpl[d] || 0);
+
+            if (publicChartInstance) publicChartInstance.destroy();
+
+            publicChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Laporan Kelompok', data: valKel,
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 2, tension: 0.3, fill: true, pointRadius: 4
+                        },
+                        {
+                            label: 'Laporan Mahasiswa', data: valMhs,
+                            backgroundColor: 'rgba(168, 85, 247, 0.2)', borderColor: 'rgba(168, 85, 247, 1)',
+                            borderWidth: 2, tension: 0.3, fill: true, pointRadius: 4
+                        },
+                        {
+                            label: 'Laporan DPL', data: valDpl,
+                            backgroundColor: 'rgba(34, 197, 94, 0.2)', borderColor: 'rgba(34, 197, 94, 1)',
+                            borderWidth: 2, tension: 0.3, fill: true, pointRadius: 4
+                        }
+                    ]
+                },
+                options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+            });
         }
 
         function renderAdminDashboard() {
             applyFilters(); 
-            const totalGroups = new Set(reportsData.map(r => r.group)).size;
-            const emergencies = reportsData.filter(r => r.emergency && r.emergency.trim() !== '').length;
             
+            // Menghitung Entitas dari data laporan yang masuk
+            const totalGroups = new Set(reportsData.map(r => r.group)).size;
+            const totalMhs = new Set(mahasiswaReportsData.map(r => r.username)).size;
+            const totalDpl = new Set(dplReportsData.map(r => r.username)).size;
+            
+            // Menghitung Jumlah Laporan
+            const repKel = reportsData.length;
+            const repMhs = mahasiswaReportsData.length;
+            const repDpl = dplReportsData.length;
+            
+            // Menghitung Isu/Keluhan/Darurat
+            const emergencies = reportsData.filter(r => r.emergency && r.emergency.trim() !== '').length;
+            const keluhans = mahasiswaReportsData.filter(r => r.keluhan && r.keluhan.trim() !== '').length;
+            
+            // Update UI Kartu Statistik
             document.getElementById('stat-groups').innerText = totalGroups || (USE_MOCK ? 2 : 0);
-            document.getElementById('stat-reports').innerText = reportsData.length;
-            document.getElementById('stat-emergencies').innerText = emergencies;
+            document.getElementById('stat-mhs').innerText = totalMhs || (USE_MOCK ? 1 : 0);
+            document.getElementById('stat-dpl').innerText = totalDpl || (USE_MOCK ? 1 : 0);
+            document.getElementById('stat-darurat').innerText = emergencies;
+            
+            document.getElementById('stat-rep-kel').innerText = repKel;
+            document.getElementById('stat-rep-mhs').innerText = repMhs;
+            document.getElementById('stat-rep-dpl').innerText = repDpl;
+            document.getElementById('stat-keluhan').innerText = keluhans;
 
-            renderChart(reportsData, 'reportChart', 'admin');
+            renderAdminMultiChart(reportsData, mahasiswaReportsData, dplReportsData);
         }
 
-        function renderChart(data, canvasId, type) {
-            const ctx = document.getElementById(canvasId).getContext('2d');
-            const dateCounts = {};
-            data.forEach(r => { dateCounts[r.date] = (dateCounts[r.date] || 0) + 1; });
-            const labels = Object.keys(dateCounts).sort();
-            const values = labels.map(date => dateCounts[date]);
+        function renderAdminMultiChart(dataKel, dataMhs, dataDpl) {
+            const ctx = document.getElementById('reportChart').getContext('2d');
+            
+            const counts = { kel: {}, mhs: {}, dpl: {} };
+            const allDates = new Set();
 
-            if (type === 'admin' && adminChartInstance) adminChartInstance.destroy();
-            if (type === 'public' && publicChartInstance) publicChartInstance.destroy();
+            dataKel.forEach(r => { counts.kel[r.date] = (counts.kel[r.date] || 0) + 1; allDates.add(r.date); });
+            dataMhs.forEach(r => { counts.mhs[r.tanggal] = (counts.mhs[r.tanggal] || 0) + 1; allDates.add(r.tanggal); });
+            dataDpl.forEach(r => { counts.dpl[r.tanggal] = (counts.dpl[r.tanggal] || 0) + 1; allDates.add(r.tanggal); });
 
-            const newChart = new Chart(ctx, {
+            const labels = Array.from(allDates).sort();
+            const valKel = labels.map(d => counts.kel[d] || 0);
+            const valMhs = labels.map(d => counts.mhs[d] || 0);
+            const valDpl = labels.map(d => counts.dpl[d] || 0);
+
+            if (adminChartInstance) adminChartInstance.destroy();
+
+            adminChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
-                    datasets: [{
-                        label: 'Jumlah Laporan',
-                        data: values,
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                        borderColor: 'rgba(59, 130, 246, 1)',
-                        borderWidth: 2,
-                        tension: 0.3,
-                        fill: true,
-                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
-                        pointRadius: 4
-                    }]
+                    datasets: [
+                        {
+                            label: 'Laporan Kelompok', data: valKel,
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 2, tension: 0.3, fill: true, pointRadius: 4
+                        },
+                        {
+                            label: 'Laporan Mahasiswa', data: valMhs,
+                            backgroundColor: 'rgba(168, 85, 247, 0.2)', borderColor: 'rgba(168, 85, 247, 1)',
+                            borderWidth: 2, tension: 0.3, fill: true, pointRadius: 4
+                        },
+                        {
+                            label: 'Laporan DPL', data: valDpl,
+                            backgroundColor: 'rgba(34, 197, 94, 0.2)', borderColor: 'rgba(34, 197, 94, 1)',
+                            borderWidth: 2, tension: 0.3, fill: true, pointRadius: 4
+                        }
+                    ]
                 },
                 options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
             });
-
-            if (type === 'admin') adminChartInstance = newChart;
-            if (type === 'public') publicChartInstance = newChart;
         }
 
         function applyFilters() {
             const dateFilter = document.getElementById('filter-date').value;
-            const groupFilter = document.getElementById('filter-group').value;
 
-            let filtered = reportsData;
-            if (dateFilter) filtered = filtered.filter(r => r.date === dateFilter);
-            if (groupFilter) filtered = filtered.filter(r => r.group === groupFilter);
+            filteredDataKel = reportsData;
+            filteredDataMhs = mahasiswaReportsData;
+            filteredDataDpl = dplReportsData;
 
-            renderAdminTable(filtered);
+            if (dateFilter) {
+                filteredDataKel = filteredDataKel.filter(r => r.date === dateFilter);
+                filteredDataMhs = filteredDataMhs.filter(r => r.tanggal === dateFilter);
+                filteredDataDpl = filteredDataDpl.filter(r => r.tanggal === dateFilter);
+            }
+
+            // Reset pagination saat difilter
+            currentPageKel = 1;
+            currentPageMhs = 1;
+            currentPageDpl = 1;
+
+            renderAdminTable(filteredDataKel);
+            renderAdminTableMahasiswa(filteredDataMhs);
+            renderAdminTableDpl(filteredDataDpl);
         }
 
         function resetFilters() {
             document.getElementById('filter-date').value = '';
-            document.getElementById('filter-group').value = '';
             applyFilters();
         }
 
@@ -656,12 +1328,17 @@
 
             if (data.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
+                renderPagination('pagination-kelompok', 0, 1, 'Kel');
                 return;
             }
 
             const sortedData = data.sort((a,b) => new Date(b.date) - new Date(a.date));
+            const totalPages = Math.ceil(sortedData.length / itemsPerPage);
+            const startIndex = (currentPageKel - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageData = sortedData.slice(startIndex, endIndex);
 
-            sortedData.forEach(report => {
+            pageData.forEach(report => {
                 const tr = document.createElement('tr');
                 const hasEmergency = report.emergency && report.emergency.trim() !== '';
                 
@@ -684,6 +1361,133 @@
                 `;
                 tbody.appendChild(tr);
             });
+            
+            renderPagination('pagination-kelompok', totalPages, currentPageKel, 'Kel');
+        }
+
+        function renderAdminTableMahasiswa(data) {
+            const tbody = document.getElementById('admin-mhs-table-body');
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
+                renderPagination('pagination-mhs', 0, 1, 'Mhs');
+                return;
+            }
+
+            const sortedData = data.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+            const totalPages = Math.ceil(sortedData.length / itemsPerPage);
+            const startIndex = (currentPageMhs - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageData = sortedData.slice(startIndex, endIndex);
+
+            pageData.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">${r.tanggal}</td>
+                    <td class="px-6 py-4 font-medium text-purple-600">
+                        <div>${r.namaLengkap || r.username}</div>
+                        <div class="text-xs text-gray-500 font-normal">@${r.username}</div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-700">${r.kelompok}</td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm truncate max-w-xs" title="${r.rencana}">${r.rencana}</div>
+                        ${r.keluhan ? `<div class="text-xs text-red-500 mt-1 truncate max-w-xs" title="${r.keluhan}">Keluhan: ${r.keluhan}</div>` : ''}
+                    </td>
+                    <td class="px-6 py-4 text-center space-x-2">
+                        <a href="${r.foto}" target="_blank" class="text-purple-500 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 p-2 rounded-full inline-block transition" title="Lihat Foto"><i class="fa-solid fa-image"></i></a>
+                        <button type="button" onclick="deleteMahasiswaReport('${r.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            renderPagination('pagination-mhs', totalPages, currentPageMhs, 'Mhs');
+        }
+        
+        function renderAdminTableDpl(data) {
+            const tbody = document.getElementById('admin-dpl-table-body');
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
+                renderPagination('pagination-dpl', 0, 1, 'Dpl');
+                return;
+            }
+
+            const sortedData = data.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+            const totalPages = Math.ceil(sortedData.length / itemsPerPage);
+            const startIndex = (currentPageDpl - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageData = sortedData.slice(startIndex, endIndex);
+
+            pageData.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">${r.tanggal}</td>
+                    <td class="px-6 py-4 font-medium text-green-600">
+                        <div>${r.namaLengkap || r.username}</div>
+                        <div class="text-xs text-gray-500 font-normal">@${r.username}</div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-700">
+                        <div>${r.kategori}</div>
+                        <div class="text-xs text-gray-500">${r.kelompok}</div>
+                    </td>
+                    <td class="px-6 py-4 truncate max-w-xs" title="${r.catatan}">${r.catatan}</td>
+                    <td class="px-6 py-4 text-center space-x-2">
+                        ${r.link ? `<a href="${r.link}" target="_blank" class="text-blue-500 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 p-2 rounded-full inline-block transition" title="Lihat Link"><i class="fa-solid fa-link"></i></a>` : ''}
+                        <button type="button" onclick="deleteDplReport('${r.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            renderPagination('pagination-dpl', totalPages, currentPageDpl, 'Dpl');
+        }
+
+        // Fungsi Helper untuk Navigasi dan Render Pagination
+        function renderPagination(containerId, totalPages, currentPage, type) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                container.classList.add('hidden');
+                container.dataset.active = 'false';
+                return;
+            }
+            
+            let tableContainerId = '';
+            if(type === 'Kel') tableContainerId = 'admin-kelompok-container';
+            if(type === 'Mhs') tableContainerId = 'admin-mhs-container';
+            if(type === 'Dpl') tableContainerId = 'admin-dpl-container';
+            
+            const tableContainer = document.getElementById(tableContainerId);
+            if(tableContainer && !tableContainer.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+            }
+            container.dataset.active = 'true';
+            
+            container.innerHTML = `
+                <span class="text-sm text-gray-600 font-medium">Halaman ${currentPage} dari ${totalPages}</span>
+                <div class="space-x-2 flex">
+                    <button onclick="changePage('${type}', -1)" ${currentPage === 1 ? 'disabled' : ''} class="px-3 py-1 rounded bg-white border border-gray-300 text-gray-700 hover:bg-blue-50 hover:text-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-sm"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button onclick="changePage('${type}', 1)" ${currentPage === totalPages ? 'disabled' : ''} class="px-3 py-1 rounded bg-white border border-gray-300 text-gray-700 hover:bg-blue-50 hover:text-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-sm"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            `;
+        }
+
+        function changePage(type, offset) {
+            if (type === 'Kel') {
+                currentPageKel += offset;
+                renderAdminTable(filteredDataKel);
+            } else if (type === 'Mhs') {
+                currentPageMhs += offset;
+                renderAdminTableMahasiswa(filteredDataMhs);
+            } else if (type === 'Dpl') {
+                currentPageDpl += offset;
+                renderAdminTableDpl(filteredDataDpl);
+            }
         }
 
         function viewDetail(id) {
@@ -712,6 +1516,574 @@
         function closeModal() {
             document.getElementById('detail-modal').classList.add('hidden');
         }
+
+        // Fungsi Tampilkan/Sembunyikan Tabel Admin
+        function toggleTable(containerId, iconId, paginationId) {
+            const container = document.getElementById(containerId);
+            const icon = document.getElementById(iconId);
+            const pagination = document.getElementById(paginationId);
+            
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                if(pagination && pagination.dataset.active === 'true') pagination.classList.remove('hidden');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                container.classList.add('hidden');
+                if(pagination) pagination.classList.add('hidden');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        }
+
+        // =========================================================================
+        // DASHBOARD DPL LOGIC
+        // =========================================================================
+
+        function renderDplDashboard() {
+            const myReports = dplReportsData.filter(r => r.username === currentUser.username);
+            const tbody = document.getElementById('dpl-table-body');
+            tbody.innerHTML = '';
+
+            const btnBulk = document.getElementById('btn-bulk-delete-dpl');
+            if (btnBulk) btnBulk.classList.add('hidden');
+            const selectAll = document.getElementById('selectAllDpl');
+            if (selectAll) selectAll.checked = false;
+
+            if (myReports.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Belum ada riwayat pelaporan.</td></tr>';
+                return;
+            }
+
+            const sortedData = myReports.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+
+            sortedData.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-4 py-3 text-center">
+                        <input type="checkbox" class="row-checkbox-dpl" value="${r.id}" onchange="updateBulkActionStateDpl()">
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap text-gray-600">${r.tanggal}</td>
+                    <td class="px-4 py-3">
+                        <div class="font-medium text-green-600">${r.kategori}</div>
+                        <div class="text-xs text-gray-500">Klp: ${r.kelompok}</div>
+                    </td>
+                    <td class="px-4 py-3 text-gray-700">
+                        <p class="truncate max-w-[200px]" title="${r.catatan}">${r.catatan}</p>
+                        ${r.link ? `<a href="${r.link}" target="_blank" class="text-xs text-blue-500 hover:underline mt-1 inline-block"><i class="fa-solid fa-link"></i> Lihat Dokumen</a>` : ''}
+                    </td>
+                    <td class="px-4 py-3 text-center space-x-2">
+                        <button type="button" onclick="editDplReport('${r.id}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button type="button" onclick="deleteDplReport('${r.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function submitDplReport(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-dpl');
+            btn.innerText = 'Menyimpan...';
+            btn.disabled = true;
+
+            const id = document.getElementById('dpl-report-id').value;
+            const payload = {
+                id: id ? parseInt(id) : Date.now(), 
+                username: currentUser.username,
+                kategori: document.getElementById('dpl-kategori').value,
+                kelompok: document.getElementById('dpl-kelompok').value,
+                tanggal: document.getElementById('dpl-tanggal').value,
+                catatan: document.getElementById('dpl-catatan').value,
+                link: document.getElementById('dpl-link').value
+            };
+
+            try {
+                if (USE_MOCK) {
+                    await new Promise(r => setTimeout(r, 600)); 
+                    if (id) {
+                        const idx = mockDplReports.findIndex(x => String(x.id) === String(id));
+                        mockDplReports[idx] = payload;
+                    } else mockDplReports.push(payload);
+                } else {
+                    const action = id ? 'editDplReport' : 'addDplReport';
+                    const res = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: action, data: payload }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const textRes = await res.text();
+                    let result = JSON.parse(textRes);
+                    if(!result.success) throw new Error(result.error || "Gagal menyimpan");
+                }
+
+                alert("Laporan DPL berhasil disimpan!");
+                resetDplForm();
+                await loadDataFromServer(); 
+            } catch (err) {
+                alert("Terjadi kesalahan: " + err.message);
+            } finally {
+                btn.innerText = 'Simpan';
+                btn.disabled = false;
+            }
+        }
+
+        function editDplReport(id) {
+            const r = dplReportsData.find(x => String(x.id) === String(id));
+            if(!r) return;
+
+            document.getElementById('dpl-form-title').innerText = "Edit Laporan Pendampingan";
+            document.getElementById('dpl-report-id').value = r.id;
+            document.getElementById('dpl-kategori').value = r.kategori;
+            document.getElementById('dpl-kelompok').value = r.kelompok;
+            document.getElementById('dpl-tanggal').value = r.tanggal;
+            document.getElementById('dpl-catatan').value = r.catatan;
+            document.getElementById('dpl-link').value = r.link || '';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function deleteDplReport(id, btnElement) {
+            if(!confirm("Apakah Anda yakin ingin menghapus riwayat pelaporan ini?")) return;
+
+            let originalIcon = '';
+            if (btnElement) {
+                originalIcon = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                btnElement.disabled = true;
+            }
+
+            try {
+                if (USE_MOCK) {
+                    mockDplReports = mockDplReports.filter(x => String(x.id) !== String(id));
+                } else {
+                    await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'deleteDplReport', id: id }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                }
+                await loadDataFromServer();
+            } catch (err) {
+                if (btnElement) {
+                    btnElement.innerHTML = originalIcon;
+                    btnElement.disabled = false;
+                }
+            }
+        }
+
+        function resetDplForm() {
+            document.getElementById('dpl-report-form').reset();
+            document.getElementById('dpl-report-id').value = '';
+            document.getElementById('dpl-form-title').innerText = "Buat Laporan Pendampingan";
+        }
+
+        // --- Fitur Edit Biodata DPL ---
+        function openEditProfileDplModal() {
+            document.getElementById('edit-prof-dpl-nama').value = currentUser.namaLengkap || '';
+            document.getElementById('edit-prof-dpl-nip').value = currentUser.nip || '';
+            document.getElementById('edit-prof-dpl-fakultas').value = currentUser.fakultas || '';
+            document.getElementById('edit-prof-dpl-kontak').value = currentUser.kontak || '';
+            document.getElementById('edit-profile-dpl-modal').classList.remove('hidden');
+        }
+
+        function closeEditProfileDplModal() {
+            document.getElementById('edit-profile-dpl-modal').classList.add('hidden');
+        }
+
+        async function submitEditProfileDpl(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-profile-dpl');
+            btn.innerText = 'Menyimpan...';
+            btn.disabled = true;
+
+            const newNama = document.getElementById('edit-prof-dpl-nama').value;
+            const newNip = document.getElementById('edit-prof-dpl-nip').value;
+            const newFakultas = document.getElementById('edit-prof-dpl-fakultas').value;
+            const newKontak = document.getElementById('edit-prof-dpl-kontak').value;
+
+            try {
+                if (!USE_MOCK) {
+                    await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: 'updateProfile',
+                            data: { username: currentUser.username, namaLengkap: newNama, nip: newNip, fakultas: newFakultas, kontak: newKontak }
+                        }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                }
+
+                // Update Session Lokal
+                currentUser.namaLengkap = newNama;
+                currentUser.nip = newNip;
+                currentUser.fakultas = newFakultas;
+                currentUser.kontak = newKontak;
+                localStorage.setItem('kkn_session', JSON.stringify(currentUser));
+
+                // Update UI Langsung
+                document.getElementById('dpl-nama').innerText = newNama;
+                document.getElementById('dpl-nip').innerText = newNip;
+                document.getElementById('dpl-fakultas').innerText = newFakultas;
+                document.getElementById('dpl-kontak').innerText = newKontak;
+
+                alert("Biodata DPL berhasil diperbarui!");
+                closeEditProfileDplModal();
+            } catch (error) {
+                alert("Gagal memperbarui biodata. Periksa koneksi Anda.");
+            } finally {
+                btn.innerText = 'Simpan Perubahan';
+                btn.disabled = false;
+            }
+        }
+
+        // --- Fitur Bulk Delete DPL ---
+        function toggleAllCheckboxesDpl(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox-dpl');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+            updateBulkActionStateDpl();
+        }
+
+        function updateBulkActionStateDpl() {
+            const checkboxes = document.querySelectorAll('.row-checkbox-dpl:checked');
+            const allCheckboxes = document.querySelectorAll('.row-checkbox-dpl');
+            const btn = document.getElementById('btn-bulk-delete-dpl');
+            const selectAll = document.getElementById('selectAllDpl');
+
+            if (checkboxes.length > 0) {
+                btn.classList.remove('hidden');
+                btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
+            } else {
+                btn.classList.add('hidden');
+            }
+
+            if (allCheckboxes.length > 0) {
+                 selectAll.checked = checkboxes.length === allCheckboxes.length;
+            }
+        }
+
+        async function deleteBulkReportsDpl() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox-dpl:checked');
+            if(checkedBoxes.length === 0) return;
+            
+            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} riwayat pelaporan yang dipilih?`)) return;
+
+            const btn = document.getElementById('btn-bulk-delete-dpl');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
+            btn.disabled = true;
+
+            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
+
+            try {
+                if (USE_MOCK) {
+                    mockDplReports = mockDplReports.filter(x => !idsToDelete.includes(String(x.id)));
+                } else {
+                    for (const id of idsToDelete) {
+                        await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'deleteDplReport', id: id }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                    }
+                }
+                await loadDataFromServer();
+            } catch (err) {
+                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
+                btn.innerHTML = originalText;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // =========================================================================
+        // DASHBOARD MAHASISWA LOGIC
+        // =========================================================================
+        async function loadMahasiswaData() {
+            setConnectionStatus('loading');
+            try {
+                document.getElementById('mhs-nama').innerText = currentUser.namaLengkap;
+                document.getElementById('mhs-nim').innerText = currentUser.nim;
+                document.getElementById('mhs-kelompok').innerText = currentUser.kelompok;
+                document.getElementById('mhs-lokasi').innerText = currentUser.lokasi;
+
+                if (USE_MOCK) {
+                    mahasiswaReportsData = [...mockMahasiswaReports];
+                    setConnectionStatus('online');
+                } else {
+                    const res = await fetch(`${SCRIPT_URL}?action=getMahasiswaReports&_t=${new Date().getTime()}`);
+                    const data = await res.json();
+                    mahasiswaReportsData = data.reports;
+                    setConnectionStatus('online');
+                }
+                renderMahasiswaDashboard();
+            } catch (error) {
+                setConnectionStatus('offline');
+            }
+        }
+
+        function renderMahasiswaDashboard() {
+            const myReports = mahasiswaReportsData.filter(r => r.username === currentUser.username);
+            const tbody = document.getElementById('mhs-table-body');
+            tbody.innerHTML = '';
+
+            const btnBulk = document.getElementById('btn-bulk-delete-mhs');
+            if (btnBulk) btnBulk.classList.add('hidden');
+            const selectAll = document.getElementById('selectAllMhs');
+            if (selectAll) selectAll.checked = false;
+
+            if (myReports.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Belum ada riwayat kegiatan harian.</td></tr>';
+                return;
+            }
+
+            const sortedData = myReports.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+
+            sortedData.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-4 py-3 text-center">
+                        <input type="checkbox" class="row-checkbox-mhs" value="${r.id}" onchange="updateBulkActionStateMhs()">
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap text-gray-600">${r.tanggal}</td>
+                    <td class="px-4 py-3 text-gray-700">
+                        <div class="font-medium max-w-[200px] truncate" title="${r.rencana}">${r.rencana}</div>
+                        ${r.keluhan ? `<div class="text-xs text-orange-600 mt-1 truncate max-w-[200px]" title="${r.keluhan}">Keluhan: ${r.keluhan}</div>` : ''}
+                    </td>
+                    <td class="px-4 py-3 text-center">
+                        <a href="${r.foto}" target="_blank" class="text-purple-500 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 p-2 rounded-full inline-block transition" title="Lihat Foto"><i class="fa-solid fa-image"></i></a>
+                    </td>
+                    <td class="px-4 py-3 text-center space-x-2">
+                        <button type="button" onclick="editMahasiswaReport('${r.id}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button type="button" onclick="deleteMahasiswaReport('${r.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function submitMahasiswaReport(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-mhs');
+            btn.innerText = 'Menyimpan...';
+            btn.disabled = true;
+
+            const id = document.getElementById('mhs-report-id').value;
+            const payload = {
+                id: id ? parseInt(id) : Date.now(), 
+                username: currentUser.username,
+                kelompok: currentUser.kelompok,
+                tanggal: document.getElementById('mhs-tanggal').value,
+                rencana: document.getElementById('mhs-rencana').value,
+                keluhan: document.getElementById('mhs-keluhan').value,
+                foto: document.getElementById('mhs-foto').value
+            };
+
+            try {
+                if (USE_MOCK) {
+                    await new Promise(r => setTimeout(r, 600)); 
+                    if (id) {
+                        const idx = mockMahasiswaReports.findIndex(x => String(x.id) === String(id));
+                        mockMahasiswaReports[idx] = payload;
+                    } else mockMahasiswaReports.push(payload);
+                } else {
+                    const action = id ? 'editMahasiswaReport' : 'addMahasiswaReport';
+                    const res = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: action, data: payload }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const textRes = await res.text();
+                    let result = JSON.parse(textRes);
+                    if(!result.success) throw new Error(result.error || "Gagal menyimpan");
+                }
+
+                alert("Laporan kegiatan harian berhasil disimpan!");
+                resetMahasiswaForm();
+                await loadDataFromServer(); 
+            } catch (err) {
+                alert("Terjadi kesalahan: " + err.message);
+            } finally {
+                btn.innerText = 'Simpan';
+                btn.disabled = false;
+            }
+        }
+
+        function editMahasiswaReport(id) {
+            const r = mahasiswaReportsData.find(x => String(x.id) === String(id));
+            if(!r) return;
+
+            document.getElementById('mhs-form-title').innerText = "Edit Laporan Harian";
+            document.getElementById('mhs-report-id').value = r.id;
+            document.getElementById('mhs-tanggal').value = r.tanggal;
+            document.getElementById('mhs-rencana').value = r.rencana;
+            document.getElementById('mhs-keluhan').value = r.keluhan || '';
+            document.getElementById('mhs-foto').value = r.foto || '';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function deleteMahasiswaReport(id, btnElement) {
+            if(!confirm("Apakah Anda yakin ingin menghapus laporan harian ini?")) return;
+
+            let originalIcon = '';
+            if (btnElement) {
+                originalIcon = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                btnElement.disabled = true;
+            }
+
+            try {
+                if (USE_MOCK) {
+                    mockMahasiswaReports = mockMahasiswaReports.filter(x => String(x.id) !== String(id));
+                } else {
+                    await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'deleteMahasiswaReport', id: id }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                }
+                await loadDataFromServer();
+            } catch (err) {
+                if (btnElement) {
+                    btnElement.innerHTML = originalIcon;
+                    btnElement.disabled = false;
+                }
+            }
+        }
+
+        function resetMahasiswaForm() {
+            document.getElementById('mhs-report-form').reset();
+            document.getElementById('mhs-report-id').value = '';
+            document.getElementById('mhs-form-title').innerText = "Buat Laporan Harian";
+        }
+
+        // --- Fitur Edit Biodata Mahasiswa ---
+        function openEditProfileModal() {
+            document.getElementById('edit-prof-nama').value = currentUser.namaLengkap || '';
+            document.getElementById('edit-prof-nim').value = currentUser.nim || '';
+            document.getElementById('edit-prof-kelompok').value = currentUser.kelompok || '';
+            document.getElementById('edit-prof-lokasi').value = currentUser.lokasi || '';
+            document.getElementById('edit-profile-modal').classList.remove('hidden');
+        }
+
+        function closeEditProfileModal() {
+            document.getElementById('edit-profile-modal').classList.add('hidden');
+        }
+
+        async function submitEditProfile(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-profile');
+            btn.innerText = 'Menyimpan...';
+            btn.disabled = true;
+
+            const newNama = document.getElementById('edit-prof-nama').value;
+            const newNim = document.getElementById('edit-prof-nim').value;
+            const newKelompok = document.getElementById('edit-prof-kelompok').value;
+            const newLokasi = document.getElementById('edit-prof-lokasi').value;
+
+            try {
+                if (!USE_MOCK) {
+                    await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: 'updateProfile',
+                            data: { username: currentUser.username, namaLengkap: newNama, nip: newNim, kelompok: newKelompok, lokasi: newLokasi }
+                        }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                }
+
+                // Update Session Lokal
+                currentUser.namaLengkap = newNama;
+                currentUser.nim = newNim;
+                currentUser.kelompok = newKelompok;
+                currentUser.lokasi = newLokasi;
+                localStorage.setItem('kkn_session', JSON.stringify(currentUser));
+
+                // Update UI Langsung
+                document.getElementById('mhs-nama').innerText = newNama;
+                document.getElementById('mhs-nim').innerText = newNim;
+                document.getElementById('mhs-kelompok').innerText = newKelompok;
+                document.getElementById('mhs-lokasi').innerText = newLokasi;
+
+                alert("Biodata berhasil diperbarui!");
+                closeEditProfileModal();
+            } catch (error) {
+                alert("Gagal memperbarui biodata.");
+            } finally {
+                btn.innerText = 'Simpan Perubahan';
+                btn.disabled = false;
+            }
+        }
+
+        // --- Fitur Bulk Delete Mahasiswa ---
+        function toggleAllCheckboxesMhs(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox-mhs');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+            updateBulkActionStateMhs();
+        }
+
+        function updateBulkActionStateMhs() {
+            const checkboxes = document.querySelectorAll('.row-checkbox-mhs:checked');
+            const allCheckboxes = document.querySelectorAll('.row-checkbox-mhs');
+            const btn = document.getElementById('btn-bulk-delete-mhs');
+            const selectAll = document.getElementById('selectAllMhs');
+
+            if (checkboxes.length > 0) {
+                btn.classList.remove('hidden');
+                btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
+            } else {
+                btn.classList.add('hidden');
+            }
+
+            if (allCheckboxes.length > 0) {
+                 selectAll.checked = checkboxes.length === allCheckboxes.length;
+            }
+        }
+
+        async function deleteBulkReportsMhs() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox-mhs:checked');
+            if(checkedBoxes.length === 0) return;
+            
+            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan harian yang dipilih?`)) return;
+
+            const btn = document.getElementById('btn-bulk-delete-mhs');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
+            btn.disabled = true;
+
+            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
+
+            try {
+                if (USE_MOCK) {
+                    mockMahasiswaReports = mockMahasiswaReports.filter(x => !idsToDelete.includes(String(x.id)));
+                } else {
+                    for (const id of idsToDelete) {
+                        const res = await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'deleteMahasiswaReport', id: id }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                        const textRes = await res.text();
+                        try {
+                            const result = JSON.parse(textRes);
+                            if(!result.success) console.error("Gagal menghapus ID:", id);
+                        } catch(e) {}
+                    }
+                }
+                await loadDataFromServer();
+            } catch (err) {
+                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
+                btn.innerHTML = originalText;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // =========================================================================
+        // GROUP DASHBOARD LOGIC (KELOMPOK)
+        // =========================================================================
 
         function renderGroupDashboard() {
             const myReports = reportsData.filter(r => r.group === currentUser.username);
