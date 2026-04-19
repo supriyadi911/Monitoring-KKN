@@ -372,12 +372,16 @@
             <div class="bg-white rounded-lg shadow overflow-hidden mb-8">
                 <div class="px-6 py-4 border-b flex justify-between items-center bg-purple-50">
                     <h3 class="font-bold text-gray-700">Daftar Laporan Mahasiswa</h3>
-                    <button onclick="toggleTable('admin-mhs-container', 'icon-mhs', 'pagination-mhs')" class="text-gray-500 hover:text-gray-800 transition" title="Sembunyikan/Tampilkan Tabel"><i id="icon-mhs" class="fa-solid fa-chevron-up"></i></button>
+                    <div class="flex items-center space-x-3">
+                        <button id="btn-bulk-delete-admin-mhs" onclick="deleteBulkReportsAdminMhs()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
+                        <button onclick="toggleTable('admin-mhs-container', 'icon-mhs', 'pagination-mhs')" class="text-gray-500 hover:text-gray-800 transition" title="Sembunyikan/Tampilkan Tabel"><i id="icon-mhs" class="fa-solid fa-chevron-up"></i></button>
+                    </div>
                 </div>
                 <div id="admin-mhs-container" class="overflow-x-auto overflow-y-auto max-h-[600px] transition-all duration-300">
                     <table class="w-full whitespace-nowrap">
                         <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
                             <tr>
+                                <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdminMhs" onclick="toggleAllCheckboxesAdminMhs(this)"></th>
                                 <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
                                 <th class="px-6 py-3 text-left font-medium tracking-wider">Mahasiswa</th>
                                 <th class="px-6 py-3 text-left font-medium tracking-wider">Kelompok</th>
@@ -398,12 +402,16 @@
             <div class="bg-white rounded-lg shadow overflow-hidden">
                 <div class="px-6 py-4 border-b flex justify-between items-center bg-green-50">
                     <h3 class="font-bold text-gray-700">Daftar Laporan DPL</h3>
-                    <button onclick="toggleTable('admin-dpl-container', 'icon-dpl', 'pagination-dpl')" class="text-gray-500 hover:text-gray-800 transition" title="Sembunyikan/Tampilkan Tabel"><i id="icon-dpl" class="fa-solid fa-chevron-up"></i></button>
+                    <div class="flex items-center space-x-3">
+                        <button id="btn-bulk-delete-admin-dpl" onclick="deleteBulkReportsAdminDpl()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
+                        <button onclick="toggleTable('admin-dpl-container', 'icon-dpl', 'pagination-dpl')" class="text-gray-500 hover:text-gray-800 transition" title="Sembunyikan/Tampilkan Tabel"><i id="icon-dpl" class="fa-solid fa-chevron-up"></i></button>
+                    </div>
                 </div>
                 <div id="admin-dpl-container" class="overflow-x-auto overflow-y-auto max-h-[600px] transition-all duration-300">
                     <table class="w-full whitespace-nowrap">
                         <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
                             <tr>
+                                <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdminDpl" onclick="toggleAllCheckboxesAdminDpl(this)"></th>
                                 <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
                                 <th class="px-6 py-3 text-left font-medium tracking-wider">DPL</th>
                                 <th class="px-6 py-3 text-left font-medium tracking-wider">Kategori & Kelompok</th>
@@ -1369,8 +1377,13 @@
             const tbody = document.getElementById('admin-mhs-table-body');
             tbody.innerHTML = '';
             
+            const btnBulkAdminMhs = document.getElementById('btn-bulk-delete-admin-mhs');
+            if (btnBulkAdminMhs) btnBulkAdminMhs.classList.add('hidden');
+            const selectAllAdminMhs = document.getElementById('selectAllAdminMhs');
+            if (selectAllAdminMhs) selectAllAdminMhs.checked = false;
+            
             if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
                 renderPagination('pagination-mhs', 0, 1, 'Mhs');
                 return;
             }
@@ -1384,6 +1397,9 @@
             pageData.forEach(r => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
+                    <td class="px-6 py-4 text-center">
+                        <input type="checkbox" class="row-checkbox-admin-mhs" value="${r.id}" onchange="updateBulkActionStateAdminMhs()">
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap">${r.tanggal}</td>
                     <td class="px-6 py-4 font-medium text-purple-600">
                         <div>${r.namaLengkap || r.username}</div>
@@ -1409,8 +1425,13 @@
             const tbody = document.getElementById('admin-dpl-table-body');
             tbody.innerHTML = '';
             
+            const btnBulkAdminDpl = document.getElementById('btn-bulk-delete-admin-dpl');
+            if (btnBulkAdminDpl) btnBulkAdminDpl.classList.add('hidden');
+            const selectAllAdminDpl = document.getElementById('selectAllAdminDpl');
+            if (selectAllAdminDpl) selectAllAdminDpl.checked = false;
+
             if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
                 renderPagination('pagination-dpl', 0, 1, 'Dpl');
                 return;
             }
@@ -1424,6 +1445,9 @@
             pageData.forEach(r => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
+                    <td class="px-6 py-4 text-center">
+                        <input type="checkbox" class="row-checkbox-admin-dpl" value="${r.id}" onchange="updateBulkActionStateAdminDpl()">
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap">${r.tanggal}</td>
                     <td class="px-6 py-4 font-medium text-green-600">
                         <div>${r.namaLengkap || r.username}</div>
@@ -2378,6 +2402,124 @@
                         } catch(e) {
                              console.error("Gagal menghubungi server untuk ID:", id);
                         }
+                    }
+                }
+                await loadDataFromServer();
+            } catch (err) {
+                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
+                btn.innerHTML = originalText;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // --- Bulk Delete Admin Mahasiswa ---
+        function toggleAllCheckboxesAdminMhs(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox-admin-mhs');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+            updateBulkActionStateAdminMhs();
+        }
+
+        function updateBulkActionStateAdminMhs() {
+            const checkboxes = document.querySelectorAll('.row-checkbox-admin-mhs:checked');
+            const allCheckboxes = document.querySelectorAll('.row-checkbox-admin-mhs');
+            const btn = document.getElementById('btn-bulk-delete-admin-mhs');
+            const selectAll = document.getElementById('selectAllAdminMhs');
+
+            if (checkboxes.length > 0) {
+                btn.classList.remove('hidden');
+                btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
+            } else {
+                btn.classList.add('hidden');
+            }
+
+            if (allCheckboxes.length > 0) {
+                 selectAll.checked = checkboxes.length === allCheckboxes.length;
+            }
+        }
+
+        async function deleteBulkReportsAdminMhs() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox-admin-mhs:checked');
+            if(checkedBoxes.length === 0) return;
+            
+            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan mahasiswa?`)) return;
+
+            const btn = document.getElementById('btn-bulk-delete-admin-mhs');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
+            btn.disabled = true;
+
+            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
+
+            try {
+                if (USE_MOCK) {
+                    mockMahasiswaReports = mockMahasiswaReports.filter(x => !idsToDelete.includes(String(x.id)));
+                } else {
+                    for (const id of idsToDelete) {
+                        await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'deleteMahasiswaReport', id: id }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                    }
+                }
+                await loadDataFromServer();
+            } catch (err) {
+                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
+                btn.innerHTML = originalText;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // --- Bulk Delete Admin DPL ---
+        function toggleAllCheckboxesAdminDpl(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox-admin-dpl');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+            updateBulkActionStateAdminDpl();
+        }
+
+        function updateBulkActionStateAdminDpl() {
+            const checkboxes = document.querySelectorAll('.row-checkbox-admin-dpl:checked');
+            const allCheckboxes = document.querySelectorAll('.row-checkbox-admin-dpl');
+            const btn = document.getElementById('btn-bulk-delete-admin-dpl');
+            const selectAll = document.getElementById('selectAllAdminDpl');
+
+            if (checkboxes.length > 0) {
+                btn.classList.remove('hidden');
+                btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
+            } else {
+                btn.classList.add('hidden');
+            }
+
+            if (allCheckboxes.length > 0) {
+                 selectAll.checked = checkboxes.length === allCheckboxes.length;
+            }
+        }
+
+        async function deleteBulkReportsAdminDpl() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox-admin-dpl:checked');
+            if(checkedBoxes.length === 0) return;
+            
+            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan DPL?`)) return;
+
+            const btn = document.getElementById('btn-bulk-delete-admin-dpl');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
+            btn.disabled = true;
+
+            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
+
+            try {
+                if (USE_MOCK) {
+                    mockDplReports = mockDplReports.filter(x => !idsToDelete.includes(String(x.id)));
+                } else {
+                    for (const id of idsToDelete) {
+                        await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'deleteDplReport', id: id }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
                     }
                 }
                 await loadDataFromServer();
