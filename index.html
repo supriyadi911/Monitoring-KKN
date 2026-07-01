@@ -21,11 +21,33 @@
 </head>
 <body class="text-gray-800">
 
+    <!-- ==============================
+         SPLASH SCREEN
+    =============================== -->
+    <div id="splash-screen" class="fixed inset-0 z-[9999] bg-gradient-to-br from-blue-50 via-white to-gray-100 flex flex-col items-center justify-center transition-all duration-700 ease-in-out">
+        <div class="relative flex flex-col items-center animate-pulse">
+            <!-- Logo UIN -->
+            <img src="https://upload.wikimedia.org/wikipedia/id/thumb/3/3d/Lambang_UIN_Raden_Intan_Lampung.png/250px-Lambang_UIN_Raden_Intan_Lampung.png" alt="Logo UIN Raden Intan" class="h-32 md:h-40 w-auto mb-6 drop-shadow-lg object-contain">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-blue-800 tracking-wide drop-shadow-sm">SIM KKN</h1>
+            <p class="text-gray-600 mt-2 font-semibold tracking-wider text-sm md:text-base uppercase text-center px-4">Universitas Islam Negeri<br>Raden Intan Lampung</p>
+        </div>
+        <!-- Bouncing Loading Dots -->
+        <div class="mt-10 flex items-center justify-center space-x-3">
+            <div class="w-3.5 h-3.5 bg-blue-600 rounded-full animate-bounce shadow-sm" style="animation-delay: -0.3s"></div>
+            <div class="w-3.5 h-3.5 bg-blue-600 rounded-full animate-bounce shadow-sm" style="animation-delay: -0.15s"></div>
+            <div class="w-3.5 h-3.5 bg-blue-600 rounded-full animate-bounce shadow-sm"></div>
+        </div>
+    </div>
+
     <!-- Navbar -->
     <nav class="bg-blue-700 text-white shadow-md w-full z-10 sticky top-0 hidden" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0 flex items-center font-bold text-xl">
+                    <!-- Tombol Toggle Sidebar -->
+                    <button id="btn-sidebar-toggle" onclick="toggleSidebar()" class="hidden mr-4 text-white hover:text-gray-300 focus:outline-none transition">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
                     <i class="fa-solid fa-map-location-dot mr-2"></i> SIM KKN
                 </div>
                 <div class="flex items-center space-x-4">
@@ -43,13 +65,13 @@
         </div>
     </nav>
 
-    <!-- Main Container -->
-    <main class="w-full h-screen flex flex-col overflow-y-auto">
+    <!-- Main Container (Diperbarui: overflow-hidden) -->
+    <main class="w-full h-screen flex flex-col overflow-hidden bg-gray-50">
         
         <!-- ==============================
              0. PUBLIC DASHBOARD (LANDING PAGE)
         =============================== -->
-        <div id="public-page" class="hidden flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+        <div id="public-page" class="hidden flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8 overflow-y-auto">
             <!-- Hero / Sambutan -->
             <div class="text-center mb-10 mt-6 bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
                 <!-- Status Koneksi Public -->
@@ -121,7 +143,7 @@
         <!-- ==============================
              1. LOGIN PAGE
         =============================== -->
-        <div id="login-page" class="hidden flex-grow items-center justify-center p-4">
+        <div id="login-page" class="hidden flex-grow items-center justify-center p-4 overflow-y-auto">
             <div class="bg-white p-8 rounded-xl shadow-lg max-w-md w-full">
                 <div class="text-center mb-6">
                     <i class="fa-solid fa-users text-blue-600 text-5xl mb-3"></i>
@@ -136,7 +158,12 @@
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
-                        <input id="password" type="password" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="••••••••">
+                        <div class="relative">
+                            <input id="password" type="password" required class="shadow appearance-none border rounded w-full py-2 px-3 pr-10 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="••••••••">
+                            <button type="button" onclick="togglePassword('password', 'login-eye-icon')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-blue-600 transition">
+                                <i id="login-eye-icon" class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="role">Peran (Role)</label>
@@ -179,7 +206,7 @@
         <!-- ==============================
              1.5. REGISTER PAGE (BARU)
         =============================== -->
-        <div id="register-page" class="hidden flex-grow items-center justify-center p-4">
+        <div id="register-page" class="hidden flex-grow items-center justify-center p-4 overflow-y-auto">
             <div class="bg-white p-8 rounded-xl shadow-lg max-w-2xl w-full my-8">
                 <div class="text-center mb-6">
                     <i class="fa-solid fa-user-plus text-blue-600 text-5xl mb-3"></i>
@@ -196,7 +223,13 @@
                         </div>
                         <div>
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="reg-password">Password *</label>
-                            <input id="reg-password" type="password" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <div class="relative">
+                                <input id="reg-password" type="password" required pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).+$" title="Harus mengandung kombinasi huruf dan angka" class="shadow appearance-none border rounded w-full py-2 px-3 pr-10 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <button type="button" onclick="togglePassword('reg-password', 'reg-eye-icon')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-blue-600 transition">
+                                    <i id="reg-eye-icon" class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1"><i class="fa-solid fa-circle-info mr-1"></i>Gunakan kombinasi huruf dan angka.</p>
                         </div>
                         <div>
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="reg-role">Peran (Role) *</label>
@@ -250,189 +283,267 @@
         </div>
 
         <!-- ==============================
-             2. DASHBOARD ADMIN / DOSEN
+             2. DASHBOARD ADMIN (LAYOUT SIDEBAR)
         =============================== -->
-        <div id="admin-page" class="hidden flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
-            <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard Monitor Admin</h1>
+        <div id="admin-page" class="hidden flex-grow w-full bg-gray-100 flex-col md:flex-row overflow-hidden relative">
             
-            <!-- Statistik Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <!-- Baris 1: Entitas Pengguna & Darurat -->
-                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-blue-500 flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500 font-medium uppercase">Total Kelompok</p>
-                        <p class="text-2xl font-bold text-gray-800" id="stat-groups">0</p>
+            <!-- Sidebar Menu Admin (Diperbarui) -->
+            <aside id="admin-sidebar" class="w-64 bg-gray-800 text-white flex flex-col shadow-xl z-40 flex-shrink-0 absolute md:relative h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+                <div class="p-5 font-bold text-lg border-b border-gray-700 flex items-center justify-between bg-gray-900 sticky top-0 z-20">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-shield-halved text-blue-400"></i>
+                        <span>Menu Admin</span>
                     </div>
-                    <i class="fa-solid fa-users text-3xl text-blue-200"></i>
+                    <!-- Tombol Tutup Khusus Mobile -->
+                    <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white transition">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
                 </div>
-                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-purple-500 flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500 font-medium uppercase">Total Mahasiswa</p>
-                        <p class="text-2xl font-bold text-gray-800" id="stat-mhs">0</p>
-                    </div>
-                    <i class="fa-solid fa-user-graduate text-3xl text-purple-200"></i>
-                </div>
-                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-green-500 flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500 font-medium uppercase">Total DPL</p>
-                        <p class="text-2xl font-bold text-gray-800" id="stat-dpl">0</p>
-                    </div>
-                    <i class="fa-solid fa-user-tie text-3xl text-green-200"></i>
-                </div>
-                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-red-500 flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500 font-medium uppercase">Kejadian Darurat</p>
-                        <p class="text-2xl font-bold text-red-600" id="stat-darurat">0</p>
-                    </div>
-                    <i class="fa-solid fa-triangle-exclamation text-3xl text-red-200"></i>
-                </div>
+                <nav class="flex-1 px-3 py-6 space-y-2 overflow-y-auto">
+                    <button onclick="switchAdminTab('dashboard')" id="tab-btn-dashboard" class="w-full flex items-center px-4 py-3 bg-blue-600 text-white rounded-lg transition font-medium shadow-sm">
+                        <i class="fa-solid fa-chart-pie w-6 text-center"></i> Dashboard
+                    </button>
+                    <button onclick="switchAdminTab('kelompok')" id="tab-btn-kelompok" class="w-full flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium">
+                        <i class="fa-solid fa-users w-6 text-center"></i> Laporan Kelompok
+                    </button>
+                    <button onclick="switchAdminTab('mahasiswa')" id="tab-btn-mahasiswa" class="w-full flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium">
+                        <i class="fa-solid fa-user-graduate w-6 text-center"></i> Laporan Mahasiswa
+                    </button>
+                    <button onclick="switchAdminTab('dpl')" id="tab-btn-dpl" class="w-full flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium">
+                        <i class="fa-solid fa-user-tie w-6 text-center"></i> Laporan DPL
+                    </button>
+                    <button onclick="switchAdminTab('akun')" id="tab-btn-akun" class="w-full flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium">
+                        <i class="fa-solid fa-users-cog w-6 text-center"></i> Pengaturan Akun
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Main Content Area (Bisa di-scroll, mengecil bersama sidebar) -->
+            <div class="flex-1 p-4 sm:p-6 lg:p-8 w-full min-w-0 overflow-y-auto h-full">
                 
-                <!-- Baris 2: Laporan & Keluhan -->
-                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-blue-400 flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500 font-medium uppercase">Lap. Kelompok</p>
-                        <p class="text-2xl font-bold text-gray-800" id="stat-rep-kel">0</p>
+                <!-- Mobile Dropdown Nav (Hanya tampil di layar kecil) -->
+                <div class="md:hidden mb-6 bg-white p-3 rounded-lg shadow-sm border flex flex-col space-y-2">
+                    <span class="font-bold text-gray-700"><i class="fa-solid fa-bars mr-2"></i> Menu Navigasi Admin</span>
+                    <select id="admin-mobile-nav" onchange="switchAdminTab(this.value)" class="w-full border rounded-md p-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 font-medium">
+                        <option value="dashboard">Dashboard Overview</option>
+                            <option value="kelompok">Laporan Kelompok</option>
+                            <option value="mahasiswa">Laporan Mahasiswa</option>
+                            <option value="dpl">Laporan DPL</option>
+                            <option value="akun">Pengaturan Akun</option>
+                        </select>
                     </div>
-                    <i class="fa-solid fa-file-lines text-3xl text-blue-200"></i>
-                </div>
-                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-purple-400 flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500 font-medium uppercase">Lap. Mahasiswa</p>
-                        <p class="text-2xl font-bold text-gray-800" id="stat-rep-mhs">0</p>
-                    </div>
-                    <i class="fa-solid fa-file-signature text-3xl text-purple-200"></i>
-                </div>
-                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-green-400 flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500 font-medium uppercase">Lap. DPL</p>
-                        <p class="text-2xl font-bold text-gray-800" id="stat-rep-dpl">0</p>
-                    </div>
-                    <i class="fa-solid fa-file-contract text-3xl text-green-200"></i>
-                </div>
-                <div class="bg-white rounded-lg shadow p-5 border-l-4 border-orange-500 flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500 font-medium uppercase">Total Keluhan</p>
-                        <p class="text-2xl font-bold text-orange-600" id="stat-keluhan">0</p>
-                    </div>
-                    <i class="fa-solid fa-comment-dots text-3xl text-orange-200"></i>
-                </div>
-            </div>
 
-            <!-- Grafik & Filter -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white rounded-lg shadow p-6 lg:col-span-2">
-                    <h3 class="font-bold text-gray-700 mb-4">Grafik Laporan per Hari</h3>
-                    <canvas id="reportChart" width="400" height="200"></canvas>
-                </div>
-                <div class="bg-white rounded-lg shadow p-6">
-                    <h3 class="font-bold text-gray-700 mb-4">Filter Data</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm text-gray-600">Tanggal</label>
-                            <input type="date" id="filter-date" class="mt-1 w-full border rounded-md p-2 text-sm" onchange="applyFilters()">
+                <!-- -----------------------------------------
+                     TAB 1: DASHBOARD OVERVIEW
+                ------------------------------------------ -->
+                <div id="admin-tab-dashboard" class="space-y-6">
+                    <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard Monitor Admin</h1>
+                    
+                    <!-- Statistik Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-blue-500 flex items-center justify-between">
+                            <div><p class="text-xs text-gray-500 font-medium uppercase">Total Kelompok</p><p class="text-2xl font-bold text-gray-800" id="stat-groups">0</p></div>
+                            <i class="fa-solid fa-users text-3xl text-blue-200"></i>
                         </div>
-                        <button onclick="resetFilters()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-md text-sm transition mt-4">
-                            Reset Filter
-                        </button>
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-purple-500 flex items-center justify-between">
+                            <div><p class="text-xs text-gray-500 font-medium uppercase">Total Mahasiswa</p><p class="text-2xl font-bold text-gray-800" id="stat-mhs">0</p></div>
+                            <i class="fa-solid fa-user-graduate text-3xl text-purple-200"></i>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-green-500 flex items-center justify-between">
+                            <div><p class="text-xs text-gray-500 font-medium uppercase">Total DPL</p><p class="text-2xl font-bold text-gray-800" id="stat-dpl">0</p></div>
+                            <i class="fa-solid fa-user-tie text-3xl text-green-200"></i>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-red-500 flex items-center justify-between">
+                            <div><p class="text-xs text-gray-500 font-medium uppercase">Kejadian Darurat</p><p class="text-2xl font-bold text-red-600" id="stat-darurat">0</p></div>
+                            <i class="fa-solid fa-triangle-exclamation text-3xl text-red-200"></i>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-blue-400 flex items-center justify-between">
+                            <div><p class="text-xs text-gray-500 font-medium uppercase">Lap. Kelompok</p><p class="text-2xl font-bold text-gray-800" id="stat-rep-kel">0</p></div>
+                            <i class="fa-solid fa-file-lines text-3xl text-blue-200"></i>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-purple-400 flex items-center justify-between">
+                            <div><p class="text-xs text-gray-500 font-medium uppercase">Lap. Mahasiswa</p><p class="text-2xl font-bold text-gray-800" id="stat-rep-mhs">0</p></div>
+                            <i class="fa-solid fa-file-signature text-3xl text-purple-200"></i>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-green-400 flex items-center justify-between">
+                            <div><p class="text-xs text-gray-500 font-medium uppercase">Lap. DPL</p><p class="text-2xl font-bold text-gray-800" id="stat-rep-dpl">0</p></div>
+                            <i class="fa-solid fa-file-contract text-3xl text-green-200"></i>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-orange-500 flex items-center justify-between">
+                            <div><p class="text-xs text-gray-500 font-medium uppercase">Total Keluhan</p><p class="text-2xl font-bold text-orange-600" id="stat-keluhan">0</p></div>
+                            <i class="fa-solid fa-comment-dots text-3xl text-orange-200"></i>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Tabel Data Kelompok -->
-            <div class="bg-white rounded-lg shadow overflow-hidden mb-8">
-                <div class="px-6 py-4 border-b flex justify-between items-center bg-blue-50">
-                    <h3 class="font-bold text-gray-700">Daftar Laporan Kelompok</h3>
-                    <div class="flex items-center space-x-3">
-                        <button id="btn-bulk-delete-admin" onclick="deleteBulkReportsAdmin()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
-                        <button onclick="toggleTable('admin-kelompok-container', 'icon-kelompok', 'pagination-kelompok')" class="text-gray-500 hover:text-gray-800 transition" title="Sembunyikan/Tampilkan Tabel"><i id="icon-kelompok" class="fa-solid fa-chevron-up"></i></button>
+                    <!-- Grafik & Filter Global -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-white rounded-lg shadow-sm p-6 lg:col-span-2 border">
+                            <h3 class="font-bold text-gray-700 mb-4">Grafik Analitik Laporan per Hari</h3>
+                            <canvas id="reportChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-6 border">
+                            <h3 class="font-bold text-gray-700 mb-4">Filter Data Global</h3>
+                            <p class="text-xs text-gray-500 mb-4">Pilih tanggal di bawah ini untuk memfilter data pada kartu statistik dan seluruh tabel laporan.</p>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm text-gray-600 font-medium mb-1">Pilih Tanggal</label>
+                                    <input type="date" id="filter-date" class="w-full border rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="applyFilters()">
+                                </div>
+                                <button onclick="resetFilters()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-md text-sm transition mt-2">
+                                    Reset Filter
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div id="admin-kelompok-container" class="overflow-x-auto overflow-y-auto max-h-[600px] transition-all duration-300">
-                    <table class="w-full whitespace-nowrap">
-                        <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
-                            <tr>
-                                <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdmin" onclick="toggleAllCheckboxesAdmin(this)"></th>
-                                <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
-                                <th class="px-6 py-3 text-left font-medium tracking-wider">Kelompok</th>
-                                <th class="px-6 py-3 text-left font-medium tracking-wider">Kegiatan</th>
-                                <th class="px-6 py-3 text-left font-medium tracking-wider">Status/Darurat</th>
-                                <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-table-body" class="bg-white divide-y divide-gray-200 text-sm">
-                            <!-- Data injected via JS -->
-                        </tbody>
-                    </table>
-                </div>
-                <!-- Pagination Kelompok -->
-                <div id="pagination-kelompok" data-active="false" class="hidden flex justify-between items-center px-6 py-3 bg-gray-50 border-t"></div>
-            </div>
 
-            <!-- Tabel Data Mahasiswa -->
-            <div class="bg-white rounded-lg shadow overflow-hidden mb-8">
-                <div class="px-6 py-4 border-b flex justify-between items-center bg-purple-50">
-                    <h3 class="font-bold text-gray-700">Daftar Laporan Mahasiswa</h3>
-                    <div class="flex items-center space-x-3">
-                        <button id="btn-bulk-delete-admin-mhs" onclick="deleteBulkReportsAdminMhs()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
-                        <button onclick="toggleTable('admin-mhs-container', 'icon-mhs', 'pagination-mhs')" class="text-gray-500 hover:text-gray-800 transition" title="Sembunyikan/Tampilkan Tabel"><i id="icon-mhs" class="fa-solid fa-chevron-up"></i></button>
+                <!-- -----------------------------------------
+                     TAB 2: DAFTAR LAPORAN KELOMPOK
+                ------------------------------------------ -->
+                <div id="admin-tab-kelompok" class="hidden space-y-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-2xl font-bold text-gray-800">Manajemen Laporan Kelompok</h1>
+                    </div>
+                    <!-- Tabel Data Kelompok -->
+                    <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
+                        <div class="px-6 py-4 border-b flex justify-between items-center bg-blue-50">
+                            <h3 class="font-bold text-blue-800">Daftar Laporan Kelompok</h3>
+                            <button id="btn-bulk-delete-admin" onclick="deleteBulkReportsAdmin()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition shadow-sm"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
+                        </div>
+                        <div id="admin-kelompok-container" class="overflow-x-auto overflow-y-auto max-h-[600px]">
+                            <table class="w-full whitespace-nowrap">
+                                <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
+                                    <tr>
+                                        <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdmin" onclick="toggleAllCheckboxesAdmin(this)"></th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Kelompok</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Kegiatan</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Status/Darurat</th>
+                                        <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-table-body" class="bg-white divide-y divide-gray-200 text-sm">
+                                    <!-- Data injected via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Pagination Kelompok -->
+                        <div id="pagination-kelompok" data-active="false" class="hidden flex justify-between items-center px-6 py-3 bg-gray-50 border-t"></div>
                     </div>
                 </div>
-                <div id="admin-mhs-container" class="overflow-x-auto overflow-y-auto max-h-[600px] transition-all duration-300">
-                    <table class="w-full whitespace-nowrap">
-                        <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
-                            <tr>
-                                <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdminMhs" onclick="toggleAllCheckboxesAdminMhs(this)"></th>
-                                <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
-                                <th class="px-6 py-3 text-left font-medium tracking-wider">Mahasiswa</th>
-                                <th class="px-6 py-3 text-left font-medium tracking-wider">Kelompok</th>
-                                <th class="px-6 py-3 text-left font-medium tracking-wider">Rencana & Keluhan</th>
-                                <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-mhs-table-body" class="bg-white divide-y divide-gray-200 text-sm">
-                            <!-- Data injected via JS -->
-                        </tbody>
-                    </table>
-                </div>
-                <!-- Pagination Mahasiswa -->
-                <div id="pagination-mhs" data-active="false" class="hidden flex justify-between items-center px-6 py-3 bg-gray-50 border-t"></div>
-            </div>
 
-            <!-- Tabel Data DPL -->
-            <div class="bg-white rounded-lg shadow overflow-hidden">
-                <div class="px-6 py-4 border-b flex justify-between items-center bg-green-50">
-                    <h3 class="font-bold text-gray-700">Daftar Laporan DPL</h3>
-                    <div class="flex items-center space-x-3">
-                        <button id="btn-bulk-delete-admin-dpl" onclick="deleteBulkReportsAdminDpl()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
-                        <button onclick="toggleTable('admin-dpl-container', 'icon-dpl', 'pagination-dpl')" class="text-gray-500 hover:text-gray-800 transition" title="Sembunyikan/Tampilkan Tabel"><i id="icon-dpl" class="fa-solid fa-chevron-up"></i></button>
+                <!-- -----------------------------------------
+                     TAB 3: DAFTAR LAPORAN MAHASISWA
+                ------------------------------------------ -->
+                <div id="admin-tab-mahasiswa" class="hidden space-y-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-2xl font-bold text-gray-800">Manajemen Laporan Mahasiswa</h1>
+                    </div>
+                    <!-- Tabel Data Mahasiswa -->
+                    <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
+                        <div class="px-6 py-4 border-b flex justify-between items-center bg-purple-50">
+                            <h3 class="font-bold text-purple-800">Daftar Laporan Harian Mahasiswa</h3>
+                            <button id="btn-bulk-delete-admin-mhs" onclick="deleteBulkReportsAdminMhs()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition shadow-sm"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
+                        </div>
+                        <div id="admin-mhs-container" class="overflow-x-auto overflow-y-auto max-h-[600px]">
+                            <table class="w-full whitespace-nowrap">
+                                <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
+                                    <tr>
+                                        <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdminMhs" onclick="toggleAllCheckboxesAdminMhs(this)"></th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Mahasiswa</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Kelompok</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Rencana & Keluhan</th>
+                                        <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-mhs-table-body" class="bg-white divide-y divide-gray-200 text-sm">
+                                    <!-- Data injected via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Pagination Mahasiswa -->
+                        <div id="pagination-mhs" data-active="false" class="hidden flex justify-between items-center px-6 py-3 bg-gray-50 border-t"></div>
                     </div>
                 </div>
-                <div id="admin-dpl-container" class="overflow-x-auto overflow-y-auto max-h-[600px] transition-all duration-300">
-                    <table class="w-full whitespace-nowrap">
-                        <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
-                            <tr>
-                                <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdminDpl" onclick="toggleAllCheckboxesAdminDpl(this)"></th>
-                                <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
-                                <th class="px-6 py-3 text-left font-medium tracking-wider">DPL</th>
-                                <th class="px-6 py-3 text-left font-medium tracking-wider">Kategori & Kelompok</th>
-                                <th class="px-6 py-3 text-left font-medium tracking-wider">Catatan</th>
-                                <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-dpl-table-body" class="bg-white divide-y divide-gray-200 text-sm">
-                            <!-- Data injected via JS -->
-                        </tbody>
-                    </table>
+
+                <!-- -----------------------------------------
+                     TAB 4: DAFTAR LAPORAN DPL
+                ------------------------------------------ -->
+                <div id="admin-tab-dpl" class="hidden space-y-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-2xl font-bold text-gray-800">Manajemen Laporan DPL</h1>
+                    </div>
+                    <!-- Tabel Data DPL -->
+                    <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
+                        <div class="px-6 py-4 border-b flex justify-between items-center bg-green-50">
+                            <h3 class="font-bold text-green-800">Daftar Laporan Pendampingan DPL</h3>
+                            <button id="btn-bulk-delete-admin-dpl" onclick="deleteBulkReportsAdminDpl()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition shadow-sm"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
+                        </div>
+                        <div id="admin-dpl-container" class="overflow-x-auto overflow-y-auto max-h-[600px]">
+                            <table class="w-full whitespace-nowrap">
+                                <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
+                                    <tr>
+                                        <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdminDpl" onclick="toggleAllCheckboxesAdminDpl(this)"></th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">DPL</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Kategori & Kelompok</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Catatan</th>
+                                        <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-dpl-table-body" class="bg-white divide-y divide-gray-200 text-sm">
+                                    <!-- Data injected via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Pagination DPL -->
+                        <div id="pagination-dpl" data-active="false" class="hidden flex justify-between items-center px-6 py-3 bg-gray-50 border-t"></div>
+                    </div>
                 </div>
-                <!-- Pagination DPL -->
-                <div id="pagination-dpl" data-active="false" class="hidden flex justify-between items-center px-6 py-3 bg-gray-50 border-t"></div>
-            </div>
-        </div>
+
+                <!-- -----------------------------------------
+                     TAB 5: PENGATURAN AKUN
+                ------------------------------------------ -->
+                <div id="admin-tab-akun" class="hidden space-y-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-2xl font-bold text-gray-800">Pengaturan Akun Pengguna</h1>
+                        <!-- Tombol Tambah Akun mengarah ke fungsi Modal Admin -->
+                        <button onclick="openAccountModal('add')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium shadow-sm transition"><i class="fa-solid fa-plus mr-1"></i> Tambah Akun Baru</button>
+                    </div>
+                    <!-- Tabel Daftar Akun -->
+                    <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
+                        <div class="px-6 py-4 border-b bg-gray-50 flex justify-between items-center">
+                            <h3 class="font-bold text-gray-700">Daftar Akun Terdaftar</h3>
+                        </div>
+                        <div class="overflow-x-auto p-4">
+                            <table class="w-full whitespace-nowrap">
+                                <thead class="bg-gray-100 text-gray-600 text-sm">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left font-medium rounded-tl-md">Username</th>
+                                        <th class="px-4 py-3 text-left font-medium">Password</th>
+                                        <th class="px-4 py-3 text-left font-medium">Peran (Role)</th>
+                                        <th class="px-4 py-3 text-left font-medium">Nama Lengkap</th>
+                                        <th class="px-4 py-3 text-left font-medium">Informasi Detail</th>
+                                        <th class="px-4 py-3 text-center font-medium rounded-tr-md">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-akun-table-body" class="bg-white divide-y divide-gray-200 text-sm">
+                                    <!-- Data Akun injected via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- Tutup flex-1 Main Content -->
+        </div> <!-- Tutup Admin Page -->
 
         <!-- ==============================
              3. DASHBOARD KELOMPOK (FORM)
         =============================== -->
-        <div id="group-page" class="hidden flex-grow max-w-5xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+        <div id="group-page" class="hidden flex-grow max-w-5xl mx-auto w-full p-4 sm:p-6 lg:p-8 overflow-y-auto">
             <h1 class="text-2xl font-bold text-gray-800 mb-6">Area Kelompok KKN</h1>
             
             <div class="grid grid-cols-1 gap-8">
@@ -552,6 +663,71 @@
             </div>
         </div>
 
+        <!-- Modal Tambah/Edit Akun (Admin) -->
+        <div id="account-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4 overflow-y-auto">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 my-8">
+                <div class="flex justify-between items-center mb-4 border-b pb-2">
+                    <h3 class="text-xl font-bold text-gray-800" id="account-modal-title">Tambah Akun Baru</h3>
+                    <button onclick="closeAccountModal()" class="text-gray-500 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <form id="account-form" onsubmit="submitAccount(event)">
+                    <input type="hidden" id="acc-form-mode" value="add">
+                    <input type="hidden" id="acc-original-username" value="">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 text-sm text-gray-700">
+                        <div>
+                            <label class="block font-bold mb-1">Username *</label>
+                            <input type="text" id="acc-username" required class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold mb-1">Password *</label>
+                            <div class="relative">
+                                <input type="password" id="acc-password" required class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none pr-10">
+                                <button type="button" onclick="togglePassword('acc-password', 'acc-eye-icon')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-blue-600 transition"><i id="acc-eye-icon" class="fa-solid fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-bold mb-1">Peran (Role) *</label>
+                            <select id="acc-role" required class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                                <option value="admin">Admin</option>
+                                <option value="kelompok">Kelompok</option>
+                                <option value="dpl">DPL</option>
+                                <option value="mahasiswa">Mahasiswa</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold mb-1">Nama Lengkap / Kelompok *</label>
+                            <input type="text" id="acc-namaLengkap" required class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold mb-1">NIM / NIP</label>
+                            <input type="text" id="acc-nip" class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold mb-1">Kelompok KKN</label>
+                            <input type="text" id="acc-kelompok" class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold mb-1">Fakultas</label>
+                            <input type="text" id="acc-fakultas" class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold mb-1">Kontak / WA</label>
+                            <input type="text" id="acc-kontak" class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                    </div>
+                    <div class="mb-6 text-sm text-gray-700">
+                        <label class="block font-bold mb-1">Lokasi KKN</label>
+                        <input type="text" id="acc-lokasi" class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="submit" id="btn-submit-account" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition shadow-sm">Simpan Akun</button>
+                        <button type="button" onclick="closeAccountModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded transition shadow-sm">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- Modal Edit Biodata Mahasiswa -->
         <div id="edit-profile-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
             <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
@@ -623,7 +799,7 @@
         <!-- ==============================
              4. DASHBOARD DPL
         =============================== -->
-        <div id="dpl-page" class="hidden flex-grow max-w-5xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+        <div id="dpl-page" class="hidden flex-grow max-w-5xl mx-auto w-full p-4 sm:p-6 lg:p-8 overflow-y-auto">
             <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard Dosen Pembimbing Lapangan (DPL)</h1>
             
             <div class="grid grid-cols-1 gap-8">
@@ -723,7 +899,7 @@
         <!-- ==============================
              5. DASHBOARD MAHASISWA
         =============================== -->
-        <div id="mahasiswa-page" class="hidden flex-grow max-w-5xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+        <div id="mahasiswa-page" class="hidden flex-grow max-w-5xl mx-auto w-full p-4 sm:p-6 lg:p-8 overflow-y-auto">
             <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard Mahasiswa KKN</h1>
             
             <div class="grid grid-cols-1 gap-8">
@@ -832,7 +1008,7 @@
         let reportsData = []; 
         let dplReportsData = []; 
         let mahasiswaReportsData = []; 
-        
+        let accountsData = []; // State untuk menampung data seluruh Akun
         // State Filter & Pagination Admin
         let filteredDataKel = [];
         let filteredDataMhs = [];
@@ -870,7 +1046,13 @@
         // INITIALIZATION & ROUTING
         // =========================================================================
         window.onload = async () => {
-            await loadDataFromServer();
+            // Buat jeda minimal 1.5 detik untuk Splash Screen agar animasi terlihat elegan
+            const splashTimeout = new Promise(resolve => setTimeout(resolve, 1500));
+            const dataLoadPromise = loadDataFromServer();
+            
+            // Tunggu hingga data termuat DAN waktu minimal splash screen selesai
+            await Promise.all([splashTimeout, dataLoadPromise]);
+
             const session = localStorage.getItem('kkn_session');
             if (session) {
                 currentUser = JSON.parse(session);
@@ -878,15 +1060,60 @@
             } else {
                 showPublicPage();
             }
+
+            // Transisi menghilang (Fade out) Splash Screen
+            const splash = document.getElementById('splash-screen');
+            if (splash) {
+                splash.classList.add('opacity-0', 'invisible', 'scale-105');
+                setTimeout(() => {
+                    splash.remove(); // Hapus elemen dari DOM setelah animasi selesai
+                }, 700);
+            }
         };
+
+        // Fungsi Toggle Sidebar Admin (Diperbarui)
+        function toggleSidebar() {
+            const sidebar = document.getElementById('admin-sidebar');
+            if (!sidebar) return;
+            
+            if (window.innerWidth < 768) {
+                // Tampilan Mobile: Toggle efek slide dari kiri layar
+                sidebar.classList.toggle('-translate-x-full');
+            } else {
+                // Tampilan Desktop: Tampilkan/Sembunyikan panel (flex vs none)
+                if (sidebar.style.display === 'none') {
+                    sidebar.style.display = 'flex';
+                } else {
+                    sidebar.style.display = 'none';
+                }
+            }
+        }
+
+        // Fungsi Lihat/Sembunyikan Password
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
 
         function showPublicPage() {
             document.getElementById('navbar').classList.add('hidden');
+            document.getElementById('btn-sidebar-toggle').classList.add('hidden');
             document.getElementById('login-page').classList.add('hidden');
             document.getElementById('login-page').classList.remove('flex');
             document.getElementById('register-page').classList.add('hidden');
             document.getElementById('register-page').classList.remove('flex');
             document.getElementById('admin-page').classList.add('hidden');
+            document.getElementById('admin-page').classList.remove('flex');
             document.getElementById('group-page').classList.add('hidden');
             document.getElementById('dpl-page').classList.add('hidden');
             document.getElementById('mahasiswa-page').classList.add('hidden');
@@ -916,16 +1143,33 @@
             document.getElementById('register-page').classList.add('hidden');
             document.getElementById('register-page').classList.remove('flex');
             document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('btn-sidebar-toggle').classList.add('hidden');
             document.getElementById('nav-username').innerText = `Halo, ${currentUser.username.toUpperCase()}`;
 
-            // Reset semua halaman
+            // Reset semua halaman utama
             document.getElementById('admin-page').classList.add('hidden');
+            document.getElementById('admin-page').classList.remove('flex');
             document.getElementById('group-page').classList.add('hidden');
             document.getElementById('dpl-page').classList.add('hidden');
             document.getElementById('mahasiswa-page').classList.add('hidden');
 
             if (currentUser.role === 'admin') {
                 document.getElementById('admin-page').classList.remove('hidden');
+                document.getElementById('admin-page').classList.add('flex');
+                document.getElementById('btn-sidebar-toggle').classList.remove('hidden'); // Munculkan tombol sidebar
+                
+                // Atur ulang Sidebar ke posisi default (Desktop tampil, Mobile tersembunyi)
+                const sidebar = document.getElementById('admin-sidebar');
+                if (sidebar) {
+                    sidebar.style.display = ''; // Reset display style
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('-translate-x-full');
+                    } else {
+                        sidebar.classList.remove('-translate-x-full');
+                    }
+                }
+                
+                switchAdminTab('dashboard'); // Buka tab dashboard secara default
             } else if (currentUser.role === 'dpl') {
                 document.getElementById('dpl-page').classList.remove('hidden');
             } else if (currentUser.role === 'mahasiswa') {
@@ -1055,6 +1299,7 @@
             currentUser = null;
             document.getElementById('navbar').classList.add('hidden');
             document.getElementById('admin-page').classList.add('hidden');
+            document.getElementById('admin-page').classList.remove('flex');
             document.getElementById('group-page').classList.add('hidden');
             document.getElementById('dpl-page').classList.add('hidden');
             document.getElementById('mahasiswa-page').classList.add('hidden');
@@ -1149,7 +1394,237 @@
         // =========================================================================
         // TAMPILAN DASHBOARD UMUM & ADMIN
         // =========================================================================
+
+        // --- Navigasi Sidebar Admin ---
+        function switchAdminTab(tabId) {
+            const tabs = ['dashboard', 'kelompok', 'mahasiswa', 'dpl', 'akun'];
+            
+            tabs.forEach(t => {
+                // Tampilkan/Sembunyikan Konten
+                const content = document.getElementById('admin-tab-' + t);
+                if (content) {
+                    if (t === tabId) content.classList.remove('hidden');
+                    else content.classList.add('hidden');
+                }
+                
+                // Ubah Gaya Tombol Sidebar
+                const btn = document.getElementById('tab-btn-' + t);
+                if (btn) {
+                    if (t === tabId) {
+                        btn.className = 'w-full flex items-center px-4 py-3 bg-blue-600 text-white rounded-lg transition font-medium shadow-sm';
+                    } else {
+                        btn.className = 'w-full flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium';
+                    }
+                }
+            });
+            
+            // Sinkronisasi dengan dropdown mobile
+            const mobileSelect = document.getElementById('admin-mobile-nav');
+            if (mobileSelect && mobileSelect.value !== tabId) {
+                mobileSelect.value = tabId;
+            }
+            
+            // Jika masuk ke tab akun, Fetch data akun terbaru lalu render tabel
+            if (tabId === 'akun') {
+                document.getElementById('admin-akun-table-body').innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-500"><div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Memuat data akun...</td></tr>';
+                fetchAdminAccounts();
+            }
+
+            // Tutup sidebar otomatis di perangkat mobile setelah memilih menu
+            if (window.innerWidth < 768) {
+                const sidebar = document.getElementById('admin-sidebar');
+                if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            }
+        }
+
+        async function fetchAdminAccounts() {
+            try {
+                if (USE_MOCK) {
+                    accountsData = Object.values(mockUsers);
+                } else {
+                    const res = await fetch(`${SCRIPT_URL}?action=getAccounts&_t=${new Date().getTime()}`);
+                    const data = await res.json();
+                    if(data.success) {
+                        accountsData = data.accounts;
+                    }
+                }
+                renderAdminTableAkun();
+            } catch (err) {
+                console.error("Gagal memuat akun:", err);
+                document.getElementById('admin-akun-table-body').innerHTML = '<tr><td colspan="5" class="text-center py-4 text-red-500">Gagal memuat data akun. Periksa koneksi internet Anda.</td></tr>';
+            }
+        }
+
+        function renderAdminTableAkun() {
+            const tbody = document.getElementById('admin-akun-table-body');
+            tbody.innerHTML = '';
+            
+            if(accountsData.length === 0) {
+                 tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">Belum ada data akun</td></tr>';
+                 return;
+            }
+            
+            accountsData.forEach(u => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-4 py-3 font-medium text-gray-800">${u.username}</td>
+                    <td class="px-4 py-3 text-gray-600 font-mono text-sm">${u.password}</td>
+                    <td class="px-4 py-3 capitalize">
+                        <span class="px-2 py-1 inline-flex text-xs leading-4 font-semibold rounded-full 
+                        ${u.role==='admin' ? 'bg-red-100 text-red-800' : 
+                          u.role==='dpl' ? 'bg-green-100 text-green-800' : 
+                          u.role==='mahasiswa' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'}">
+                          ${u.role}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-gray-700">${u.namaLengkap || u.username}</td>
+                    <td class="px-4 py-3 text-sm text-gray-500">
+                        ${u.kelompok && u.kelompok !== '-' ? `Klp: <span class="font-medium text-gray-700">${u.kelompok}</span><br>` : ''}
+                        ${u.lokasi && u.lokasi !== '-' ? `<span class="truncate max-w-[150px] inline-block" title="${u.lokasi}">${u.lokasi}</span>` : '-'}
+                    </td>
+                    <td class="px-4 py-3 text-center space-x-2">
+                        <button onclick="openAccountModal('edit', '${u.username}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit Akun"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button onclick="deleteAccountAdmin('${u.username}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus Akun"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
         
+        // --- Fungsi CRUD Akun Admin (Modal & Logic) ---
+        function openAccountModal(mode, username = '') {
+            document.getElementById('acc-form-mode').value = mode;
+            const modal = document.getElementById('account-modal');
+            const title = document.getElementById('account-modal-title');
+            const form = document.getElementById('account-form');
+            
+            form.reset();
+            
+            if(mode === 'edit') {
+                title.innerText = "Edit Akun";
+                document.getElementById('acc-original-username').value = username;
+                
+                // Cari data akun untuk diisi ke form
+                const u = accountsData.find(x => x.username === username);
+                if(u) {
+                    document.getElementById('acc-username').value = u.username;
+                    document.getElementById('acc-password').value = u.password || '';
+                    document.getElementById('acc-role').value = u.role;
+                    document.getElementById('acc-namaLengkap').value = u.namaLengkap || '';
+                    document.getElementById('acc-nip').value = u.nip || '';
+                    document.getElementById('acc-kelompok').value = u.kelompok || '';
+                    document.getElementById('acc-fakultas').value = u.fakultas || '';
+                    document.getElementById('acc-kontak').value = u.kontak || '';
+                    document.getElementById('acc-lokasi').value = u.lokasi || '';
+                }
+            } else {
+                title.innerText = "Tambah Akun Baru";
+                document.getElementById('acc-original-username').value = '';
+            }
+            
+            modal.classList.remove('hidden');
+        }
+        
+        function closeAccountModal() {
+            document.getElementById('account-modal').classList.add('hidden');
+        }
+
+        async function submitAccount(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-account');
+            const mode = document.getElementById('acc-form-mode').value;
+            const originalText = btn.innerText;
+            
+            btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px; border-left-color: white;"></div> Menyimpan...`;
+            btn.disabled = true;
+            
+            const payload = {
+                originalUsername: document.getElementById('acc-original-username').value,
+                username: document.getElementById('acc-username').value,
+                password: document.getElementById('acc-password').value,
+                role: document.getElementById('acc-role').value,
+                namaLengkap: document.getElementById('acc-namaLengkap').value,
+                nip: document.getElementById('acc-nip').value,
+                kelompok: document.getElementById('acc-kelompok').value,
+                fakultas: document.getElementById('acc-fakultas').value,
+                kontak: document.getElementById('acc-kontak').value,
+                lokasi: document.getElementById('acc-lokasi').value
+            };
+            
+            try {
+                if (USE_MOCK) {
+                    await new Promise(r => setTimeout(r, 600));
+                    if (mode === 'add') {
+                        if (mockUsers[payload.username]) throw new Error("Username sudah terdaftar!");
+                        mockUsers[payload.username] = payload;
+                    } else {
+                        const oldUser = payload.originalUsername;
+                        let userData = mockUsers[oldUser];
+                        // Jika admin merubah nama username
+                        if (oldUser !== payload.username) {
+                            if (mockUsers[payload.username]) throw new Error("Username baru sudah terpakai oleh orang lain!");
+                            delete mockUsers[oldUser]; 
+                        }
+                        mockUsers[payload.username] = { ...userData, ...payload };
+                    }
+                } else {
+                    const action = mode === 'add' ? 'register' : 'updateProfile';
+                    const res = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: action, data: payload }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const textRes = await res.text();
+                    const result = JSON.parse(textRes);
+                    if(!result.success) throw new Error(result.error || "Gagal menyimpan akun.");
+                }
+                
+                alert(`Akun berhasil ${mode === 'add' ? 'dibuat' : 'diperbarui'}!`);
+                closeAccountModal();
+                fetchAdminAccounts(); // Refresh tabel
+            } catch (err) {
+                alert("Terjadi kesalahan: " + err.message);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        async function deleteAccountAdmin(username, btnElement) {
+            if(username === currentUser.username) {
+                alert("Peringatan: Anda tidak dapat menghapus akun Admin Anda sendiri yang sedang aktif digunakan!");
+                return;
+            }
+            if(!confirm(`Apakah Anda yakin ingin menghapus akun secara permanen: @${username}?`)) return;
+            
+            const originalIcon = btnElement.innerHTML;
+            btnElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            btnElement.disabled = true;
+            
+            try {
+                if (USE_MOCK) {
+                    await new Promise(r => setTimeout(r, 600));
+                    delete mockUsers[username];
+                } else {
+                    const res = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'deleteAccount', username: username }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const textRes = await res.text();
+                    const result = JSON.parse(textRes);
+                    if(!result.success) throw new Error(result.error || "Gagal menghapus.");
+                }
+                fetchAdminAccounts(); // Refresh tabel setelah hapus
+            } catch(err) {
+                alert("Gagal menghapus akun: " + err.message);
+                btnElement.innerHTML = originalIcon;
+                btnElement.disabled = false;
+            }
+        }
+
         function renderPublicDashboard() {
             applyPublicFilters(); 
         }
@@ -1539,25 +2014,6 @@
 
         function closeModal() {
             document.getElementById('detail-modal').classList.add('hidden');
-        }
-
-        // Fungsi Tampilkan/Sembunyikan Tabel Admin
-        function toggleTable(containerId, iconId, paginationId) {
-            const container = document.getElementById(containerId);
-            const icon = document.getElementById(iconId);
-            const pagination = document.getElementById(paginationId);
-            
-            if (container.classList.contains('hidden')) {
-                container.classList.remove('hidden');
-                if(pagination && pagination.dataset.active === 'true') pagination.classList.remove('hidden');
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-up');
-            } else {
-                container.classList.add('hidden');
-                if(pagination) pagination.classList.add('hidden');
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
-            }
         }
 
         // =========================================================================
