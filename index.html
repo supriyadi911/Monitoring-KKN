@@ -411,6 +411,13 @@
                                 <option value="Draft Artikel PKM">Draft Artikel PKM</option>
                             </select>
                         </div>
+                        <div class="w-full sm:w-32">
+                            <select onchange="changeItemsPerPage(this.value)" class="items-per-page-select w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none shadow-sm text-gray-700">
+                                <option value="20">20 Baris</option>
+                                <option value="50">50 Baris</option>
+                                <option value="100">100 Baris</option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- Tabel Data Kelompok -->
@@ -424,9 +431,9 @@
                                 <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
                                     <tr>
                                         <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdmin" onclick="toggleAllCheckboxesAdmin(this)"></th>
-                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
-                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Kelompok</th>
-                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Jenis Laporan</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Kel', 'date')">Tanggal <i id="sort-Kel-date" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Kel', 'group')">Kelompok <i id="sort-Kel-group" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Kel', 'korkel')">Jenis Laporan <i id="sort-Kel-korkel" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
                                     </tr>
                                 </thead>
@@ -463,6 +470,13 @@
                                 <option value="Giat Harian">Giat Harian</option>
                             </select>
                         </div>
+                        <div class="w-full sm:w-32">
+                            <select onchange="changeItemsPerPage(this.value)" class="items-per-page-select w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 outline-none shadow-sm text-gray-700">
+                                <option value="20">20 Baris</option>
+                                <option value="50">50 Baris</option>
+                                <option value="100">100 Baris</option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- Tabel Data Mahasiswa -->
@@ -476,10 +490,10 @@
                                 <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
                                     <tr>
                                         <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdminMhs" onclick="toggleAllCheckboxesAdminMhs(this)"></th>
-                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
-                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Mahasiswa</th>
-                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Kelompok</th>
-                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Jenis Laporan & Durasi</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Mhs', 'tanggal')">Tanggal <i id="sort-Mhs-tanggal" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Mhs', 'namaLengkap')">Mahasiswa <i id="sort-Mhs-namaLengkap" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Mhs', 'kelompok')">Kelompok <i id="sort-Mhs-kelompok" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Mhs', 'rencana')">Jenis Laporan & Durasi <i id="sort-Mhs-rencana" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
                                     </tr>
                                 </thead>
@@ -518,6 +532,13 @@
                                 <option value="Nilai KKN">Nilai KKN</option>
                             </select>
                         </div>
+                        <div class="w-full sm:w-32">
+                            <select onchange="changeItemsPerPage(this.value)" class="items-per-page-select w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 outline-none shadow-sm text-gray-700">
+                                <option value="20">20 Baris</option>
+                                <option value="50">50 Baris</option>
+                                <option value="100">100 Baris</option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- Tabel Data DPL -->
@@ -531,9 +552,9 @@
                                 <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
                                     <tr>
                                         <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdminDpl" onclick="toggleAllCheckboxesAdminDpl(this)"></th>
-                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Tanggal</th>
-                                        <th class="px-6 py-3 text-left font-medium tracking-wider">DPL</th>
-                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Kategori & Kelompok</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Dpl', 'tanggal')">Tanggal <i id="sort-Dpl-tanggal" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Dpl', 'namaLengkap')">DPL <i id="sort-Dpl-namaLengkap" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Dpl', 'kategori')">Kategori & Kelompok <i id="sort-Dpl-kategori" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider">Catatan</th>
                                         <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
                                     </tr>
@@ -557,19 +578,46 @@
                         <!-- Tombol Tambah Akun mengarah ke fungsi Modal Admin -->
                         <button onclick="openAccountModal('add')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium shadow-sm transition"><i class="fa-solid fa-plus mr-1"></i> Tambah Akun Baru</button>
                     </div>
+                    
+                    <!-- Toolbar Pencarian & Filter Akun -->
+                    <div class="flex flex-col sm:flex-row gap-4 mb-2">
+                        <div class="relative flex-1">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-search text-gray-400"></i>
+                            </div>
+                            <input type="text" id="search-akun" onkeyup="applyAdminAkunFilters()" placeholder="Cari username, nama lengkap, kelompok, atau DPL..." class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm shadow-sm">
+                        </div>
+                        <div class="w-full sm:w-48">
+                            <select id="filter-role-akun" onchange="applyAdminAkunFilters()" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none shadow-sm text-gray-700">
+                                <option value="">Semua Peran (Role)</option>
+                                <option value="admin">Admin</option>
+                                <option value="dpl">DPL</option>
+                                <option value="kelompok">Kelompok</option>
+                                <option value="mahasiswa">Mahasiswa</option>
+                            </select>
+                        </div>
+                        <div class="w-full sm:w-32">
+                            <select onchange="changeItemsPerPage(this.value)" class="items-per-page-select w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none shadow-sm text-gray-700">
+                                <option value="20">20 Baris</option>
+                                <option value="50">50 Baris</option>
+                                <option value="100">100 Baris</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <!-- Tabel Daftar Akun -->
                     <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
                         <div class="px-6 py-4 border-b bg-gray-50 flex justify-between items-center">
                             <h3 class="font-bold text-gray-700">Daftar Akun Terdaftar</h3>
                         </div>
-                        <div class="overflow-x-auto p-4">
+                        <div id="admin-akun-container" class="overflow-x-auto p-4">
                             <table class="w-full whitespace-nowrap">
-                                <thead class="bg-gray-100 text-gray-600 text-sm">
+                                <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
                                     <tr>
-                                        <th class="px-4 py-3 text-left font-medium rounded-tl-md">Username</th>
+                                        <th class="px-4 py-3 text-left font-medium rounded-tl-md cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Akun', 'username')">Username <i id="sort-Akun-username" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-4 py-3 text-left font-medium">Password</th>
-                                        <th class="px-4 py-3 text-left font-medium">Peran (Role)</th>
-                                        <th class="px-4 py-3 text-left font-medium">Nama Lengkap</th>
+                                        <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Akun', 'role')">Peran (Role) <i id="sort-Akun-role" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Akun', 'namaLengkap')">Nama Lengkap <i id="sort-Akun-namaLengkap" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-4 py-3 text-left font-medium">Informasi Detail</th>
                                         <th class="px-4 py-3 text-center font-medium rounded-tr-md">Aksi</th>
                                     </tr>
@@ -579,6 +627,8 @@
                                 </tbody>
                             </table>
                         </div>
+                        <!-- Pagination Akun -->
+                        <div id="pagination-akun" data-active="false" class="hidden flex justify-between items-center px-6 py-3 bg-gray-50 border-t"></div>
                     </div>
                 </div>
 
@@ -1039,11 +1089,20 @@
         let filteredDataKel = [];
         let filteredDataMhs = [];
         let filteredDataDpl = [];
+        let filteredDataAkun = [];
         let currentPageKel = 1;
         let currentPageMhs = 1;
         let currentPageDpl = 1;
-        const itemsPerPage = 15;
+        let currentPageAkun = 1;
+        let itemsPerPage = 20;
         
+        let sortState = {
+            Kel: { col: 'date', dir: 'desc' },
+            Mhs: { col: 'tanggal', dir: 'desc' },
+            Dpl: { col: 'tanggal', dir: 'desc' },
+            Akun: { col: 'username', dir: 'asc' }
+        };
+
         const mockUsers = {
             'admin': { username: 'admin', password: '1234', role: 'admin' },
             'kelompok12': { username: 'kelompok12', password: '1234', role: 'kelompok', namaLengkap: 'Kelompok 12', nip: '-', dpl: '-', lokasi: 'Desa Suka Maju' },
@@ -1571,7 +1630,7 @@
             if (tabId === 'akun') {
                 const adminAkunTableBody = document.getElementById('admin-akun-table-body');
                 if (adminAkunTableBody) {
-                    adminAkunTableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-500"><div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Memuat data akun...</td></tr>';
+                    adminAkunTableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500"><div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Memuat data akun...</td></tr>';
                 }
                 fetchAdminAccounts();
             }
@@ -1595,12 +1654,12 @@
                         accountsData = data.accounts;
                     }
                 }
-                renderAdminTableAkun();
+                applyAdminAkunFilters();
             } catch (err) {
                 console.error("Gagal memuat akun:", err);
                 const adminAkunTableBody = document.getElementById('admin-akun-table-body');
                 if (adminAkunTableBody) {
-                    adminAkunTableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-red-500">Gagal memuat data akun. Periksa koneksi internet Anda.</td></tr>';
+                    adminAkunTableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-red-500">Gagal memuat data akun. Periksa koneksi internet Anda.</td></tr>';
                 }
             }
         }
@@ -2046,8 +2105,79 @@
             
             if (document.getElementById('search-dpl')) document.getElementById('search-dpl').value = '';
             if (document.getElementById('filter-jenis-dpl')) document.getElementById('filter-jenis-dpl').value = '';
+
+            if (document.getElementById('search-akun')) document.getElementById('search-akun').value = '';
+            if (document.getElementById('filter-role-akun')) document.getElementById('filter-role-akun').value = '';
             
             applyFilters();
+            if (accountsData.length > 0) applyAdminAkunFilters();
+        }
+
+        function applyAdminAkunFilters() {
+            const searchTxt = document.getElementById('search-akun') ? document.getElementById('search-akun').value.toLowerCase() : '';
+            const filterRole = document.getElementById('filter-role-akun') ? document.getElementById('filter-role-akun').value : '';
+
+            filteredDataAkun = accountsData;
+
+            if (searchTxt) {
+                filteredDataAkun = filteredDataAkun.filter(u => 
+                    (u.username || '').toLowerCase().includes(searchTxt) || 
+                    (u.namaLengkap || '').toLowerCase().includes(searchTxt) ||
+                    (u.kelompok || '').toLowerCase().includes(searchTxt) ||
+                    (u.dpl || '').toLowerCase().includes(searchTxt)
+                );
+            }
+            if (filterRole) {
+                filteredDataAkun = filteredDataAkun.filter(u => u.role === filterRole);
+            }
+
+            currentPageAkun = 1;
+            renderAdminTableAkun();
+        }
+
+        function changeItemsPerPage(val) {
+            itemsPerPage = parseInt(val);
+            document.querySelectorAll('.items-per-page-select').forEach(el => el.value = val);
+            currentPageKel = 1;
+            currentPageMhs = 1;
+            currentPageDpl = 1;
+            currentPageAkun = 1;
+            applyFilters();
+            if (accountsData.length > 0) applyAdminAkunFilters();
+        }
+
+        function handleSort(type, col) {
+            if (sortState[type].col === col) {
+                sortState[type].dir = sortState[type].dir === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortState[type].col = col;
+                sortState[type].dir = 'asc';
+            }
+            
+            document.querySelectorAll(`th i[id^="sort-${type}-"]`).forEach(icon => {
+                icon.className = 'fa-solid fa-sort ml-1 text-gray-400';
+            });
+            const activeIcon = document.getElementById(`sort-${type}-${col}`);
+            if(activeIcon) {
+                activeIcon.className = sortState[type].dir === 'asc' ? 'fa-solid fa-sort-up ml-1 text-blue-600' : 'fa-solid fa-sort-down ml-1 text-blue-600';
+            }
+
+            if (type === 'Kel') renderAdminTable(filteredDataKel);
+            if (type === 'Mhs') renderAdminTableMahasiswa(filteredDataMhs);
+            if (type === 'Dpl') renderAdminTableDpl(filteredDataDpl);
+            if (type === 'Akun') renderAdminTableAkun();
+        }
+
+        function sortData(data, type) {
+            const { col, dir } = sortState[type];
+            return data.sort((a, b) => {
+                let valA = a[col] ? String(a[col]).toLowerCase() : (a.username ? String(a.username).toLowerCase() : '');
+                let valB = b[col] ? String(b[col]).toLowerCase() : (b.username ? String(b.username).toLowerCase() : '');
+                
+                if (valA < valB) return dir === 'asc' ? -1 : 1;
+                if (valA > valB) return dir === 'asc' ? 1 : -1;
+                return 0;
+            });
         }
 
         function renderAdminTable(data) {
@@ -2066,7 +2196,7 @@
                 return;
             }
 
-            const sortedData = data.sort((a,b) => new Date(b.date) - new Date(a.date));
+            const sortedData = sortData([...data], 'Kel');
             const totalPages = Math.ceil(sortedData.length / itemsPerPage);
             const startIndex = (currentPageKel - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
@@ -2115,7 +2245,7 @@
                 return;
             }
 
-            const sortedData = data.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+            const sortedData = sortData([...data], 'Mhs');
             const totalPages = Math.ceil(sortedData.length / itemsPerPage);
             const startIndex = (currentPageMhs - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
@@ -2164,7 +2294,7 @@
                 return;
             }
 
-            const sortedData = data.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+            const sortedData = sortData([...data], 'Dpl');
             const totalPages = Math.ceil(sortedData.length / itemsPerPage);
             const startIndex = (currentPageDpl - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
@@ -2197,6 +2327,53 @@
             renderPagination('pagination-dpl', totalPages, currentPageDpl, 'Dpl');
         }
 
+        function renderAdminTableAkun() {
+            const tbody = document.getElementById('admin-akun-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            
+            if(filteredDataAkun.length === 0) {
+                 tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">Tidak ada data akun yang ditemukan</td></tr>';
+                 renderPagination('pagination-akun', 0, 1, 'Akun');
+                 return;
+            }
+            
+            const sortedData = sortData([...filteredDataAkun], 'Akun');
+            const totalPages = Math.ceil(sortedData.length / itemsPerPage);
+            const startIndex = (currentPageAkun - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageData = sortedData.slice(startIndex, endIndex);
+            
+            pageData.forEach(u => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-4 py-3 font-medium text-gray-800">${u.username}</td>
+                    <td class="px-4 py-3 text-gray-600 font-mono text-sm">${u.password}</td>
+                    <td class="px-4 py-3 capitalize">
+                        <span class="px-2 py-1 inline-flex text-xs leading-4 font-semibold rounded-full 
+                        ${u.role==='admin' ? 'bg-red-100 text-red-800' : 
+                          u.role==='dpl' ? 'bg-green-100 text-green-800' : 
+                          u.role==='mahasiswa' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'}">
+                          ${u.role}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-gray-700">${u.namaLengkap || u.username}</td>
+                    <td class="px-4 py-3 text-sm text-gray-500">
+                        ${u.kelompok && u.kelompok !== '-' ? `Klp: <span class="font-medium text-gray-700">${u.kelompok}</span><br>` : ''}
+                        ${u.dpl && u.dpl !== '-' ? `DPL: <span class="font-medium text-gray-700">${u.dpl}</span><br>` : ''}
+                        ${u.lokasi && u.lokasi !== '-' ? `<span class="truncate max-w-[150px] inline-block" title="${u.lokasi}">${u.lokasi}</span>` : '-'}
+                    </td>
+                    <td class="px-4 py-3 text-center space-x-2">
+                        <button onclick="openAccountModal('edit', '${u.username}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit Akun"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button onclick="deleteAccountAdmin('${u.username}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus Akun"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            renderPagination('pagination-akun', totalPages, currentPageAkun, 'Akun');
+        }
+
         function renderPagination(containerId, totalPages, currentPage, type) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -2212,6 +2389,7 @@
             if(type === 'Kel') tableContainerId = 'admin-kelompok-container';
             if(type === 'Mhs') tableContainerId = 'admin-mhs-container';
             if(type === 'Dpl') tableContainerId = 'admin-dpl-container';
+            if(type === 'Akun') tableContainerId = 'admin-akun-container';
             
             const tableContainer = document.getElementById(tableContainerId);
             if(tableContainer && !tableContainer.classList.contains('hidden')) {
@@ -2238,6 +2416,9 @@
             } else if (type === 'Dpl') {
                 currentPageDpl += offset;
                 renderAdminTableDpl(filteredDataDpl);
+            } else if (type === 'Akun') {
+                currentPageAkun += offset;
+                renderAdminTableAkun();
             }
         }
 
