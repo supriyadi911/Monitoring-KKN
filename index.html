@@ -394,6 +394,25 @@
                     <div class="flex justify-between items-center mb-6">
                         <h1 class="text-2xl font-bold text-gray-800">Manajemen Laporan Kelompok</h1>
                     </div>
+                    
+                    <!-- Toolbar Pencarian & Filter Kelompok -->
+                    <div class="flex flex-col sm:flex-row gap-4 mb-2">
+                        <div class="relative flex-1">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-search text-gray-400"></i>
+                            </div>
+                            <input type="text" id="search-kelompok" onkeyup="applyAdminKelompokFilters()" placeholder="Cari nama kelompok, deskripsi kegiatan..." class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm shadow-sm">
+                        </div>
+                        <div class="w-full sm:w-56">
+                            <select id="filter-jenis-kelompok" onchange="applyAdminKelompokFilters()" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none shadow-sm text-gray-700">
+                                <option value="">Semua Jenis Laporan</option>
+                                <option value="Kegiatan Harian">Kegiatan Harian</option>
+                                <option value="Laporan Akhir KKN">Laporan Akhir KKN</option>
+                                <option value="Draft Artikel PKM">Draft Artikel PKM</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <!-- Tabel Data Kelompok -->
                     <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
                         <div class="px-6 py-4 border-b flex justify-between items-center bg-blue-50">
@@ -428,6 +447,24 @@
                     <div class="flex justify-between items-center mb-6">
                         <h1 class="text-2xl font-bold text-gray-800">Manajemen Laporan Mahasiswa</h1>
                     </div>
+
+                    <!-- Toolbar Pencarian & Filter Mahasiswa -->
+                    <div class="flex flex-col sm:flex-row gap-4 mb-2">
+                        <div class="relative flex-1">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-search text-gray-400"></i>
+                            </div>
+                            <input type="text" id="search-mhs" onkeyup="applyAdminMhsFilters()" placeholder="Cari nama, kelompok, kegiatan..." class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-sm shadow-sm">
+                        </div>
+                        <div class="w-full sm:w-56">
+                            <select id="filter-jenis-mhs" onchange="applyAdminMhsFilters()" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 outline-none shadow-sm text-gray-700">
+                                <option value="">Semua Jenis Laporan</option>
+                                <option value="Pembekalan KKN">Pembekalan KKN</option>
+                                <option value="Giat Harian">Giat Harian</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <!-- Tabel Data Mahasiswa -->
                     <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
                         <div class="px-6 py-4 border-b flex justify-between items-center bg-purple-50">
@@ -463,6 +500,26 @@
                     <div class="flex justify-between items-center mb-6">
                         <h1 class="text-2xl font-bold text-gray-800">Manajemen Laporan DPL</h1>
                     </div>
+
+                    <!-- Toolbar Pencarian & Filter DPL -->
+                    <div class="flex flex-col sm:flex-row gap-4 mb-2">
+                        <div class="relative flex-1">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-search text-gray-400"></i>
+                            </div>
+                            <input type="text" id="search-dpl" onkeyup="applyAdminDplFilters()" placeholder="Cari nama DPL, kelompok, catatan..." class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none text-sm shadow-sm">
+                        </div>
+                        <div class="w-full sm:w-64">
+                            <select id="filter-jenis-dpl" onchange="applyAdminDplFilters()" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 outline-none shadow-sm text-gray-700">
+                                <option value="">Semua Kategori</option>
+                                <option value="Laporan Kunjungan dan Monev">Laporan Kunjungan dan Monev</option>
+                                <option value="Laporan Kejadian Darurat">Laporan Kejadian Darurat</option>
+                                <option value="Draft artikel PKM">Draft artikel PKM</option>
+                                <option value="Nilai KKN">Nilai KKN</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <!-- Tabel Data DPL -->
                     <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
                         <div class="px-6 py-4 border-b flex justify-between items-center bg-green-50">
@@ -1775,31 +1832,96 @@
         }
 
         function applyFilters() {
-            const filterDate = document.getElementById('filter-date');
-            const dateFilter = filterDate ? filterDate.value : '';
+            // Memicu filter spesifik masing-masing tabel agar mempertimbangkan data global
+            applyAdminKelompokFilters();
+            applyAdminMhsFilters();
+            applyAdminDplFilters();
+        }
+
+        function applyAdminKelompokFilters() {
+            const filterDate = document.getElementById('filter-date') ? document.getElementById('filter-date').value : '';
+            const searchTxt = document.getElementById('search-kelompok') ? document.getElementById('search-kelompok').value.toLowerCase() : '';
+            const filterJenis = document.getElementById('filter-jenis-kelompok') ? document.getElementById('filter-jenis-kelompok').value : '';
 
             filteredDataKel = reportsData;
-            filteredDataMhs = mahasiswaReportsData;
-            filteredDataDpl = dplReportsData;
 
-            if (dateFilter) {
-                filteredDataKel = filteredDataKel.filter(r => r.date === dateFilter);
-                filteredDataMhs = filteredDataMhs.filter(r => r.tanggal === dateFilter);
-                filteredDataDpl = filteredDataDpl.filter(r => r.tanggal === dateFilter);
+            if (filterDate) filteredDataKel = filteredDataKel.filter(r => r.date === filterDate);
+            
+            if (searchTxt) {
+                filteredDataKel = filteredDataKel.filter(r => 
+                    (r.group || '').toLowerCase().includes(searchTxt) || 
+                    (r.activity || '').toLowerCase().includes(searchTxt)
+                );
+            }
+            if (filterJenis) {
+                filteredDataKel = filteredDataKel.filter(r => (r.korkel || 'Kegiatan Harian') === filterJenis);
             }
 
             currentPageKel = 1;
-            currentPageMhs = 1;
-            currentPageDpl = 1;
-
             renderAdminTable(filteredDataKel);
+        }
+
+        function applyAdminMhsFilters() {
+            const filterDate = document.getElementById('filter-date') ? document.getElementById('filter-date').value : '';
+            const searchTxt = document.getElementById('search-mhs') ? document.getElementById('search-mhs').value.toLowerCase() : '';
+            const filterJenis = document.getElementById('filter-jenis-mhs') ? document.getElementById('filter-jenis-mhs').value : '';
+
+            filteredDataMhs = mahasiswaReportsData;
+
+            if (filterDate) filteredDataMhs = filteredDataMhs.filter(r => r.tanggal === filterDate);
+            
+            if (searchTxt) {
+                filteredDataMhs = filteredDataMhs.filter(r => 
+                    (r.namaLengkap || r.username || '').toLowerCase().includes(searchTxt) || 
+                    (r.kelompok || '').toLowerCase().includes(searchTxt) ||
+                    (r.rencana || '').toLowerCase().includes(searchTxt)
+                );
+            }
+            if (filterJenis) {
+                filteredDataMhs = filteredDataMhs.filter(r => r.rencana === filterJenis);
+            }
+
+            currentPageMhs = 1;
             renderAdminTableMahasiswa(filteredDataMhs);
+        }
+
+        function applyAdminDplFilters() {
+            const filterDate = document.getElementById('filter-date') ? document.getElementById('filter-date').value : '';
+            const searchTxt = document.getElementById('search-dpl') ? document.getElementById('search-dpl').value.toLowerCase() : '';
+            const filterJenis = document.getElementById('filter-jenis-dpl') ? document.getElementById('filter-jenis-dpl').value : '';
+
+            filteredDataDpl = dplReportsData;
+
+            if (filterDate) filteredDataDpl = filteredDataDpl.filter(r => r.tanggal === filterDate);
+            
+            if (searchTxt) {
+                filteredDataDpl = filteredDataDpl.filter(r => 
+                    (r.namaLengkap || r.username || '').toLowerCase().includes(searchTxt) || 
+                    (r.kelompok || '').toLowerCase().includes(searchTxt) ||
+                    (r.catatan || '').toLowerCase().includes(searchTxt)
+                );
+            }
+            if (filterJenis) {
+                filteredDataDpl = filteredDataDpl.filter(r => r.kategori === filterJenis);
+            }
+
+            currentPageDpl = 1;
             renderAdminTableDpl(filteredDataDpl);
         }
 
         function resetFilters() {
-            const filterDate = document.getElementById('filter-date');
-            if (filterDate) filterDate.value = '';
+            if (document.getElementById('filter-date')) document.getElementById('filter-date').value = '';
+            
+            // Reset input filter tambahan
+            if (document.getElementById('search-kelompok')) document.getElementById('search-kelompok').value = '';
+            if (document.getElementById('filter-jenis-kelompok')) document.getElementById('filter-jenis-kelompok').value = '';
+            
+            if (document.getElementById('search-mhs')) document.getElementById('search-mhs').value = '';
+            if (document.getElementById('filter-jenis-mhs')) document.getElementById('filter-jenis-mhs').value = '';
+            
+            if (document.getElementById('search-dpl')) document.getElementById('search-dpl').value = '';
+            if (document.getElementById('filter-jenis-dpl')) document.getElementById('filter-jenis-dpl').value = '';
+            
             applyFilters();
         }
 
@@ -1814,7 +1936,7 @@
             if (selectAllAdmin) selectAllAdmin.checked = false;
 
             if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
                 renderPagination('pagination-kelompok', 0, 1, 'Kel');
                 return;
             }
@@ -1840,11 +1962,6 @@
                     <td class="px-6 py-4">
                         <div class="font-semibold text-gray-800">${jenisLaporan}</div>
                         <div class="text-xs text-gray-500 truncate max-w-[200px] inline-block" title="${report.activity}">${snippet}</div>
-                    </td>
-                    <td class="px-6 py-4">
-                        ${hasEmergency 
-                            ? `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Darurat!</span>` 
-                            : `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Aman</span>`}
                     </td>
                     <td class="px-6 py-4 text-center space-x-2">
                         <button onclick="viewDetail('${report.id}')" class="text-blue-500 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 p-2 rounded-full transition" title="Lihat Detail"><i class="fa-solid fa-eye"></i></button>
