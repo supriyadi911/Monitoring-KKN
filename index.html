@@ -2536,6 +2536,142 @@
             }
         }
 
+        function resetMahasiswaForm() {
+            const form = document.getElementById('mhs-report-form');
+            if (form) form.reset();
+            const id = document.getElementById('mhs-report-id');
+            if (id) id.value = '';
+            const formTitle = document.getElementById('mhs-form-title');
+            if (formTitle) formTitle.innerText = "Buat Laporan Harian";
+        }
+
+        function editMahasiswaReport(id) {
+            const r = mahasiswaReportsData.find(x => String(x.id) === String(id));
+            if(!r) return;
+
+            const formTitle = document.getElementById('mhs-form-title');
+            const reportId = document.getElementById('mhs-report-id');
+            const mhsJenis = document.getElementById('mhs-jenis');
+            const mhsTanggal = document.getElementById('mhs-tanggal');
+            const mhsJam = document.getElementById('mhs-jam');
+            const mhsFoto = document.getElementById('mhs-foto');
+
+            if (formTitle) formTitle.innerText = "Edit Laporan Harian";
+            if (reportId) reportId.value = r.id;
+            if (mhsJenis) mhsJenis.value = r.rencana;
+            if (mhsTanggal) mhsTanggal.value = r.tanggal;
+            if (mhsJam) mhsJam.value = r.keluhan;
+            if (mhsFoto) mhsFoto.value = r.foto;
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function deleteMahasiswaReport(id, btnElement) {
+            if(!confirm("Apakah Anda yakin ingin menghapus laporan mahasiswa ini?")) return;
+
+            let originalIcon = '';
+            if (btnElement) {
+                originalIcon = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                btnElement.disabled = true;
+            }
+
+            try {
+                if (USE_MOCK) {
+                    mockMahasiswaReports = mockMahasiswaReports.filter(x => String(x.id) !== String(id));
+                } else {
+                    const res = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'deleteMahasiswaReport', id: id }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    
+                    const textRes = await res.text();
+                    let result;
+                    try { result = JSON.parse(textRes); } 
+                    catch(e) { throw new Error("Terjadi masalah dengan koneksi Database."); }
+                    
+                    if(!result.success) throw new Error(result.error || "Gagal menghapus");
+                }
+                
+                await loadDataFromServer();
+            } catch (err) {
+                alert("Gagal menghapus: " + err.message);
+                if (btnElement) {
+                    btnElement.innerHTML = originalIcon;
+                    btnElement.disabled = false;
+                }
+            }
+        }
+
+        function toggleAllCheckboxesMhs(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox-mhs');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+            updateBulkActionStateMhs();
+        }
+
+        function updateBulkActionStateMhs() {
+            const checkboxes = document.querySelectorAll('.row-checkbox-mhs:checked');
+            const allCheckboxes = document.querySelectorAll('.row-checkbox-mhs');
+            const btn = document.getElementById('btn-bulk-delete-mhs');
+            const selectAll = document.getElementById('selectAllMhs');
+
+            if (btn) {
+                if (checkboxes.length > 0) {
+                    btn.classList.remove('hidden');
+                    btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
+                } else {
+                    btn.classList.add('hidden');
+                }
+            }
+
+            if (selectAll && allCheckboxes.length > 0) {
+                 selectAll.checked = checkboxes.length === allCheckboxes.length;
+            }
+        }
+
+        async function deleteBulkReportsMhs() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox-mhs:checked');
+            if(checkedBoxes.length === 0) return;
+            
+            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan mahasiswa yang dipilih?`)) return;
+
+            const btn = document.getElementById('btn-bulk-delete-mhs');
+            const originalText = btn ? btn.innerHTML : 'Hapus Terpilih';
+            
+            if (btn) {
+                btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
+                btn.disabled = true;
+            }
+
+            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
+
+            try {
+                if (USE_MOCK) {
+                    mockMahasiswaReports = mockMahasiswaReports.filter(x => !idsToDelete.includes(String(x.id)));
+                } else {
+                    for (const id of idsToDelete) {
+                        const res = await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'deleteMahasiswaReport', id: id }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                        const textRes = await res.text();
+                        try {
+                            const result = JSON.parse(textRes);
+                            if(!result.success) console.error("Gagal menghapus ID:", id);
+                        } catch(e) {}
+                    }
+                }
+                await loadDataFromServer();
+            } catch (err) {
+                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
+                if (btn) btn.innerHTML = originalText;
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        }
+
         // =========================================================================
         // GROUP DASHBOARD LOGIC (KELOMPOK)
         // =========================================================================
@@ -2718,6 +2854,17 @@
                     btn.disabled = false;
                 }
             }
+        }
+
+        function resetForm() {
+            const form = document.getElementById('report-form');
+            if (form) form.reset();
+            const id = document.getElementById('report-id');
+            if (id) id.value = '';
+            const formTitle = document.getElementById('form-title');
+            if (formTitle) formTitle.innerText = "Buat Laporan Baru";
+            const formFieldsWrapper = document.getElementById('dynamic-form-fields');
+            if (formFieldsWrapper) formFieldsWrapper.classList.add('hidden');
         }
 
         function editReport(id) {
