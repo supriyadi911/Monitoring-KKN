@@ -933,6 +933,10 @@
                             <tbody id="mhs-table-body" class="bg-white divide-y divide-gray-200 text-sm">
                                 <!-- Data injected via JS -->
                             </tbody>
+                            <!-- Tambahan Tabel Footer untuk Total Jam -->
+                            <tfoot id="mhs-table-footer" class="bg-purple-50 border-t-2 border-purple-200 text-sm">
+                                <!-- Data diinjeksi via JS -->
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -2870,8 +2874,10 @@
         function renderMahasiswaDashboard() {
             const myReports = mahasiswaReportsData.filter(r => r.username === currentUser.username);
             const tbody = document.getElementById('mhs-table-body');
+            const tfoot = document.getElementById('mhs-table-footer'); // Ambil elemen footer
             if (!tbody) return;
             tbody.innerHTML = '';
+            if (tfoot) tfoot.innerHTML = ''; // Bersihkan footer sebelumnya
 
             const btnBulk = document.getElementById('btn-bulk-delete-mhs');
             if (btnBulk) btnBulk.classList.add('hidden');
@@ -2883,9 +2889,13 @@
                 return;
             }
 
+            let totalJam = 0; // Inisialisasi variabel total jam
+
             const sortedData = myReports.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
 
             sortedData.forEach(r => {
+                totalJam += Number(r.keluhan || 0); // Hitung akumulasi jam
+
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="px-4 py-3 text-center">
@@ -2906,6 +2916,16 @@
                 `;
                 tbody.appendChild(tr);
             });
+
+            // Tampilkan total jam ke dalam tfoot
+            if (tfoot) {
+                tfoot.innerHTML = `
+                    <tr>
+                        <td colspan="2" class="px-4 py-3 text-right font-bold text-gray-800">Total Akumulasi Waktu:</td>
+                        <td colspan="3" class="px-4 py-3 font-bold text-purple-700 text-base">${totalJam} Jam</td>
+                    </tr>
+                `;
+            }
         }
 
         async function submitMahasiswaReport(e) {
