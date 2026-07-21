@@ -890,6 +890,131 @@
             </div>
         </div>
 
+        <!-- ==============================
+             KUMPULAN MODAL (POP-UP) 
+        =============================== -->
+        
+        <!-- Modal Formulir Akun (Manajemen Admin) -->
+        <div id="account-modal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-blue-50">
+                    <h3 class="font-bold text-blue-800 text-lg" id="account-modal-title">Tambah Akun Baru</h3>
+                    <button onclick="closeAccountModal()" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div class="p-6 overflow-y-auto flex-1 bg-white">
+                    <form id="account-form" onsubmit="submitAccount(event)">
+                        <input type="hidden" id="acc-form-mode" value="add">
+                        <input type="hidden" id="acc-original-username" value="">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Username *</label>
+                                <input type="text" id="acc-username" required class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Password *</label>
+                                <input type="text" id="acc-password" required class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Peran (Role) *</label>
+                                <select id="acc-role" required class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                                    <option value="" disabled selected>-- Pilih Peran --</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="kelompok">Kelompok</option>
+                                    <option value="dpl">DPL</option>
+                                    <option value="mahasiswa">Mahasiswa</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Lengkap / Kelompok *</label>
+                                <input type="text" id="acc-namaLengkap" required class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">NIP / NIM</label>
+                                <input type="text" id="acc-nip" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Kelompok KKN</label>
+                                <input type="text" id="acc-kelompok" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm" placeholder="Cth: Kelompok 1, Kelompok 2">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Fakultas</label>
+                                <input type="text" id="acc-fakultas" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Kontak (WA)</label>
+                                <input type="text" id="acc-kontak" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Dosen Pembimbing (DPL)</label>
+                                <input type="text" id="acc-dpl" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Lokasi KKN</label>
+                                <input type="text" id="acc-lokasi" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                            </div>
+                        </div>
+                        <div class="flex justify-end space-x-2 mt-6 pt-4 border-t">
+                            <button type="button" onclick="closeAccountModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded text-sm transition">Batal</button>
+                            <button type="submit" id="btn-submit-account" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm transition">Simpan Akun</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Detail Laporan (Digunakan di Admin & Kelompok) -->
+        <div id="detail-modal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-lg overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+                    <h3 class="font-bold text-gray-800 text-lg">Detail Laporan</h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div class="p-6 text-sm" id="modal-content">
+                    <!-- Data injeksi via JS -->
+                </div>
+                <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 text-right">
+                    <button onclick="closeModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 text-sm rounded transition">Tutup</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Edit Profil DPL -->
+        <div id="edit-profile-dpl-modal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-green-50">
+                    <h3 class="font-bold text-green-800 text-lg">Edit Biodata DPL</h3>
+                    <button onclick="closeEditProfileDplModal()" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div class="p-6 bg-white">
+                    <form onsubmit="submitEditProfileDpl(event)">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Lengkap Beserta Gelar *</label>
+                                <input type="text" id="edit-prof-dpl-nama" required class="w-full border rounded p-2 focus:ring-2 focus:ring-green-500 outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">NIP/NIDN *</label>
+                                <input type="text" id="edit-prof-dpl-nip" required class="w-full border rounded p-2 focus:ring-2 focus:ring-green-500 outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Fakultas</label>
+                                <input type="text" id="edit-prof-dpl-fakultas" class="w-full border rounded p-2 focus:ring-2 focus:ring-green-500 outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Kontak (WA)</label>
+                                <input type="text" id="edit-prof-dpl-kontak" class="w-full border rounded p-2 focus:ring-2 focus:ring-green-500 outline-none text-sm">
+                            </div>
+                        </div>
+                        <div class="flex justify-end space-x-2 mt-6 pt-4 border-t">
+                            <button type="button" onclick="closeEditProfileDplModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded text-sm transition">Batal</button>
+                            <button type="submit" id="btn-submit-profile-dpl" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm transition">Simpan Perubahan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- JAVASCRIPT LOGIC -->
