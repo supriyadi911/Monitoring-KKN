@@ -17,6 +17,12 @@
         .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #3b82f6; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .hidden { display: none !important; }
+        
+        /* Marquee Animation */
+        .marquee-container { overflow: hidden; white-space: nowrap; position: relative; }
+        .animate-marquee { display: inline-block; padding-left: 100%; animation: marquee 70s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        .animate-marquee:hover { animation-play-state: paused; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -61,6 +67,13 @@
                         <i class="fa-solid fa-sign-out-alt"></i> Keluar
                     </button>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Running Text Warning -->
+        <div class="bg-red-600 text-white text-sm py-1.5 w-full marquee-container border-t border-red-700 shadow-inner">
+            <div class="animate-marquee font-medium tracking-wide">
+                <i class="fa-solid fa-triangle-exclamation mr-1 text-yellow-300"></i> <span class="text-yellow-300 font-bold mr-1">PERHATIAN PENTING:</span> Pastikan seluruh tautan (link) berkas Google Drive yang dilampirkan telah diatur hak akses berbaginya menjadi <span class="bg-red-800 px-2 py-0.5 rounded mx-1 shadow-sm">"Siapa saja yang memiliki tautan" (Anyone with the link)</span>. Berkas yang dikunci/dibatasi (Restricted) tidak dapat dibuka dan dinilai oleh DPL maupun Admin.
             </div>
         </div>
     </nav>
