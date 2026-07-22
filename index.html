@@ -385,6 +385,48 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Kartu Info Belum Lapor (Kelompok, DPL, & Mahasiswa) -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <!-- Kelompok Belum Lapor -->
+                        <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
+                            <div class="px-6 py-4 border-b bg-red-50 flex justify-between items-center">
+                                <h3 class="font-bold text-red-800"><i class="fa-solid fa-users-slash mr-2"></i>Kelompok Belum Lapor</h3>
+                                <span id="badge-unreported-kel" class="bg-red-200 text-red-800 text-xs font-bold px-2.5 py-1 rounded-full">0</span>
+                            </div>
+                            <div class="p-4 max-h-64 overflow-y-auto bg-white">
+                                <ul id="list-unreported-kel" class="space-y-1 text-sm text-gray-600">
+                                    <!-- Data diinjeksi via JS -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Mahasiswa Belum Lapor -->
+                        <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
+                            <div class="px-6 py-4 border-b bg-purple-50 flex justify-between items-center">
+                                <h3 class="font-bold text-purple-800"><i class="fa-solid fa-user-graduate mr-2"></i>Mahasiswa Belum Lapor</h3>
+                                <span id="badge-unreported-mhs" class="bg-purple-200 text-purple-800 text-xs font-bold px-2.5 py-1 rounded-full">0</span>
+                            </div>
+                            <div class="p-4 max-h-64 overflow-y-auto bg-white">
+                                <ul id="list-unreported-mhs" class="space-y-1 text-sm text-gray-600">
+                                    <!-- Data diinjeksi via JS -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- DPL Belum Lapor -->
+                        <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
+                            <div class="px-6 py-4 border-b bg-orange-50 flex justify-between items-center">
+                                <h3 class="font-bold text-orange-800"><i class="fa-solid fa-user-xmark mr-2"></i>DPL Belum Lapor</h3>
+                                <span id="badge-unreported-dpl" class="bg-orange-200 text-orange-800 text-xs font-bold px-2.5 py-1 rounded-full">0</span>
+                            </div>
+                            <div class="p-4 max-h-64 overflow-y-auto bg-white">
+                                <ul id="list-unreported-dpl" class="space-y-1 text-sm text-gray-600">
+                                    <!-- Data diinjeksi via JS -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- -----------------------------------------
@@ -993,11 +1035,13 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-1">Kelompok KKN</label>
-                                <input type="text" id="acc-kelompok" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm" placeholder="Cth: Kelompok 1, Kelompok 2">
+                                <select id="acc-kelompok-select" onchange="handleSelectChange('acc-kelompok')" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm mb-1"></select>
+                                <input type="text" id="acc-kelompok" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm hidden" placeholder="Ketik kelompok baru...">
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-1">Fakultas</label>
-                                <input type="text" id="acc-fakultas" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                                <select id="acc-fakultas-select" onchange="handleSelectChange('acc-fakultas')" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm mb-1"></select>
+                                <input type="text" id="acc-fakultas" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm hidden" placeholder="Ketik fakultas baru...">
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-1">Kontak (WA)</label>
@@ -1005,11 +1049,13 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-1">Dosen Pembimbing (DPL)</label>
-                                <input type="text" id="acc-dpl" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                                <select id="acc-dpl-select" onchange="handleSelectChange('acc-dpl')" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm mb-1"></select>
+                                <input type="text" id="acc-dpl" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm hidden" placeholder="Ketik nama DPL baru...">
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-1">Lokasi KKN</label>
-                                <input type="text" id="acc-lokasi" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                                <select id="acc-lokasi-select" onchange="handleSelectChange('acc-lokasi')" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm mb-1"></select>
+                                <input type="text" id="acc-lokasi" class="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm hidden" placeholder="Ketik lokasi baru...">
                             </div>
                         </div>
                         <div class="flex justify-end space-x-2 mt-6 pt-4 border-t">
@@ -1139,12 +1185,11 @@
         // INITIALIZATION & ROUTING
         // =========================================================================
         window.onload = async () => {
-            // Memuat sesi pengguna terlebih dahulu agar currentUser tidak bernilai null saat data dimuat
             const session = localStorage.getItem('kkn_session');
             if (session) {
                 currentUser = JSON.parse(session);
                 if (currentUser && currentUser.role) {
-                    currentUser.role = currentUser.role.toLowerCase().trim(); // Memastikan format role selalu aman
+                    currentUser.role = currentUser.role.toLowerCase().trim();
                 }
             }
 
@@ -1168,7 +1213,6 @@
             }
         };
 
-        // Fungsi Utama handleLogin yang Sempat Hilang
         async function handleLogin(e) {
             e.preventDefault();
             const u = document.getElementById('username').value;
@@ -1226,7 +1270,6 @@
             }
         }
 
-        // Fungsi Utama handleRegister yang Sempat Hilang
         async function handleRegister(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-register');
@@ -1427,7 +1470,7 @@
             if (elements.mhsPage) elements.mhsPage.classList.add('hidden');
 
             if (currentUser) {
-                const userRole = currentUser.role.toLowerCase().trim(); // Menggunakan pemformatan huruf kecil yang aman
+                const userRole = currentUser.role.toLowerCase().trim();
                 if (userRole === 'admin') {
                     if (elements.adminPage) {
                         elements.adminPage.classList.remove('hidden');
@@ -1455,7 +1498,7 @@
                     if (dplNip) dplNip.innerText = currentUser.nip;
                     if (dplFakultas) dplFakultas.innerText = currentUser.fakultas;
                     if (dplKontak) dplKontak.innerText = currentUser.kontak;
-                    populateDplKelompokDropdown(); // Menambahkan inisialisasi dropdown kelompok bimbingan
+                    populateDplKelompokDropdown();
                     renderDplDashboard();
                 } else if (userRole === 'mahasiswa') {
                     if (elements.mhsPage) elements.mhsPage.classList.remove('hidden');
@@ -1478,7 +1521,7 @@
                     renderGroupDashboard();
                 }
             }
-            loadDataFromServer(); // PENTING: Memicu pemuatan dan sinkronisasi data seketika setelah login / rute berubah!
+            loadDataFromServer();
         }
 
         function logout() {
@@ -1506,7 +1549,6 @@
             showPublicPage();
         }
 
-        // Fungsi Pembantu untuk Mengatur Status Koneksi Database
         function setConnectionStatus(status) {
             const navIcon = document.getElementById('nav-conn-icon');
             const navText = document.getElementById('nav-conn-text');
@@ -1547,16 +1589,15 @@
                     reportsData = [...mockReports]; 
                     dplReportsData = [...mockDplReports];
                     mahasiswaReportsData = [...mockMahasiswaReports];
-                    accountsData = Object.values(mockUsers); // Load mock users
+                    accountsData = Object.values(mockUsers);
                     setConnectionStatus('online');
                 } else {
                     const _t = new Date().getTime();
-                    // Parallel Fetch 4 endpoint sekaligus untuk optimasi pemuatan halaman
                     const [res1, res2, res3, res4] = await Promise.all([
                         fetch(`${SCRIPT_URL}?action=getReports&_t=${_t}`, { cache: 'no-store' }),
                         fetch(`${SCRIPT_URL}?action=getDplReports&_t=${_t}`, { cache: 'no-store' }),
                         fetch(`${SCRIPT_URL}?action=getMahasiswaReports&_t=${_t}`, { cache: 'no-store' }),
-                        fetch(`${SCRIPT_URL}?action=getAccounts&_t=${_t}`, { cache: 'no-store' }) // Ditambahkan kueri user database
+                        fetch(`${SCRIPT_URL}?action=getAccounts&_t=${_t}`, { cache: 'no-store' })
                     ]);
                     
                     const data1 = await res1.json();
@@ -1567,14 +1608,14 @@
                     reportsData = data1.reports || [];
                     dplReportsData = data2.reports || [];
                     mahasiswaReportsData = data3.reports || [];
-                    accountsData = data4.accounts || []; // Update state user global
+                    accountsData = data4.accounts || []; 
                     setConnectionStatus('online');
                 }
 
                 if (!currentUser) {
                     renderPublicDashboard();
                 } else {
-                    const userRole = currentUser.role.toLowerCase().trim(); // Memastikan lowercase yang aman
+                    const userRole = currentUser.role.toLowerCase().trim();
                     if (userRole === 'admin') {
                         renderAdminDashboard();
                     } else if (userRole === 'dpl') {
@@ -1586,7 +1627,7 @@
                         if (dplNip) dplNip.innerText = currentUser.nip;
                         if (dplFakultas) dplFakultas.innerText = currentUser.fakultas;
                         if (dplKontak) dplKontak.innerText = currentUser.kontak;
-                        populateDplKelompokDropdown(); // Menambahkan inisialisasi dropdown kelompok bimbingan
+                        populateDplKelompokDropdown();
                         renderDplDashboard();
                     } else if (userRole === 'mahasiswa') {
                         const mhsNama = document.getElementById('mhs-nama');
@@ -1601,7 +1642,7 @@
                         if (mhsLokasi) mhsLokasi.innerText = currentUser.lokasi;
                         renderMahasiswaDashboard();
                     } else {
-                        renderGroupDataCard(); // Pemicu pemuatan data kartu kelompok dengan daftar user terlengkap!
+                        renderGroupDataCard();
                         renderGroupDashboard();
                     }
                 }
@@ -1672,17 +1713,46 @@
             }
         }
 
+        function applyAdminAkunFilters() {
+            const searchTxt = document.getElementById('search-akun') ? document.getElementById('search-akun').value.toLowerCase() : '';
+            const filterRole = document.getElementById('filter-role-akun') ? document.getElementById('filter-role-akun').value : '';
+
+            filteredDataAkun = accountsData;
+
+            if (searchTxt) {
+                filteredDataAkun = filteredDataAkun.filter(u => 
+                    (u.username || '').toLowerCase().includes(searchTxt) || 
+                    (u.namaLengkap || '').toLowerCase().includes(searchTxt) ||
+                    (u.kelompok || '').toLowerCase().includes(searchTxt) ||
+                    (u.dpl || '').toLowerCase().includes(searchTxt)
+                );
+            }
+            if (filterRole) {
+                filteredDataAkun = filteredDataAkun.filter(u => u.role === filterRole);
+            }
+
+            currentPageAkun = 1;
+            renderAdminTableAkun();
+        }
+
         function renderAdminTableAkun() {
             const tbody = document.getElementById('admin-akun-table-body');
             if (!tbody) return;
             tbody.innerHTML = '';
             
-            if(accountsData.length === 0) {
-                 tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">Belum ada data akun</td></tr>';
+            if(filteredDataAkun.length === 0) {
+                 tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">Tidak ada data akun yang ditemukan</td></tr>';
+                 renderPagination('pagination-akun', 0, 1, 'Akun');
                  return;
             }
             
-            accountsData.forEach(u => {
+            const sortedData = sortData([...filteredDataAkun], 'Akun');
+            const totalPages = Math.ceil(sortedData.length / itemsPerPage);
+            const startIndex = (currentPageAkun - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageData = sortedData.slice(startIndex, endIndex);
+            
+            pageData.forEach(u => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="px-4 py-3 font-medium text-gray-800">${u.username}</td>
@@ -1708,6 +1778,61 @@
                 `;
                 tbody.appendChild(tr);
             });
+            
+            renderPagination('pagination-akun', totalPages, currentPageAkun, 'Akun');
+        }
+
+        function handleSelectChange(fieldId) {
+            const selectEl = document.getElementById(fieldId + '-select');
+            const inputEl = document.getElementById(fieldId);
+            if (!selectEl || !inputEl) return;
+            
+            if (selectEl.value === '__LAINNYA__') {
+                inputEl.classList.remove('hidden');
+                inputEl.value = '';
+                inputEl.focus();
+            } else {
+                inputEl.classList.add('hidden');
+                inputEl.value = selectEl.value;
+            }
+        }
+
+        function populateDropdown(fieldId, listData, currentValue) {
+            const selectEl = document.getElementById(fieldId + '-select');
+            const inputEl = document.getElementById(fieldId);
+            
+            if (!selectEl || !inputEl) return;
+            
+            selectEl.innerHTML = '<option value="">-- Pilih --</option>';
+            
+            listData.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item;
+                opt.innerText = item;
+                selectEl.appendChild(opt);
+            });
+            
+            const optLainnya = document.createElement('option');
+            optLainnya.value = '__LAINNYA__';
+            optLainnya.innerText = '-- Tambah Baru (Ketik Manual) --';
+            optLainnya.style.fontWeight = 'bold';
+            selectEl.appendChild(optLainnya);
+            
+            if (currentValue && currentValue !== '-') {
+                if (listData.includes(currentValue)) {
+                    selectEl.value = currentValue;
+                    inputEl.value = currentValue;
+                    inputEl.classList.add('hidden');
+                } else {
+                    selectEl.value = '__LAINNYA__';
+                    inputEl.value = currentValue;
+                    inputEl.classList.remove('hidden');
+                }
+            } else {
+                selectEl.value = '';
+                inputEl.value = '';
+                inputEl.classList.add('hidden');
+            }
         }
         
         function openAccountModal(mode, username = '') {
@@ -1719,41 +1844,53 @@
             const form = document.getElementById('account-form');
             
             if (form) form.reset();
+
+            const kelompokList = [...new Set(accountsData.filter(a => a.role === 'kelompok').map(a => a.namaLengkap || a.username))];
+            const dplList = [...new Set(accountsData.filter(a => a.role === 'dpl').map(a => a.namaLengkap))];
+            const lokasiList = [...new Set(accountsData.map(a => a.lokasi).filter(x => x && x !== '-'))];
+            const fakultasList = ['Tarbiyah dan Keguruan', 'Syariah', 'Ushuluddin', 'Dakwah dan Ilmu Komunikasi', 'Ekonomi dan Bisnis Islam', 'Adab'];
             
+            const dbFakultas = [...new Set(accountsData.map(a => a.fakultas).filter(x => x && x !== '-'))];
+            dbFakultas.forEach(f => { if(!fakultasList.includes(f)) fakultasList.push(f); });
+            
+            let u = null;
+
             if(mode === 'edit') {
                 if (title) title.innerText = "Edit Akun";
                 const accOriginalUsername = document.getElementById('acc-original-username');
                 if (accOriginalUsername) accOriginalUsername.value = username;
                 
-                const u = accountsData.find(x => x.username === username);
+                u = accountsData.find(x => x.username === username);
                 if(u) {
                     const elUsername = document.getElementById('acc-username');
                     const elPassword = document.getElementById('acc-password');
                     const elRole = document.getElementById('acc-role');
                     const elNama = document.getElementById('acc-namaLengkap');
                     const elNip = document.getElementById('acc-nip');
-                    const elKlp = document.getElementById('acc-kelompok');
-                    const elFakultas = document.getElementById('acc-fakultas');
                     const elKontak = document.getElementById('acc-kontak');
-                    const elDpl = document.getElementById('acc-dpl');
-                    const elLokasi = document.getElementById('acc-lokasi');
 
                     if (elUsername) elUsername.value = u.username;
                     if (elPassword) elPassword.value = u.password || '';
                     if (elRole) elRole.value = u.role;
                     if (elNama) elNama.value = u.namaLengkap || '';
                     if (elNip) elNip.value = u.nip || '';
-                    if (elKlp) elKlp.value = u.kelompok || '';
-                    if (elFakultas) elFakultas.value = u.fakultas || '';
                     if (elKontak) elKontak.value = u.kontak || '';
-                    if (elDpl) elDpl.value = u.dpl || '';
-                    if (elLokasi) elLokasi.value = u.lokasi || '';
                 }
             } else {
                 if (title) title.innerText = "Tambah Akun Baru";
                 const accOriginalUsername = document.getElementById('acc-original-username');
                 if (accOriginalUsername) accOriginalUsername.value = '';
             }
+
+            const currentKlp = u ? (u.kelompok || '') : '';
+            const currentFakultas = u ? (u.fakultas || '') : '';
+            const currentDpl = u ? (u.dpl || '') : '';
+            const currentLokasi = u ? (u.lokasi || '') : '';
+
+            populateDropdown('acc-kelompok', kelompokList, currentKlp);
+            populateDropdown('acc-fakultas', fakultasList, currentFakultas);
+            populateDropdown('acc-dpl', dplList, currentDpl);
+            populateDropdown('acc-lokasi', lokasiList, currentLokasi);
             
             if (modal) modal.classList.remove('hidden');
         }
@@ -2024,10 +2161,75 @@
         }
 
         function applyFilters() {
-            // Memicu filter spesifik masing-masing tabel agar mempertimbangkan data global
             applyAdminKelompokFilters();
             applyAdminMhsFilters();
             applyAdminDplFilters();
+            updateUnreportedStatus();
+        }
+
+        function updateUnreportedStatus() {
+            // Ambil semua akun kelompok, DPL, dan Mahasiswa
+            const allGroups = accountsData.filter(a => a.role === 'kelompok');
+            const allDpls = accountsData.filter(a => a.role === 'dpl');
+            const allMhs = accountsData.filter(a => a.role === 'mahasiswa');
+
+            // Cek siapa yang sudah melapor berdasarkan data yang terfilter saat ini
+            const reportedGroups = new Set(filteredDataKel.map(r => r.group));
+            const reportedDpls = new Set(filteredDataDpl.map(r => r.username));
+            const reportedMhs = new Set(filteredDataMhs.map(r => r.username));
+
+            // Saring siapa yang belum melapor
+            const unreportedGroups = allGroups.filter(g => !reportedGroups.has(g.username));
+            const unreportedDpls = allDpls.filter(d => !reportedDpls.has(d.username));
+            const unreportedMhs = allMhs.filter(m => !reportedMhs.has(m.username));
+
+            // Update UI Kelompok
+            const listKel = document.getElementById('list-unreported-kel');
+            const badgeKel = document.getElementById('badge-unreported-kel');
+            if (listKel) {
+                if (unreportedGroups.length === 0) {
+                    listKel.innerHTML = '<li class="text-green-600 text-center py-6 font-medium"><i class="fa-solid fa-check-circle mr-1 text-lg block mb-1"></i> Semua kelompok telah melapor</li>';
+                } else {
+                    listKel.innerHTML = unreportedGroups.map(g => `
+                        <li class="flex items-center justify-between p-2.5 hover:bg-gray-50 rounded-lg border border-transparent hover:border-gray-100 transition">
+                            <span class="font-semibold text-gray-800">${g.namaLengkap || g.username}</span>
+                            <span class="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded">@${g.username}</span>
+                        </li>`).join('');
+                }
+            }
+            if (badgeKel) badgeKel.innerText = unreportedGroups.length;
+
+            // Update UI Mahasiswa
+            const listMhs = document.getElementById('list-unreported-mhs');
+            const badgeMhs = document.getElementById('badge-unreported-mhs');
+            if (listMhs) {
+                if (unreportedMhs.length === 0) {
+                    listMhs.innerHTML = '<li class="text-green-600 text-center py-6 font-medium"><i class="fa-solid fa-check-circle mr-1 text-lg block mb-1"></i> Semua mahasiswa telah melapor</li>';
+                } else {
+                    listMhs.innerHTML = unreportedMhs.map(m => `
+                        <li class="flex items-center justify-between p-2.5 hover:bg-gray-50 rounded-lg border border-transparent hover:border-gray-100 transition">
+                            <span class="font-semibold text-gray-800">${m.namaLengkap || m.username}</span>
+                            <span class="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded">@${m.username}</span>
+                        </li>`).join('');
+                }
+            }
+            if (badgeMhs) badgeMhs.innerText = unreportedMhs.length;
+
+            // Update UI DPL
+            const listDpl = document.getElementById('list-unreported-dpl');
+            const badgeDpl = document.getElementById('badge-unreported-dpl');
+            if (listDpl) {
+                if (unreportedDpls.length === 0) {
+                    listDpl.innerHTML = '<li class="text-green-600 text-center py-6 font-medium"><i class="fa-solid fa-check-circle mr-1 text-lg block mb-1"></i> Semua DPL telah melapor</li>';
+                } else {
+                    listDpl.innerHTML = unreportedDpls.map(d => `
+                        <li class="flex items-center justify-between p-2.5 hover:bg-gray-50 rounded-lg border border-transparent hover:border-gray-100 transition">
+                            <span class="font-semibold text-gray-800">${d.namaLengkap || d.username}</span>
+                            <span class="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded">@${d.username}</span>
+                        </li>`).join('');
+                }
+            }
+            if (badgeDpl) badgeDpl.innerText = unreportedDpls.length;
         }
 
         function applyAdminKelompokFilters() {
@@ -2104,7 +2306,6 @@
         function resetFilters() {
             if (document.getElementById('filter-date')) document.getElementById('filter-date').value = '';
             
-            // Reset input filter tambahan
             if (document.getElementById('search-kelompok')) document.getElementById('search-kelompok').value = '';
             if (document.getElementById('filter-jenis-kelompok')) document.getElementById('filter-jenis-kelompok').value = '';
             
@@ -2119,28 +2320,6 @@
             
             applyFilters();
             if (accountsData.length > 0) applyAdminAkunFilters();
-        }
-
-        function applyAdminAkunFilters() {
-            const searchTxt = document.getElementById('search-akun') ? document.getElementById('search-akun').value.toLowerCase() : '';
-            const filterRole = document.getElementById('filter-role-akun') ? document.getElementById('filter-role-akun').value : '';
-
-            filteredDataAkun = accountsData;
-
-            if (searchTxt) {
-                filteredDataAkun = filteredDataAkun.filter(u => 
-                    (u.username || '').toLowerCase().includes(searchTxt) || 
-                    (u.namaLengkap || '').toLowerCase().includes(searchTxt) ||
-                    (u.kelompok || '').toLowerCase().includes(searchTxt) ||
-                    (u.dpl || '').toLowerCase().includes(searchTxt)
-                );
-            }
-            if (filterRole) {
-                filteredDataAkun = filteredDataAkun.filter(u => u.role === filterRole);
-            }
-
-            currentPageAkun = 1;
-            renderAdminTableAkun();
         }
 
         function changeItemsPerPage(val) {
@@ -2335,53 +2514,6 @@
             renderPagination('pagination-dpl', totalPages, currentPageDpl, 'Dpl');
         }
 
-        function renderAdminTableAkun() {
-            const tbody = document.getElementById('admin-akun-table-body');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-            
-            if(filteredDataAkun.length === 0) {
-                 tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">Tidak ada data akun yang ditemukan</td></tr>';
-                 renderPagination('pagination-akun', 0, 1, 'Akun');
-                 return;
-            }
-            
-            const sortedData = sortData([...filteredDataAkun], 'Akun');
-            const totalPages = Math.ceil(sortedData.length / itemsPerPage);
-            const startIndex = (currentPageAkun - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const pageData = sortedData.slice(startIndex, endIndex);
-            
-            pageData.forEach(u => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="px-4 py-3 font-medium text-gray-800">${u.username}</td>
-                    <td class="px-4 py-3 text-gray-600 font-mono text-sm">${u.password}</td>
-                    <td class="px-4 py-3 capitalize">
-                        <span class="px-2 py-1 inline-flex text-xs leading-4 font-semibold rounded-full 
-                        ${u.role==='admin' ? 'bg-red-100 text-red-800' : 
-                          u.role==='dpl' ? 'bg-green-100 text-green-800' : 
-                          u.role==='mahasiswa' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'}">
-                          ${u.role}
-                        </span>
-                    </td>
-                    <td class="px-4 py-3 text-gray-700">${u.namaLengkap || u.username}</td>
-                    <td class="px-4 py-3 text-sm text-gray-500">
-                        ${u.kelompok && u.kelompok !== '-' ? `Klp: <span class="font-medium text-gray-700">${u.kelompok}</span><br>` : ''}
-                        ${u.dpl && u.dpl !== '-' ? `DPL: <span class="font-medium text-gray-700">${u.dpl}</span><br>` : ''}
-                        ${u.lokasi && u.lokasi !== '-' ? `<span class="truncate max-w-[150px] inline-block" title="${u.lokasi}">${u.lokasi}</span>` : '-'}
-                    </td>
-                    <td class="px-4 py-3 text-center space-x-2">
-                        <button onclick="openAccountModal('edit', '${u.username}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit Akun"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteAccountAdmin('${u.username}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus Akun"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-            
-            renderPagination('pagination-akun', totalPages, currentPageAkun, 'Akun');
-        }
-
         function renderPagination(containerId, totalPages, currentPage, type) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -2463,7 +2595,6 @@
         // DASHBOARD DPL LOGIC
         // =========================================================================
 
-        // Fungsi untuk Mengisi List Kelompok Bimbingan Dropdown secara otomatis dari sesi DPL
         function populateDplKelompokDropdown() {
             const select = document.getElementById('dpl-kelompok');
             if (!select || !currentUser || !currentUser.kelompok) return;
@@ -2477,7 +2608,6 @@
             });
         }
 
-        // Fungsi untuk Mengatur Tampilan Input Form Berdasarkan Kategori Laporan DPL
         function toggleDplFormFields() {
             const kategori = document.getElementById('dpl-kategori').value;
             const descWrapper = document.getElementById('dpl-dynamic-desc-wrapper');
@@ -2578,7 +2708,6 @@
             const id = document.getElementById('dpl-report-id') ? document.getElementById('dpl-report-id').value : '';
             const kategori = document.getElementById('dpl-kategori').value;
             
-            // Tentukan data catatan dari textarea atau input nilai korelasi
             const catatanValue = kategori === "Nilai KKN" 
                 ? document.getElementById('dpl-nilai').value 
                 : document.getElementById('dpl-catatan').value;
@@ -2643,13 +2772,11 @@
             if (elId) elId.value = r.id;
             if (elKategori) elKategori.value = r.kategori;
             
-            // Populasikan ulang dropdown bimbingan sebelum menyetel nilainya
             populateDplKelompokDropdown();
             if (elKelompok) elKelompok.value = r.kelompok;
             
             if (elTanggal) elTanggal.value = r.tanggal;
             
-            // Atur kesesuaian isian dinamis
             toggleDplFormFields();
             
             if (r.kategori === "Nilai KKN") {
@@ -2878,10 +3005,10 @@
         function renderMahasiswaDashboard() {
             const myReports = mahasiswaReportsData.filter(r => r.username === currentUser.username);
             const tbody = document.getElementById('mhs-table-body');
-            const tfoot = document.getElementById('mhs-table-footer'); // Ambil elemen footer
+            const tfoot = document.getElementById('mhs-table-footer');
             if (!tbody) return;
             tbody.innerHTML = '';
-            if (tfoot) tfoot.innerHTML = ''; // Bersihkan footer sebelumnya
+            if (tfoot) tfoot.innerHTML = ''; 
 
             const btnBulk = document.getElementById('btn-bulk-delete-mhs');
             if (btnBulk) btnBulk.classList.add('hidden');
@@ -2893,12 +3020,12 @@
                 return;
             }
 
-            let totalJam = 0; // Inisialisasi variabel total jam
+            let totalJam = 0; 
 
             const sortedData = myReports.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
 
             sortedData.forEach(r => {
-                totalJam += Number(r.keluhan || 0); // Hitung akumulasi jam
+                totalJam += Number(r.keluhan || 0); 
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -2921,7 +3048,6 @@
                 tbody.appendChild(tr);
             });
 
-            // Tampilkan total jam ke dalam tfoot
             if (tfoot) {
                 tfoot.innerHTML = `
                     <tr>
@@ -3129,7 +3255,6 @@
             const groupName = (currentUser.namaLengkap || currentUser.username).toLowerCase().trim();
             const groupUsername = currentUser.username.toLowerCase().trim();
             
-            // 1. Ambil Mahasiswa dari sheet user yang ber-role 'mahasiswa' dan memiliki Kelompok KKN yang sesuai
             const members = accountsData.filter(u => {
                 if (u.role !== 'mahasiswa') return false;
                 const userKlp = (u.kelompok || '').toLowerCase().trim();
@@ -3140,7 +3265,6 @@
                 ? members.map(m => m.namaLengkap).join(', ') 
                 : 'Belum ada anggota mahasiswa terdaftar';
             
-            // 2. Ambil Dosen Pembimbing (DPL) dari sheet user yang ber-role 'dpl' dan memiliki penugasan bimbingan Kelompok KKN ini
             const dplUsers = accountsData.filter(u => {
                 if (u.role !== 'dpl') return false;
                 const dplKlp = (u.kelompok || '').toLowerCase().trim();
@@ -3264,13 +3388,13 @@
             const payload = {
                 id: id ? parseInt(id) : Date.now(), 
                 group: currentUser.username,
-                korkel: jenisLaporan, // Jenis Laporan disimpan di kolom korkel spreadsheet
-                members: currentUser.nip || '-', // Labeled as Anggota Kelompok
-                location: currentUser.lokasi || '-', // Lokasi KKN
+                korkel: jenisLaporan,
+                members: currentUser.nip || '-', 
+                location: currentUser.lokasi || '-', 
                 rawLocation: { kab: '', kec: '', desa: '', jalan: '' }, 
                 date: document.getElementById('form-date') ? document.getElementById('form-date').value : '',
                 activity: document.getElementById('form-activity') ? document.getElementById('form-activity').value : '',
-                emergency: currentUser.dpl || '-', // Menyimpan nama DPL pada emergency field agar tampil di Admin detail
+                emergency: currentUser.dpl || '-', 
                 photo: document.getElementById('form-link-url') ? document.getElementById('form-link-url').value : '' 
             };
 
@@ -3391,7 +3515,6 @@
             updateBulkActionState();
         }
 
-        // Pastikan penanganan toggle sidebar mobile bekerja dengan baik
         function toggleSidebar() {
             const sidebar = document.getElementById('admin-sidebar');
             if (!sidebar) return;
