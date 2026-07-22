@@ -191,9 +191,9 @@
 
                 <!-- Info Kontak -->
                 <div class="mt-6 p-4 bg-green-50 rounded-md text-center border border-green-100">
-                    <p class="text-sm text-gray-700 mb-3">Informasi login Hubungi <strong>Supriyadi</strong></p>
-                    <a href="https://wa.me/6282371962881?text=mohon%20info%20akun%20Monitoring%20KKN" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded transition duration-150 shadow-sm">
-                        <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Hubungi via WhatsApp
+                    <p class="text-sm text-gray-700 mb-3">Informasi login Hubungi <strong>Chatbot KKN (AI)</strong></p>
+                    <a href="https://supriyadi911.github.io/chatbotKKN/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded transition duration-150 shadow-sm">
+                        <i class="fa-brands fa-whatsapp text-lg mr-2"></i>Chatbot KKN (AI)
                     </a>
                 </div>
 
@@ -406,9 +406,11 @@
                         <div class="w-full sm:w-56">
                             <select id="filter-jenis-kelompok" onchange="applyAdminKelompokFilters()" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none shadow-sm text-gray-700">
                                 <option value="">Semua Jenis Laporan</option>
+                                <option value="Lomba Jingle KKN UINRIL">Lomba Jingle KKN UINRIL</option>
+                                <option value="Lomba Green Neighborhood (Lingkungan Hijau, Bersih, dan Sehat)">Lomba Green Neighborhood</option>
                                 <option value="Kegiatan Harian">Kegiatan Harian</option>
                                 <option value="Laporan Akhir KKN">Laporan Akhir KKN</option>
-                                <option value="Draft Artikel PKM">Draft Artikel PKM</option>
+                                <option value="Draft Artikel KKN">Draft Artikel KKN</option>
                             </select>
                         </div>
                         <div class="w-full sm:w-32">
@@ -673,9 +675,11 @@
                             <label class="block text-sm text-gray-600 mb-1 font-semibold">Jenis Laporan *</label>
                             <select id="form-jenis-laporan" required onchange="toggleGroupFormFields()" class="w-full border rounded p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
                                 <option value="" disabled selected>-- Pilih Jenis Laporan --</option>
+                                <option value="Lomba Jingle KKN UINRIL">Lomba Jingle KKN UINRIL</option>
+                                <option value="Lomba Green Neighborhood (Lingkungan Hijau, Bersih, dan Sehat)">Lomba Green Neighborhood (Lingkungan Hijau, Bersih, dan Sehat)</option>
                                 <option value="Kegiatan Harian">Kegiatan Harian</option>
                                 <option value="Laporan Akhir KKN">Laporan Akhir KKN</option>
-                                <option value="Draft Artikel PKM">Draft Artikel PKM</option>
+                                <option value="Draft Artikel KKN">Draft Artikel KKN</option>
                             </select>
                         </div>
 
@@ -3187,11 +3191,21 @@
                 if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat dari laporan akhir KKN kelompok...";
                 if (linkLabel) linkLabel.innerText = "Link google drive file Laporan Akhir KKN *";
                 if (linkInput) linkInput.placeholder = "https://drive.google.com/file/d/... atau https://drive.google.com/drive/folders/...";
-            } else if (jenis === "Draft Artikel PKM") {
-                if (descLabel) descLabel.innerText = "Deskripsi singkat Laporan *";
-                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat dari draft artikel PKM kelompok...";
-                if (linkLabel) linkLabel.innerText = "Link google drive file Draft Artikel PKM *";
+            } else if (jenis === "Draft Artikel KKN") {
+                if (descLabel) descLabel.innerText = "Deskripsi singkat Draft *";
+                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat dari draft artikel KKN kelompok...";
+                if (linkLabel) linkLabel.innerText = "Link google drive file Draft Artikel KKN *";
                 if (linkInput) linkInput.placeholder = "https://drive.google.com/file/d/... atau https://drive.google.com/drive/folders/...";
+            } else if (jenis === "Lomba Jingle KKN UINRIL") {
+                if (descLabel) descLabel.innerText = "Deskripsi / Judul Jingle *";
+                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat mengenai Jingle KKN yang dibuat...";
+                if (linkLabel) linkLabel.innerText = "Link Video Lomba (YouTube/Instagram/Drive) *";
+                if (linkInput) linkInput.placeholder = "https://...";
+            } else if (jenis === "Lomba Green Neighborhood (Lingkungan Hijau, Bersih, dan Sehat)") {
+                if (descLabel) descLabel.innerText = "Deskripsi Program / Kegiatan Lingkungan *";
+                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat mengenai program Green Neighborhood yang dijalankan...";
+                if (linkLabel) linkLabel.innerText = "Link Bukti / Dokumentasi Lomba (Drive/Sosmed) *";
+                if (linkInput) linkInput.placeholder = "https://...";
             }
         }
 
