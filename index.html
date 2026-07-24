@@ -574,7 +574,7 @@
                                     <tr>
                                         <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdmin" onclick="toggleAllCheckboxesAdmin(this)"></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Kel', 'date')">Tanggal <i id="sort-Kel-date" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
-                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Waktu Pengiriman</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Kel', 'timestamp')">Waktu Pengiriman <i id="sort-Kel-timestamp" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Kel', 'group')">Kelompok <i id="sort-Kel-group" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Kel', 'korkel')">Jenis Laporan <i id="sort-Kel-korkel" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
@@ -648,7 +648,7 @@
                                     <tr>
                                         <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdminMhs" onclick="toggleAllCheckboxesAdminMhs(this)"></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Mhs', 'tanggal')">Tanggal <i id="sort-Mhs-tanggal" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
-                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Waktu Pengiriman</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Mhs', 'timestamp')">Waktu Pengiriman <i id="sort-Mhs-timestamp" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Mhs', 'namaLengkap')">Mahasiswa <i id="sort-Mhs-namaLengkap" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Mhs', 'kelompok')">Kelompok <i id="sort-Mhs-kelompok" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Mhs', 'rencana')">Jenis Laporan & Durasi <i id="sort-Mhs-rencana" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
@@ -725,7 +725,7 @@
                                     <tr>
                                         <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdminDpl" onclick="toggleAllCheckboxesAdminDpl(this)"></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Dpl', 'tanggal')">Tanggal <i id="sort-Dpl-tanggal" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
-                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Waktu Pengiriman</th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Dpl', 'timestamp')">Waktu Pengiriman <i id="sort-Dpl-timestamp" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Dpl', 'namaLengkap')">DPL <i id="sort-Dpl-namaLengkap" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Dpl', 'kategori')">Kategori & Kelompok <i id="sort-Dpl-kategori" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider">Catatan</th>
@@ -2602,6 +2602,30 @@
                 let valA = a[col] ? String(a[col]).toLowerCase() : (a.username ? String(a.username).toLowerCase() : '');
                 let valB = b[col] ? String(b[col]).toLowerCase() : (b.username ? String(b.username).toLowerCase() : '');
                 
+                // Khusus untuk Waktu Pengiriman (timestamp) pastikan yang disortir adalah nilai waktunya (bukan teks huruf abjad)
+                if (col === 'timestamp') {
+                    const parseTime = (str) => {
+                        if (!str || str === '-' || str.includes('Kosong')) return 0;
+                        
+                        // Coba parsing native Date
+                        let parsed = Date.parse(str.replace(' WIB', ''));
+                        if (!isNaN(parsed)) return parsed;
+
+                        // Fallback untuk format manual DD/MM/YYYY HH:mm
+                        const parts = str.match(/(\d+)/g);
+                        if (parts && parts.length >= 3) {
+                            if (parts[2].length === 4) { // Format DD/MM/YYYY
+                                return new Date(parts[2], parts[1] - 1, parts[0], parts[3] || 0, parts[4] || 0).getTime();
+                            } else if (parts[0].length === 4) { // Format YYYY-MM-DD
+                                return new Date(parts[0], parts[1] - 1, parts[2], parts[3] || 0, parts[4] || 0).getTime();
+                            }
+                        }
+                        return 0;
+                    };
+                    valA = parseTime(valA);
+                    valB = parseTime(valB);
+                }
+
                 if (valA < valB) return dir === 'asc' ? -1 : 1;
                 if (valA > valB) return dir === 'asc' ? 1 : -1;
                 return 0;
