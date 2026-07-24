@@ -375,7 +375,7 @@
                         <div class="flex flex-col sm:flex-row gap-4 items-end">
                             <div class="flex-1 w-full">
                                 <label class="block text-sm text-gray-600 font-medium mb-1">Tanggal Laporan</label>
-                                <input type="date" id="filter-date" class="w-full border rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="applyFilters()">
+                                <input type="date" id="filter-date" class="global-date-input w-full border rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate(this.value)">
                             </div>
                             <button onclick="resetFilters()" class="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2.5 px-6 rounded-md text-sm transition">
                                 <i class="fa-solid fa-rotate-right mr-1"></i> Reset Filter
@@ -521,6 +521,20 @@
                         <h1 class="text-2xl font-bold text-gray-800">Manajemen Laporan Kelompok</h1>
                     </div>
                     
+                    <!-- Filter Data Global (Kelompok) -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 border mb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-bold text-gray-700 text-sm">Filter Data Global</h3>
+                            <p class="text-xs text-gray-500">Filter berdasarkan tanggal laporan</p>
+                        </div>
+                        <div class="flex w-full sm:w-auto gap-2">
+                            <input type="date" class="global-date-input flex-1 border rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate(this.value)">
+                            <button onclick="resetFilters()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-3 rounded-md text-sm transition" title="Reset Filter">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Toolbar Pencarian & Filter Kelompok -->
                     <div class="flex flex-col sm:flex-row gap-4 mb-2">
                         <div class="relative flex-1">
@@ -560,6 +574,7 @@
                                     <tr>
                                         <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdmin" onclick="toggleAllCheckboxesAdmin(this)"></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Kel', 'date')">Tanggal <i id="sort-Kel-date" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Waktu Pengiriman</th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Kel', 'group')">Kelompok <i id="sort-Kel-group" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Kel', 'korkel')">Jenis Laporan <i id="sort-Kel-korkel" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-center font-medium tracking-wider">Aksi</th>
@@ -581,6 +596,20 @@
                 <div id="admin-tab-mahasiswa" class="hidden space-y-6">
                     <div class="flex justify-between items-center mb-6">
                         <h1 class="text-2xl font-bold text-gray-800">Manajemen Laporan Mahasiswa</h1>
+                    </div>
+
+                    <!-- Filter Data Global (Mahasiswa) -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 border mb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-bold text-gray-700 text-sm">Filter Data Global</h3>
+                            <p class="text-xs text-gray-500">Filter berdasarkan tanggal laporan</p>
+                        </div>
+                        <div class="flex w-full sm:w-auto gap-2">
+                            <input type="date" class="global-date-input flex-1 border rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate(this.value)">
+                            <button onclick="resetFilters()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-3 rounded-md text-sm transition" title="Reset Filter">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Toolbar Pencarian & Filter Mahasiswa -->
@@ -619,6 +648,7 @@
                                     <tr>
                                         <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdminMhs" onclick="toggleAllCheckboxesAdminMhs(this)"></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Mhs', 'tanggal')">Tanggal <i id="sort-Mhs-tanggal" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Waktu Pengiriman</th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Mhs', 'namaLengkap')">Mahasiswa <i id="sort-Mhs-namaLengkap" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Mhs', 'kelompok')">Kelompok <i id="sort-Mhs-kelompok" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Mhs', 'rencana')">Jenis Laporan & Durasi <i id="sort-Mhs-rencana" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
@@ -641,6 +671,20 @@
                 <div id="admin-tab-dpl" class="hidden space-y-6">
                     <div class="flex justify-between items-center mb-6">
                         <h1 class="text-2xl font-bold text-gray-800">Manajemen Laporan DPL</h1>
+                    </div>
+
+                    <!-- Filter Data Global (DPL) -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 border mb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-bold text-gray-700 text-sm">Filter Data Global</h3>
+                            <p class="text-xs text-gray-500">Filter berdasarkan tanggal laporan</p>
+                        </div>
+                        <div class="flex w-full sm:w-auto gap-2">
+                            <input type="date" class="global-date-input flex-1 border rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate(this.value)">
+                            <button onclick="resetFilters()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-3 rounded-md text-sm transition" title="Reset Filter">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Toolbar Pencarian & Filter DPL -->
@@ -681,6 +725,7 @@
                                     <tr>
                                         <th class="px-6 py-3 w-10 text-center"><input type="checkbox" id="selectAllAdminDpl" onclick="toggleAllCheckboxesAdminDpl(this)"></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Dpl', 'tanggal')">Tanggal <i id="sort-Dpl-tanggal" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-6 py-3 text-left font-medium tracking-wider">Waktu Pengiriman</th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Dpl', 'namaLengkap')">DPL <i id="sort-Dpl-namaLengkap" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Dpl', 'kategori')">Kategori & Kelompok <i id="sort-Dpl-kategori" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-6 py-3 text-left font-medium tracking-wider">Catatan</th>
@@ -850,6 +895,7 @@
                                 <tr>
                                     <th class="px-4 py-2 w-10 text-center"><input type="checkbox" id="selectAll" onclick="toggleAllCheckboxes(this)"></th>
                                     <th class="px-4 py-2 text-left font-medium">Tanggal</th>
+                                    <th class="px-4 py-2 text-left font-medium">Waktu Pengiriman</th>
                                     <th class="px-4 py-2 text-left font-medium">Jenis Kegiatan</th>
                                     <th class="px-4 py-2 text-center font-medium">Aksi</th>
                                 </tr>
@@ -960,6 +1006,7 @@
                                 <tr>
                                     <th class="px-4 py-2 w-10 text-center rounded-tl-md"><input type="checkbox" id="selectAllDpl" onclick="toggleAllCheckboxesDpl(this)"></th>
                                     <th class="px-4 py-2 text-left font-medium">Tanggal</th>
+                                    <th class="px-4 py-2 text-left font-medium">Waktu Pengiriman</th>
                                     <th class="px-4 py-2 text-left font-medium">Kategori & Kelompok</th>
                                     <th class="px-4 py-2 text-left font-medium">Catatan / Nilai</th>
                                     <th class="px-4 py-2 text-center font-medium rounded-tr-md">Aksi</th>
@@ -1055,6 +1102,7 @@
                                 <tr>
                                     <th class="px-4 py-2 w-10 text-center rounded-tl-md"><input type="checkbox" id="selectAllMhs" onclick="toggleAllCheckboxesMhs(this)"></th>
                                     <th class="px-4 py-2 text-left font-medium">Tanggal</th>
+                                    <th class="px-4 py-2 text-left font-medium">Waktu Pengiriman</th>
                                     <th class="px-4 py-2 text-left font-medium">Jenis Kegiatan & Jam</th>
                                     <th class="px-4 py-2 text-center font-medium">Bukti</th>
                                     <th class="px-4 py-2 text-center font-medium rounded-tr-md">Aksi</th>
@@ -1210,7 +1258,7 @@
         // =========================================================================
         // PENGATURAN API GOOGLE APPS SCRIPT (GAS)
         // =========================================================================
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0usGakhM-ZPxkPDQkyFDAPi-DTgCsI_I6OX-uST_S8EOdxnlKCS0SpPir_eTkmnSAXQ/exec'; 
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwX_L62EN1mMftiJjaTJekAo7MuxDrjOHhi1tMlvTiFYEc2KL80VBNt_KZlLjV70U97jA/exec'; 
         
         const USE_MOCK = false; 
 
@@ -1252,17 +1300,17 @@
         };
 
         let mockReports = [
-            { id: 1, group: 'kelompok12', korkel: 'Kegiatan Harian', members: '-', location: 'Desa Suka Maju', date: '2023-10-01', activity: 'Pembersihan balai desa dan penyuluhan warga.', emergency: 'Dr. Supriyadi, M.Pd.', photo: 'https://www.instagram.com/p/123' },
-            { id: 2, group: 'kelompok2', korkel: 'Kegiatan Harian', members: '-', location: 'Desa Suka Mundur', date: '2023-10-01', activity: 'Mengajar di SD Inpres.', emergency: 'Dr. Supriyadi, M.Pd.', photo: 'https://www.instagram.com/p/456' }
+            { id: 1, group: 'kelompok12', korkel: 'Kegiatan Harian', members: '-', location: 'Desa Suka Maju', date: '2023-10-01', activity: 'Pembersihan balai desa dan penyuluhan warga.', emergency: 'Dr. Supriyadi, M.Pd.', photo: 'https://www.instagram.com/p/123', timestamp: '01/10/2023, 14:30 WIB' },
+            { id: 2, group: 'kelompok2', korkel: 'Kegiatan Harian', members: '-', location: 'Desa Suka Mundur', date: '2023-10-01', activity: 'Mengajar di SD Inpres.', emergency: 'Dr. Supriyadi, M.Pd.', photo: 'https://www.instagram.com/p/456', timestamp: '01/10/2023, 15:45 WIB' }
         ];
 
         let mockDplReports = [
-            { id: 101, username: 'dosen1', namaLengkap: 'Dr. Supriyadi, M.Pd.', kategori: 'Laporan Kunjungan dan Monev', kelompok: 'Kelompok 12', tanggal: '2023-09-25', catatan: 'Melaksanakan monev awal program kerja kelompok.', link: '' },
-            { id: 102, username: 'dosen1', namaLengkap: 'Dr. Supriyadi, M.Pd.', kategori: 'Draft artikel PKM', kelompok: 'Kelompok 12', tanggal: '2023-10-15', catatan: 'Draft pendahuluan artikel PKM sudah cukup baik.', link: 'https://drive.google.com/docs' }
+            { id: 101, username: 'dosen1', namaLengkap: 'Dr. Supriyadi, M.Pd.', kategori: 'Laporan Kunjungan dan Monev', kelompok: 'Kelompok 12', tanggal: '2023-09-25', catatan: 'Melaksanakan monev awal program kerja kelompok.', link: '', timestamp: '25/09/2023, 09:15 WIB' },
+            { id: 102, username: 'dosen1', namaLengkap: 'Dr. Supriyadi, M.Pd.', kategori: 'Draft artikel PKM', kelompok: 'Kelompok 12', tanggal: '2023-10-15', catatan: 'Draft pendahuluan artikel PKM sudah cukup baik.', link: 'https://drive.google.com/docs', timestamp: '15/10/2023, 13:20 WIB' }
         ];
 
         let mockMahasiswaReports = [
-            { id: 201, username: 'mahasiswa1', namaLengkap: 'Andi Saputra', kelompok: 'Kelompok 1', tanggal: '2023-10-01', rencana: 'Pembekalan KKN', keluhan: 3, foto: 'https://drive.google.com/photo1' }
+            { id: 201, username: 'mahasiswa1', namaLengkap: 'Andi Saputra', kelompok: 'Kelompok 1', tanggal: '2023-10-01', rencana: 'Pembekalan KKN', keluhan: 3, foto: 'https://drive.google.com/photo1', timestamp: '01/10/2023, 16:00 WIB' }
         ];
 
         // =========================================================================
@@ -2209,72 +2257,6 @@
 
         function renderAdminDashboard() {
             applyFilters(); 
-            
-            // Hitung Total Akun Terdaftar secara keseluruhan
-            const totalGroups = accountsData.filter(a => a.role === 'kelompok').length;
-            const totalMhs = accountsData.filter(a => a.role === 'mahasiswa').length;
-            const totalDpl = accountsData.filter(a => a.role === 'dpl').length;
-            
-            // Hitung Total Laporan (berdasarkan filter global)
-            const repKel = filteredDataKel.length;
-            const repMhs = filteredDataMhs.length;
-            const repDpl = filteredDataDpl.length;
-
-            // Hitung Jumlah Akun Unik yang Sudah Melapor (berdasarkan filter global)
-            const reportedGroups = new Set(filteredDataKel.map(r => r.group)).size;
-            const reportedMhs = new Set(filteredDataMhs.map(r => r.username)).size;
-            const reportedDpls = new Set(filteredDataDpl.map(r => r.username)).size;
-            
-            const emergencies = filteredDataKel.filter(r => r.emergency && String(r.emergency).trim() !== '').length;
-            const keluhans = filteredDataMhs.filter(r => r.keluhan && String(r.keluhan).trim() !== '').length;
-            
-            const elGroups = document.getElementById('stat-groups');
-            const elMhs = document.getElementById('stat-mhs');
-            const elDpl = document.getElementById('stat-dpl');
-            const elDarurat = document.getElementById('stat-darurat');
-            const elRepKel = document.getElementById('stat-rep-kel');
-            const elRepMhs = document.getElementById('stat-rep-mhs');
-            const elRepDpl = document.getElementById('stat-rep-dpl');
-            const elKeluhan = document.getElementById('stat-keluhan');
-
-            const valTotalGroups = totalGroups || (USE_MOCK ? 2 : 0);
-            const valTotalMhs = totalMhs || (USE_MOCK ? 1 : 0);
-            const valTotalDpl = totalDpl || (USE_MOCK ? 1 : 0);
-
-            // Update Angka Statistik Utama
-            if (elGroups) elGroups.innerText = valTotalGroups;
-            if (elMhs) elMhs.innerText = valTotalMhs;
-            if (elDpl) elDpl.innerText = valTotalDpl;
-            if (elDarurat) elDarurat.innerText = emergencies;
-            if (elRepKel) elRepKel.innerText = repKel;
-            if (elRepMhs) elRepMhs.innerText = repMhs;
-            if (elRepDpl) elRepDpl.innerText = repDpl;
-            if (elKeluhan) elKeluhan.innerText = keluhans;
-
-            // Update Angka "Sudah Lapor"
-            const elCountRepGroups = document.getElementById('count-rep-groups');
-            const elCountRepMhs = document.getElementById('count-rep-mhs');
-            const elCountRepDpl = document.getElementById('count-rep-dpl');
-
-            if (elCountRepGroups) elCountRepGroups.innerText = reportedGroups;
-            if (elCountRepMhs) elCountRepMhs.innerText = reportedMhs;
-            if (elCountRepDpl) elCountRepDpl.innerText = reportedDpls;
-
-            // Update Badge Persentase
-            const elPctGroups = document.getElementById('pct-groups');
-            const elPctMhsUser = document.getElementById('pct-mhs');
-            const elPctDplUser = document.getElementById('pct-dpl');
-
-            // Persentase Kepatuhan Pelaporan (Yang Lapor / Total Terdaftar)
-            const pctKelLapor = valTotalGroups ? ((reportedGroups / valTotalGroups) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
-            const pctMhsLapor = valTotalMhs ? ((reportedMhs / valTotalMhs) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
-            const pctDplLapor = valTotalDpl ? ((reportedDpls / valTotalDpl) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
-
-            if (elPctGroups) elPctGroups.innerText = `${pctKelLapor}%`;
-            if (elPctMhsUser) elPctMhsUser.innerText = `${pctMhsLapor}%`;
-            if (elPctDplUser) elPctDplUser.innerText = `${pctDplLapor}%`;
-
-            renderAdminMultiChart(reportsData, mahasiswaReportsData, dplReportsData);
         }
 
         function renderAdminMultiChart(dataKel, dataMhs, dataDpl) {
@@ -2343,35 +2325,103 @@
             });
         }
 
+        function updateGlobalDate(val) {
+            document.querySelectorAll('.global-date-input').forEach(el => el.value = val);
+            applyFilters();
+        }
+
         function applyFilters() {
+            // Eksekusi filter tabel individu
             applyAdminKelompokFilters();
             applyAdminMhsFilters();
             applyAdminDplFilters();
-            updateUnreportedStatus();
+            
+            // Eksekusi pembaruan dashboard global (Kartu, Badge, & Chart)
+            updateAdminGlobalStats();
         }
 
-        function updateUnreportedStatus() {
-            // Ambil semua akun kelompok, DPL, dan Mahasiswa
+        function updateAdminGlobalStats() {
+            const filterInput = document.querySelector('.global-date-input');
+            const filterDate = filterInput ? filterInput.value : '';
+            
+            // 1. Dapatkan Data Laporan Sesuai Filter Tanggal Global
+            const globalKel = filterDate ? reportsData.filter(r => r.date === filterDate) : reportsData;
+            const globalMhs = filterDate ? mahasiswaReportsData.filter(r => r.tanggal === filterDate) : mahasiswaReportsData;
+            const globalDpl = filterDate ? dplReportsData.filter(r => r.tanggal === filterDate) : dplReportsData;
+
+            // 2. Dapatkan Semua Akun Aktif Terdaftar
             const allGroups = accountsData.filter(a => a.role === 'kelompok');
-            const allDpls = accountsData.filter(a => a.role === 'dpl');
             const allMhs = accountsData.filter(a => a.role === 'mahasiswa');
+            const allDpls = accountsData.filter(a => a.role === 'dpl');
 
-            // Cek siapa yang sudah melapor berdasarkan data yang terfilter saat ini
-            const reportedGroups = new Set(filteredDataKel.map(r => r.group));
-            const reportedDpls = new Set(filteredDataDpl.map(r => r.username));
-            const reportedMhs = new Set(filteredDataMhs.map(r => r.username));
+            const valTotalGroups = allGroups.length || (USE_MOCK ? 2 : 0);
+            const valTotalMhs = allMhs.length || (USE_MOCK ? 1 : 0);
+            const valTotalDpl = allDpls.length || (USE_MOCK ? 1 : 0);
 
-            // Saring siapa yang belum melapor
-            const unreportedGroups = allGroups.filter(g => !reportedGroups.has(g.username));
-            const unreportedDpls = allDpls.filter(d => !reportedDpls.has(d.username));
-            const unreportedMhs = allMhs.filter(m => !reportedMhs.has(m.username));
+            // Update Angka Statistik Utama (Total Terdaftar) pada UI
+            const elGroups = document.getElementById('stat-groups');
+            const elMhs = document.getElementById('stat-mhs');
+            const elDpl = document.getElementById('stat-dpl');
+            if (elGroups) elGroups.innerText = valTotalGroups;
+            if (elMhs) elMhs.innerText = valTotalMhs;
+            if (elDpl) elDpl.innerText = valTotalDpl;
 
-            // Kalkulasi Persentase (Belum Lapor / Total Terdaftar)
-            const pctUnkel = allGroups.length ? ((unreportedGroups.length / allGroups.length) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
-            const pctUnmhs = allMhs.length ? ((unreportedMhs.length / allMhs.length) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
-            const pctUndpl = allDpls.length ? ((unreportedDpls.length / allDpls.length) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
+            // 3. Ekstrak Username yang Ada di Dalam Laporan
+            const reportedGroupsSet = new Set(globalKel.map(r => r.group));
+            const reportedMhsSet = new Set(globalMhs.map(r => r.username));
+            const reportedDplsSet = new Set(globalDpl.map(r => r.username));
 
-            // Update UI Kelompok
+            // 4. Hitung Pasti "Sudah Lapor" dan "Belum Lapor" HANYA dari Akun Terdaftar Aktif
+            const reportedGroups = allGroups.filter(g => reportedGroupsSet.has(g.username));
+            const reportedMhs = allMhs.filter(m => reportedMhsSet.has(m.username));
+            const reportedDpls = allDpls.filter(d => reportedDplsSet.has(d.username));
+
+            const unreportedGroups = allGroups.filter(g => !reportedGroupsSet.has(g.username));
+            const unreportedMhs = allMhs.filter(m => !reportedMhsSet.has(m.username));
+            const unreportedDpls = allDpls.filter(d => !reportedDplsSet.has(d.username));
+            
+            // 5. Update UI Angka "Sudah Lapor"
+            const elCountRepGroups = document.getElementById('count-rep-groups');
+            const elCountRepMhs = document.getElementById('count-rep-mhs');
+            const elCountRepDpl = document.getElementById('count-rep-dpl');
+
+            if (elCountRepGroups) elCountRepGroups.innerText = reportedGroups.length;
+            if (elCountRepMhs) elCountRepMhs.innerText = reportedMhs.length;
+            if (elCountRepDpl) elCountRepDpl.innerText = reportedDpls.length;
+
+            // 6. Kalkulasi & Update Badge Persentase "Sudah Lapor"
+            const pctKelLapor = valTotalGroups ? ((reportedGroups.length / valTotalGroups) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
+            const pctMhsLapor = valTotalMhs ? ((reportedMhs.length / valTotalMhs) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
+            const pctDplLapor = valTotalDpl ? ((reportedDpls.length / valTotalDpl) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
+
+            const elPctGroups = document.getElementById('pct-groups');
+            const elPctMhsUser = document.getElementById('pct-mhs');
+            const elPctDplUser = document.getElementById('pct-dpl');
+
+            if (elPctGroups) elPctGroups.innerText = `${pctKelLapor}%`;
+            if (elPctMhsUser) elPctMhsUser.innerText = `${pctMhsLapor}%`;
+            if (elPctDplUser) elPctDplUser.innerText = `${pctDplLapor}%`;
+
+            // 7. Update Total Keseluruhan Dokumen Laporan (3 Kartu Laporan Bawah)
+            const elRepKel = document.getElementById('stat-rep-kel');
+            const elRepMhs = document.getElementById('stat-rep-mhs');
+            const elRepDpl = document.getElementById('stat-rep-dpl');
+            if (elRepKel) elRepKel.innerText = globalKel.length;
+            if (elRepMhs) elRepMhs.innerText = globalMhs.length;
+            if (elRepDpl) elRepDpl.innerText = globalDpl.length;
+
+            // 8. Update UI "Belum Lapor" dan Grafik
+            updateUnreportedStatusUI(unreportedGroups, unreportedMhs, unreportedDpls, valTotalGroups, valTotalMhs, valTotalDpl);
+            renderAdminMultiChart(globalKel, globalMhs, globalDpl);
+        }
+
+        function updateUnreportedStatusUI(unreportedGroups, unreportedMhs, unreportedDpls, valTotalGroups, valTotalMhs, valTotalDpl) {
+            // Kalkulasi Persentase "Belum Lapor"
+            const pctUnkel = valTotalGroups ? ((unreportedGroups.length / valTotalGroups) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
+            const pctUnmhs = valTotalMhs ? ((unreportedMhs.length / valTotalMhs) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
+            const pctUndpl = valTotalDpl ? ((unreportedDpls.length / valTotalDpl) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
+
+            // Update UI Daftar & Badge Kelompok Belum Lapor
             const listKel = document.getElementById('list-unreported-kel');
             const badgeKel = document.getElementById('badge-unreported-kel');
             if (listKel) {
@@ -2387,7 +2437,7 @@
             }
             if (badgeKel) badgeKel.innerText = `${unreportedGroups.length} (${pctUnkel}%)`;
 
-            // Update UI Mahasiswa
+            // Update UI Daftar & Badge Mahasiswa Belum Lapor
             const listMhs = document.getElementById('list-unreported-mhs');
             const badgeMhs = document.getElementById('badge-unreported-mhs');
             if (listMhs) {
@@ -2403,7 +2453,7 @@
             }
             if (badgeMhs) badgeMhs.innerText = `${unreportedMhs.length} (${pctUnmhs}%)`;
 
-            // Update UI DPL
+            // Update UI Daftar & Badge DPL Belum Lapor
             const listDpl = document.getElementById('list-unreported-dpl');
             const badgeDpl = document.getElementById('badge-unreported-dpl');
             if (listDpl) {
@@ -2421,7 +2471,8 @@
         }
 
         function applyAdminKelompokFilters() {
-            const filterDate = document.getElementById('filter-date') ? document.getElementById('filter-date').value : '';
+            const filterInput = document.querySelector('.global-date-input');
+            const filterDate = filterInput ? filterInput.value : '';
             const searchTxt = document.getElementById('search-kelompok') ? document.getElementById('search-kelompok').value.toLowerCase() : '';
             const filterJenis = document.getElementById('filter-jenis-kelompok') ? document.getElementById('filter-jenis-kelompok').value : '';
 
@@ -2444,7 +2495,8 @@
         }
 
         function applyAdminMhsFilters() {
-            const filterDate = document.getElementById('filter-date') ? document.getElementById('filter-date').value : '';
+            const filterInput = document.querySelector('.global-date-input');
+            const filterDate = filterInput ? filterInput.value : '';
             const searchTxt = document.getElementById('search-mhs') ? document.getElementById('search-mhs').value.toLowerCase() : '';
             const filterJenis = document.getElementById('filter-jenis-mhs') ? document.getElementById('filter-jenis-mhs').value : '';
 
@@ -2468,7 +2520,8 @@
         }
 
         function applyAdminDplFilters() {
-            const filterDate = document.getElementById('filter-date') ? document.getElementById('filter-date').value : '';
+            const filterInput = document.querySelector('.global-date-input');
+            const filterDate = filterInput ? filterInput.value : '';
             const searchTxt = document.getElementById('search-dpl') ? document.getElementById('search-dpl').value.toLowerCase() : '';
             const filterJenis = document.getElementById('filter-jenis-dpl') ? document.getElementById('filter-jenis-dpl').value : '';
 
@@ -2492,7 +2545,7 @@
         }
 
         function resetFilters() {
-            if (document.getElementById('filter-date')) document.getElementById('filter-date').value = '';
+            document.querySelectorAll('.global-date-input').forEach(el => el.value = '');
             
             if (document.getElementById('search-kelompok')) document.getElementById('search-kelompok').value = '';
             if (document.getElementById('filter-jenis-kelompok')) document.getElementById('filter-jenis-kelompok').value = '';
@@ -2555,6 +2608,27 @@
             });
         }
 
+        // Helper untuk memformat Waktu Pengiriman dari Spreadsheet
+        function getTimestampStr(item) {
+            let rawTime = item.timestamp || item.Timestamp || item.waktu || item.Waktu;
+            
+            if (!rawTime || String(rawTime).trim() === '') {
+                return '<span class="text-red-400 italic text-[11px]" title="Kolom timestamp di spreadsheet kosong">Kosong</span>'; 
+            }
+
+            try {
+                const d = new Date(rawTime);
+                if (!isNaN(d.getTime())) {
+                    return d.toLocaleString('id-ID', { 
+                        day: '2-digit', month: '2-digit', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    }) + ' WIB';
+                }
+            } catch(e) {}
+
+            return rawTime;
+        }
+
         function renderAdminTable(data) {
             const tbody = document.getElementById('admin-table-body');
             if (!tbody) return;
@@ -2566,7 +2640,7 @@
             if (selectAllAdmin) selectAllAdmin.checked = false;
 
             if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
                 renderPagination('pagination-kelompok', 0, 1, 'Kel');
                 return;
             }
@@ -2588,6 +2662,7 @@
                         <input type="checkbox" class="row-checkbox-admin" value="${report.id}" onchange="updateBulkActionStateAdmin()">
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">${report.date}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-xs font-mono text-gray-500 bg-gray-50"><i class="fa-regular fa-clock mr-1"></i>${getTimestampStr(report)}</td>
                     <td class="px-6 py-4 font-medium text-blue-600">${report.group}</td>
                     <td class="px-6 py-4">
                         <div class="font-semibold text-gray-800">${jenisLaporan}</div>
@@ -2615,7 +2690,7 @@
             if (selectAllAdminMhs) selectAllAdminMhs.checked = false;
             
             if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
                 renderPagination('pagination-mhs', 0, 1, 'Mhs');
                 return;
             }
@@ -2633,6 +2708,7 @@
                         <input type="checkbox" class="row-checkbox-admin-mhs" value="${r.id}" onchange="updateBulkActionStateAdminMhs()">
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">${r.tanggal}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-xs font-mono text-gray-500 bg-gray-50"><i class="fa-regular fa-clock mr-1"></i>${getTimestampStr(r)}</td>
                     <td class="px-6 py-4 font-medium text-purple-600">
                         <div>${r.namaLengkap || r.username}</div>
                         <div class="text-xs text-gray-500 font-normal">@${r.username}</div>
@@ -2664,7 +2740,7 @@
             if (selectAllAdminDpl) selectAllAdminDpl.checked = false;
 
             if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-4 text-center text-gray-500">Tidak ada data ditemukan</td></tr>';
                 renderPagination('pagination-dpl', 0, 1, 'Dpl');
                 return;
             }
@@ -2682,6 +2758,7 @@
                         <input type="checkbox" class="row-checkbox-admin-dpl" value="${r.id}" onchange="updateBulkActionStateAdminDpl()">
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">${r.tanggal}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-xs font-mono text-gray-500 bg-gray-50"><i class="fa-regular fa-clock mr-1"></i>${getTimestampStr(r)}</td>
                     <td class="px-6 py-4 font-medium text-green-600">
                         <div>${r.namaLengkap || r.username}</div>
                         <div class="text-xs text-gray-500 font-normal">@${r.username}</div>
@@ -2855,7 +2932,7 @@
             if (selectAll) selectAll.checked = false;
 
             if (myReports.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Belum ada riwayat pelaporan.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-4 text-center text-gray-500">Belum ada riwayat pelaporan.</td></tr>';
                 return;
             }
 
@@ -2868,6 +2945,7 @@
                         <input type="checkbox" class="row-checkbox-dpl" value="${r.id}" onchange="updateBulkActionStateDpl()">
                     </td>
                     <td class="px-4 py-3 whitespace-nowrap text-gray-600">${r.tanggal}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-xs font-mono text-gray-500 bg-gray-50"><i class="fa-regular fa-clock mr-1"></i>${getTimestampStr(r)}</td>
                     <td class="px-4 py-3">
                         <div class="font-medium text-green-600">${r.kategori}</div>
                         <div class="text-xs text-gray-500">Klp: ${r.kelompok}</div>
@@ -2907,7 +2985,8 @@
                 kelompok: document.getElementById('dpl-kelompok').value,
                 tanggal: document.getElementById('dpl-tanggal').value,
                 catatan: catatanValue,
-                link: document.getElementById('dpl-link').value
+                link: document.getElementById('dpl-link').value,
+                timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) + ' WIB'
             };
 
             try {
@@ -3204,7 +3283,7 @@
             if (selectAll) selectAll.checked = false;
 
             if (myReports.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Belum ada riwayat kegiatan harian.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-4 text-center text-gray-500">Belum ada riwayat kegiatan harian.</td></tr>';
                 return;
             }
 
@@ -3221,6 +3300,7 @@
                         <input type="checkbox" class="row-checkbox-mhs" value="${r.id}" onchange="updateBulkActionStateMhs()">
                     </td>
                     <td class="px-4 py-3 whitespace-nowrap text-gray-600">${r.tanggal}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-xs font-mono text-gray-500 bg-gray-50"><i class="fa-regular fa-clock mr-1"></i>${getTimestampStr(r)}</td>
                     <td class="px-4 py-3 text-gray-700">
                         <div class="font-medium max-w-[200px] truncate" title="${r.rencana}">${r.rencana}</div>
                         <div class="text-xs text-purple-600 mt-1">${r.keluhan} Jam</div>
@@ -3239,7 +3319,7 @@
             if (tfoot) {
                 tfoot.innerHTML = `
                     <tr>
-                        <td colspan="2" class="px-4 py-3 text-right font-bold text-gray-800">Total Akumulasi Waktu:</td>
+                        <td colspan="3" class="px-4 py-3 text-right font-bold text-gray-800">Total Akumulasi Waktu:</td>
                         <td colspan="3" class="px-4 py-3 font-bold text-purple-700 text-base">${totalJam} Jam</td>
                     </tr>
                 `;
@@ -3262,7 +3342,8 @@
                 tanggal: document.getElementById('mhs-tanggal') ? document.getElementById('mhs-tanggal').value : '',
                 rencana: document.getElementById('mhs-jenis') ? document.getElementById('mhs-jenis').value : '', 
                 keluhan: document.getElementById('mhs-jam') ? document.getElementById('mhs-jam').value : '',  
-                foto: document.getElementById('mhs-foto') ? document.getElementById('mhs-foto').value : ''
+                foto: document.getElementById('mhs-foto') ? document.getElementById('mhs-foto').value : '',
+                timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) + ' WIB'
             };
 
             try {
@@ -3533,7 +3614,7 @@
             if (selectAll) selectAll.checked = false;
 
             if (myReports.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="px-4 py-4 text-center text-gray-500">Belum ada laporan kelompok yang tersimpan.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Belum ada laporan kelompok yang tersimpan.</td></tr>';
                 return;
             }
 
@@ -3549,6 +3630,7 @@
                         <input type="checkbox" class="row-checkbox" value="${r.id}" onchange="updateBulkActionState()">
                     </td>
                     <td class="px-4 py-2 whitespace-nowrap text-gray-600">${r.date}</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-xs font-mono text-gray-500 bg-gray-50"><i class="fa-regular fa-clock mr-1"></i>${getTimestampStr(r)}</td>
                     <td class="px-4 py-2">
                         <div class="font-semibold text-blue-600">${jenisLaporan}</div>
                         <div class="text-xs text-gray-500 truncate max-w-[200px]" title="${r.activity}">${snippet}</div>
@@ -3583,7 +3665,8 @@
                 date: document.getElementById('form-date') ? document.getElementById('form-date').value : '',
                 activity: document.getElementById('form-activity') ? document.getElementById('form-activity').value : '',
                 emergency: currentUser.dpl || '-', 
-                photo: document.getElementById('form-link-url') ? document.getElementById('form-link-url').value : '' 
+                photo: document.getElementById('form-link-url') ? document.getElementById('form-link-url').value : '',
+                timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) + ' WIB'
             };
 
             try {
@@ -3969,7 +4052,6 @@
                 if (btn) btn.disabled = false;
             }
         }
-
     </script>
 </body>
 </html>
