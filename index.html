@@ -714,6 +714,7 @@
                             <select id="filter-jenis-dpl" onchange="applyAdminDplFilters()" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 outline-none shadow-sm text-gray-700">
                                 <option value="">Semua Kategori</option>
                                 <option value="Laporan Kunjungan dan Monev">Laporan Kunjungan dan Monev</option>
+                                <option value="Briefing Kelompok KKN (offline/online)">Briefing Kelompok KKN (offline/online)</option>
                                 <option value="Laporan Kejadian Darurat">Laporan Kejadian Darurat</option>
                                 <option value="Draft artikel PKM">Draft artikel PKM</option>
                                 <option value="Nilai KKN">Nilai KKN</option>
@@ -964,6 +965,7 @@
                             <select id="dpl-kategori" required onchange="toggleDplFormFields()" class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-green-500 outline-none">
                                 <option value="" disabled selected>-- Pilih Kategori --</option>
                                 <option value="Laporan Kunjungan dan Monev">Laporan Kunjungan dan Monev</option>
+                                <option value="Briefing Kelompok KKN (offline/online)">Briefing Kelompok KKN (offline/online)</option>
                                 <option value="Laporan Kejadian Darurat">Laporan Kejadian Darurat</option>
                                 <option value="Draft artikel PKM">Draft artikel PKM</option>
                                 <option value="Nilai KKN">Nilai KKN</option>
@@ -2992,6 +2994,9 @@
                     if (kategori === "Laporan Kunjungan dan Monev") {
                         if (descLabel) descLabel.innerText = "Catatan/Keterangan Kegiatan *";
                         descInput.placeholder = "Tuliskan catatan atau keterangan kunjungan/monev kelompok bimbingan...";
+                    } else if (kategori === "Briefing Kelompok KKN (offline/online)") {
+                        if (descLabel) descLabel.innerText = "Catatan/Notulensi Briefing *";
+                        descInput.placeholder = "Tuliskan poin-poin penting atau notulensi dari hasil briefing bersama kelompok...";
                     } else if (kategori === "Laporan Kejadian Darurat") {
                         if (descLabel) descLabel.innerText = "Catatan/Keterangan Kejadian Darurat *";
                         descInput.placeholder = "Tuliskan catatan detail mengenai kronologi/kejadian darurat yang dilaporkan...";
