@@ -475,8 +475,13 @@
                         <!-- Kelompok Belum Lapor -->
                         <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
                             <div class="px-6 py-4 border-b bg-red-50 flex justify-between items-center">
-                                <h3 class="font-bold text-red-800"><i class="fa-solid fa-users-slash mr-2"></i>Kelompok Belum Lapor</h3>
-                                <span id="badge-unreported-kel" class="bg-red-200 text-red-800 text-xs font-bold px-2.5 py-1 rounded-full">0</span>
+                                <h3 class="font-bold text-red-800 flex items-center"><i class="fa-solid fa-users-slash mr-2"></i>Kelompok Belum Lapor</h3>
+                                <div class="flex items-center space-x-3">
+                                    <span id="badge-unreported-kel" class="bg-red-200 text-red-800 text-xs font-bold px-2.5 py-1 rounded-full">0</span>
+                                    <button onclick="sendWhatsAppReminder('kelompok')" class="text-green-600 hover:text-green-800 transition transform hover:scale-110" title="Bagikan daftar ini ke WhatsApp">
+                                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div class="p-4 max-h-64 overflow-y-auto bg-white">
                                 <ul id="list-unreported-kel" class="space-y-1 text-sm text-gray-600">
@@ -488,8 +493,13 @@
                         <!-- Mahasiswa Belum Lapor -->
                         <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
                             <div class="px-6 py-4 border-b bg-purple-50 flex justify-between items-center">
-                                <h3 class="font-bold text-purple-800"><i class="fa-solid fa-user-graduate mr-2"></i>Mahasiswa Belum Lapor</h3>
-                                <span id="badge-unreported-mhs" class="bg-purple-200 text-purple-800 text-xs font-bold px-2.5 py-1 rounded-full">0</span>
+                                <h3 class="font-bold text-purple-800 flex items-center"><i class="fa-solid fa-user-graduate mr-2"></i>Mahasiswa Belum Lapor</h3>
+                                <div class="flex items-center space-x-3">
+                                    <span id="badge-unreported-mhs" class="bg-purple-200 text-purple-800 text-xs font-bold px-2.5 py-1 rounded-full">0</span>
+                                    <button onclick="sendWhatsAppReminder('mahasiswa')" class="text-green-600 hover:text-green-800 transition transform hover:scale-110" title="Bagikan daftar ini ke WhatsApp">
+                                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div class="p-4 max-h-64 overflow-y-auto bg-white">
                                 <ul id="list-unreported-mhs" class="space-y-1 text-sm text-gray-600">
@@ -501,8 +511,13 @@
                         <!-- DPL Belum Lapor -->
                         <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
                             <div class="px-6 py-4 border-b bg-orange-50 flex justify-between items-center">
-                                <h3 class="font-bold text-orange-800"><i class="fa-solid fa-user-xmark mr-2"></i>DPL Belum Lapor</h3>
-                                <span id="badge-unreported-dpl" class="bg-orange-200 text-orange-800 text-xs font-bold px-2.5 py-1 rounded-full">0</span>
+                                <h3 class="font-bold text-orange-800 flex items-center"><i class="fa-solid fa-user-xmark mr-2"></i>DPL Belum Lapor</h3>
+                                <div class="flex items-center space-x-3">
+                                    <span id="badge-unreported-dpl" class="bg-orange-200 text-orange-800 text-xs font-bold px-2.5 py-1 rounded-full">0</span>
+                                    <button onclick="sendWhatsAppReminder('dpl')" class="text-green-600 hover:text-green-800 transition transform hover:scale-110" title="Bagikan daftar ini ke WhatsApp">
+                                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div class="p-4 max-h-64 overflow-y-auto bg-white">
                                 <ul id="list-unreported-dpl" class="space-y-1 text-sm text-gray-600">
@@ -1281,6 +1296,11 @@
         let currentPageDpl = 1;
         let currentPageAkun = 1;
         let itemsPerPage = 20;
+
+        // Menyimpan data pengguna belum lapor untuk fitur Share WhatsApp
+        let globalUnreportedKel = [];
+        let globalUnreportedMhs = [];
+        let globalUnreportedDpl = [];
         
         let sortState = {
             Kel: { col: 'date', dir: 'desc' },
@@ -2410,6 +2430,11 @@
             if (elRepMhs) elRepMhs.innerText = globalMhs.length;
             if (elRepDpl) elRepDpl.innerText = globalDpl.length;
 
+            // Simpan ke variabel global untuk dikirim ke WhatsApp
+            globalUnreportedKel = unreportedGroups;
+            globalUnreportedMhs = unreportedMhs;
+            globalUnreportedDpl = unreportedDpls;
+
             // 8. Update UI "Belum Lapor" dan Grafik
             updateUnreportedStatusUI(unreportedGroups, unreportedMhs, unreportedDpls, valTotalGroups, valTotalMhs, valTotalDpl);
             renderAdminMultiChart(globalKel, globalMhs, globalDpl);
@@ -2468,6 +2493,40 @@
                 }
             }
             if (badgeDpl) badgeDpl.innerText = `${unreportedDpls.length} (${pctUndpl}%)`;
+        }
+
+        function sendWhatsAppReminder(type) {
+            let list = [];
+            let title = "";
+            const filterInput = document.querySelector('.global-date-input');
+            const dateStr = filterInput && filterInput.value ? filterInput.value : '';
+            const dateText = dateStr ? ` pada tanggal ${dateStr}` : ` secara keseluruhan`;
+
+            if (type === 'kelompok') {
+                list = globalUnreportedKel;
+                title = `*DAFTAR KELOMPOK BELUM LAPOR*\nBerikut adalah kelompok yang belum mengirimkan laporan${dateText}:\n\n`;
+            } else if (type === 'mahasiswa') {
+                list = globalUnreportedMhs;
+                title = `*DAFTAR MAHASISWA BELUM LAPOR*\nBerikut adalah mahasiswa yang belum mengirimkan laporan${dateText}:\n\n`;
+            } else if (type === 'dpl') {
+                list = globalUnreportedDpl;
+                title = `*DAFTAR DPL BELUM LAPOR*\nBerikut adalah DPL yang belum mengirimkan laporan${dateText}:\n\n`;
+            }
+
+            if (list.length === 0) {
+                alert("Luar biasa! Semua telah mengirimkan laporannya. Tidak ada yang perlu diingatkan.");
+                return;
+            }
+
+            let text = title;
+            list.forEach((item, index) => {
+                text += `${index + 1}. ${item.namaLengkap || item.username} (@${item.username})\n`;
+            });
+            text += `\n_Pesan otomatis dari Sistem Monitoring KKN_\nMohon untuk segera mengisi laporan. Terima kasih.`;
+
+            // Buka link WhatsApp Web / App
+            const encodedText = encodeURIComponent(text);
+            window.open(`https://wa.me/?text=${encodedText}`, '_blank');
         }
 
         function applyAdminKelompokFilters() {
