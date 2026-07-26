@@ -1273,9 +1273,38 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // =========================================================================
+        // KEAMANAN LANJUTAN (ANTI-INSPECT & OBFUSCATION)
+        // =========================================================================
+        
+        // 1. Mencegah Klik Kanan (Context Menu)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 2. Mencegah Shortcut Keyboard untuk Inspect Element & View Source
+        document.addEventListener('keydown', function(e) {
+            if (
+                e.key === 'F12' || e.keyCode === 123 ||
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.keyCode === 73)) ||
+                (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j' || e.keyCode === 74)) ||
+                (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c' || e.keyCode === 67)) ||
+                (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85))
+            ) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // =========================================================================
         // PENGATURAN API GOOGLE APPS SCRIPT (GAS)
         // =========================================================================
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwX_L62EN1mMftiJjaTJekAo7MuxDrjOHhi1tMlvTiFYEc2KL80VBNt_KZlLjV70U97jA/exec'; 
+        
+        // URL disandikan dengan Custom Array Char Code Shift (Anti-Baca Kode)
+        const _0x_key = 3;
+        const _0x_data = [107, 119, 119, 115, 118, 61, 50, 50, 118, 102, 117, 108, 115, 119, 49, 106, 114, 114, 106, 111, 104, 49, 102, 114, 112, 50, 112, 100, 102, 117, 114, 118, 50, 118, 50, 68, 78, 105, 124, 102, 101, 122, 91, 98, 79, 57, 53, 72, 81, 52, 112, 80, 105, 119, 108, 77, 109, 100, 87, 77, 104, 110, 68, 114, 58, 80, 120, 123, 71, 117, 109, 82, 75, 107, 108, 52, 119, 80, 111, 121, 87, 108, 73, 92, 72, 102, 53, 78, 79, 59, 51, 89, 69, 81, 119, 98, 78, 93, 111, 79, 109, 89, 58, 51, 88, 60, 58, 109, 68, 50, 104, 123, 104, 102];
+        
+        // Dekripsi string URL saat runtime di dalam memori browser
+        const SCRIPT_URL = _0x_data.map(function(c) { return String.fromCharCode(c - _0x_key); }).join('');
         
         const USE_MOCK = false; 
 
