@@ -2213,15 +2213,15 @@
             if (elStatMhs) elStatMhs.innerText = fMhs.length;
             if (elStatDpl) elStatDpl.innerText = fDpl.length;
 
-            // Hitung Total Akun Terdaftar
-            const allGroups = accountsData.filter(a => a.role === 'kelompok').length;
-            const allMhs = accountsData.filter(a => a.role === 'mahasiswa').length;
-            const allDpls = accountsData.filter(a => a.role === 'dpl').length;
+            // [PERBAIKAN] Hitung Total Akun Terdaftar (Case Insensitive & Trim)
+            const allGroups = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'kelompok').length;
+            const allMhs = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'mahasiswa').length;
+            const allDpls = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'dpl').length;
 
-            // Hitung Jumlah Akun Unik yang Sudah Melapor
-            const reportedGroups = new Set(fKel.map(r => r.group)).size;
-            const reportedMhs = new Set(fMhs.map(r => r.username)).size;
-            const reportedDpl = new Set(fDpl.map(r => r.username)).size;
+            // [PERBAIKAN] Hitung Jumlah Akun Unik yang Sudah Melapor (Case Insensitive & Trim)
+            const reportedGroups = new Set(fKel.map(r => String(r.group).toLowerCase().trim())).size;
+            const reportedMhs = new Set(fMhs.map(r => String(r.username).toLowerCase().trim())).size;
+            const reportedDpl = new Set(fDpl.map(r => String(r.username).toLowerCase().trim())).size;
 
             // Kalkulasi Persentase (Yang Melapor / Total Terdaftar)
             const pctKel = allGroups ? ((reportedGroups / allGroups) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
@@ -2401,10 +2401,10 @@
             const globalMhs = filterDate ? mahasiswaReportsData.filter(r => r.tanggal === filterDate) : mahasiswaReportsData;
             const globalDpl = filterDate ? dplReportsData.filter(r => r.tanggal === filterDate) : dplReportsData;
 
-            // 2. Dapatkan Semua Akun Aktif Terdaftar
-            const allGroups = accountsData.filter(a => a.role === 'kelompok');
-            const allMhs = accountsData.filter(a => a.role === 'mahasiswa');
-            const allDpls = accountsData.filter(a => a.role === 'dpl');
+            // [PERBAIKAN] 2. Dapatkan Semua Akun Aktif Terdaftar (Gunakan toLowerCase dan trim agar kebal typo dari Spreadsheet)
+            const allGroups = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'kelompok');
+            const allMhs = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'mahasiswa');
+            const allDpls = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'dpl');
 
             const valTotalGroups = allGroups.length || (USE_MOCK ? 2 : 0);
             const valTotalMhs = allMhs.length || (USE_MOCK ? 1 : 0);
@@ -2418,19 +2418,19 @@
             if (elMhs) elMhs.innerText = valTotalMhs;
             if (elDpl) elDpl.innerText = valTotalDpl;
 
-            // 3. Ekstrak Username yang Ada di Dalam Laporan
-            const reportedGroupsSet = new Set(globalKel.map(r => r.group));
-            const reportedMhsSet = new Set(globalMhs.map(r => r.username));
-            const reportedDplsSet = new Set(globalDpl.map(r => r.username));
+            // [PERBAIKAN] 3. Ekstrak Username yang Ada di Dalam Laporan (Case Insensitive)
+            const reportedGroupsSet = new Set(globalKel.map(r => String(r.group).toLowerCase().trim()));
+            const reportedMhsSet = new Set(globalMhs.map(r => String(r.username).toLowerCase().trim()));
+            const reportedDplsSet = new Set(globalDpl.map(r => String(r.username).toLowerCase().trim()));
 
-            // 4. Hitung Pasti "Sudah Lapor" dan "Belum Lapor" HANYA dari Akun Terdaftar Aktif
-            const reportedGroups = allGroups.filter(g => reportedGroupsSet.has(g.username));
-            const reportedMhs = allMhs.filter(m => reportedMhsSet.has(m.username));
-            const reportedDpls = allDpls.filter(d => reportedDplsSet.has(d.username));
+            // [PERBAIKAN] 4. Hitung Pasti "Sudah Lapor" dan "Belum Lapor" HANYA dari Akun Terdaftar Aktif (Case Insensitive)
+            const reportedGroups = allGroups.filter(g => reportedGroupsSet.has(String(g.username).toLowerCase().trim()));
+            const reportedMhs = allMhs.filter(m => reportedMhsSet.has(String(m.username).toLowerCase().trim()));
+            const reportedDpls = allDpls.filter(d => reportedDplsSet.has(String(d.username).toLowerCase().trim()));
 
-            const unreportedGroups = allGroups.filter(g => !reportedGroupsSet.has(g.username));
-            const unreportedMhs = allMhs.filter(m => !reportedMhsSet.has(m.username));
-            const unreportedDpls = allDpls.filter(d => !reportedDplsSet.has(d.username));
+            const unreportedGroups = allGroups.filter(g => !reportedGroupsSet.has(String(g.username).toLowerCase().trim()));
+            const unreportedMhs = allMhs.filter(m => !reportedMhsSet.has(String(m.username).toLowerCase().trim()));
+            const unreportedDpls = allDpls.filter(d => !reportedDplsSet.has(String(d.username).toLowerCase().trim()));
             
             // 5. Update UI Angka "Sudah Lapor"
             const elCountRepGroups = document.getElementById('count-rep-groups');
