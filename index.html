@@ -1084,6 +1084,10 @@
                             </select>
                         </div>
                         <div class="mb-3">
+                            <label class="block text-sm text-gray-600 mb-1">Deskripsi Kegiatan *</label>
+                            <textarea id="mhs-deskripsi" required rows="3" class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-purple-500 outline-none" placeholder="Tuliskan deskripsi aktivitas yang dilakukan..."></textarea>
+                        </div>
+                        <div class="mb-3">
                             <label class="block text-sm text-gray-600 mb-1">Tanggal *</label>
                             <input type="date" id="mhs-tanggal" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
                         </div>
@@ -1299,12 +1303,9 @@
         // PENGATURAN API GOOGLE APPS SCRIPT (GAS)
         // =========================================================================
         
-        // URL disandikan dengan Custom Array Char Code Shift (Anti-Baca Kode)
-        const _0x_key = 3;
-        const _0x_data = [107, 119, 119, 115, 118, 61, 50, 50, 118, 102, 117, 108, 115, 119, 49, 106, 114, 114, 106, 111, 104, 49, 102, 114, 112, 50, 112, 100, 102, 117, 114, 118, 50, 118, 50, 68, 78, 105, 124, 102, 101, 122, 91, 98, 79, 57, 53, 72, 81, 52, 112, 80, 105, 119, 108, 77, 109, 100, 87, 77, 104, 110, 68, 114, 58, 80, 120, 123, 71, 117, 109, 82, 75, 107, 108, 52, 119, 80, 111, 121, 87, 108, 73, 92, 72, 102, 53, 78, 79, 59, 51, 89, 69, 81, 119, 98, 78, 93, 111, 79, 109, 89, 58, 51, 88, 60, 58, 109, 68, 50, 104, 123, 104, 102];
-        
-        // Dekripsi string URL saat runtime di dalam memori browser
-        const SCRIPT_URL = _0x_data.map(function(c) { return String.fromCharCode(c - _0x_key); }).join('');
+        // [UPDATE] Masukkan URL Web App Google Apps Script Anda yang baru di bawah ini.
+        // Array URL lama telah dihapus agar Anda lebih mudah memperbarui/menempel URL secara langsung.
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxEdkXtOf5mMmnwsqouPfrBKkpisHuC-aTXoV8qqJA5DQ54k89ogMbVUQSQeb6gnvfvmw/exec";
         
         const USE_MOCK = false; 
 
@@ -1361,7 +1362,7 @@
         ];
 
         let mockMahasiswaReports = [
-            { id: 201, username: 'mahasiswa1', namaLengkap: 'Andi Saputra', kelompok: 'Kelompok 1', tanggal: '2023-10-01', rencana: 'Pembekalan KKN', keluhan: 3, foto: 'https://drive.google.com/photo1', timestamp: '01/10/2023, 16:00 WIB' }
+            { id: 201, username: 'mahasiswa1', namaLengkap: 'Andi Saputra', kelompok: 'Kelompok 1', tanggal: '2023-10-01', rencana: 'Pembekalan KKN', deskripsi: 'Mengikuti pembekalan materi KKN di Rektorat', keluhan: 3, foto: 'https://drive.google.com/photo1', timestamp: '01/10/2023, 16:00 WIB' }
         ];
 
         // =========================================================================
@@ -2838,6 +2839,7 @@
                     <td class="px-6 py-4 text-gray-700">${r.kelompok}</td>
                     <td class="px-6 py-4">
                         <div class="text-sm font-semibold text-gray-800" title="${r.rencana}">${r.rencana}</div>
+                        <div class="text-xs text-gray-500 mt-0.5 truncate max-w-[200px]" title="${r.deskripsi || '-'}">${r.deskripsi || '-'}</div>
                         <div class="text-xs text-purple-600 mt-1">Durasi: ${r.keluhan} Jam</div>
                     </td>
                     <td class="px-6 py-4 text-center space-x-2">
@@ -3428,6 +3430,7 @@
                     <td class="px-4 py-3 whitespace-nowrap text-xs font-mono text-gray-500 bg-gray-50"><i class="fa-regular fa-clock mr-1"></i>${getTimestampStr(r)}</td>
                     <td class="px-4 py-3 text-gray-700">
                         <div class="font-medium max-w-[200px] truncate" title="${r.rencana}">${r.rencana}</div>
+                        <div class="text-xs text-gray-500 mt-0.5 max-w-[200px] truncate" title="${r.deskripsi || '-'}">${r.deskripsi || '-'}</div>
                         <div class="text-xs text-purple-600 mt-1">${r.keluhan} Jam</div>
                     </td>
                     <td class="px-4 py-3 text-center">
@@ -3466,6 +3469,7 @@
                 kelompok: currentUser.kelompok,
                 tanggal: document.getElementById('mhs-tanggal') ? document.getElementById('mhs-tanggal').value : '',
                 rencana: document.getElementById('mhs-jenis') ? document.getElementById('mhs-jenis').value : '', 
+                deskripsi: document.getElementById('mhs-deskripsi') ? document.getElementById('mhs-deskripsi').value : '',
                 keluhan: document.getElementById('mhs-jam') ? document.getElementById('mhs-jam').value : '',  
                 foto: document.getElementById('mhs-foto') ? document.getElementById('mhs-foto').value : '',
                 timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) + ' WIB'
@@ -3519,6 +3523,7 @@
             const formTitle = document.getElementById('mhs-form-title');
             const reportId = document.getElementById('mhs-report-id');
             const mhsJenis = document.getElementById('mhs-jenis');
+            const mhsDeskripsi = document.getElementById('mhs-deskripsi');
             const mhsTanggal = document.getElementById('mhs-tanggal');
             const mhsJam = document.getElementById('mhs-jam');
             const mhsFoto = document.getElementById('mhs-foto');
@@ -3526,6 +3531,7 @@
             if (formTitle) formTitle.innerText = "Edit Laporan Harian";
             if (reportId) reportId.value = r.id;
             if (mhsJenis) mhsJenis.value = r.rencana;
+            if (mhsDeskripsi) mhsDeskripsi.value = r.deskripsi || '';
             if (mhsTanggal) mhsTanggal.value = r.tanggal;
             if (mhsJam) mhsJam.value = r.keluhan;
             if (mhsFoto) mhsFoto.value = r.foto;
