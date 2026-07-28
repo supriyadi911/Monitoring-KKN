@@ -11,8 +11,8 @@
     <!-- jsPDF & AutoTable untuk Cetak PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-    <!-- SheetJS (XLSX) untuk Unduh Excel -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- SheetJS Style untuk Unduh Excel Berwarna -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <!-- FontAwesome untuk Ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -3102,19 +3102,66 @@
                 return {
                     "No": i + 1,
                     "Nama Mahasiswa": m.namaLengkap || m.username,
-                    "NIM / NPM": m.nip || '-',
-                    "Kelompok KKN": m.kelompok || '-',
-                    "Total Jam Harian": m.totalJam,
-                    "Persentase Ketercapaian": pct.toFixed(2).replace('.', ',') + '%'
+                    "NIM": m.nip || '-',
+                    "Kelompok": m.kelompok || '-',
+                    "Total Jam": m.totalJam,
+                    "Ketercapaian": pct.toFixed(2).replace('.', ',') + '%'
                 };
             });
 
             const worksheet = XLSX.utils.json_to_sheet(dataToExport);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Rekap_Jam_Mahasiswa");
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Rekap_Jam");
             
             // Atur lebar kolom Excel
-            worksheet['!cols'] = [ {wch:5}, {wch:30}, {wch:15}, {wch:25}, {wch:15}, {wch:20} ];
+            worksheet['!cols'] = [ 
+                {wch: 5},   // No
+                {wch: 35},  // Nama Mahasiswa
+                {wch: 20},  // NIM
+                {wch: 35},  // Kelompok
+                {wch: 12},  // Total Jam
+                {wch: 15}   // Ketercapaian
+            ];
+
+            // Memberikan Styling Border, Alignment, dan Warna Tabel
+            const range = XLSX.utils.decode_range(worksheet['!ref']);
+            for (let R = range.s.r; R <= range.e.r; ++R) {
+                for (let C = range.s.c; C <= range.e.c; ++C) {
+                    const cell_address = {c: C, r: R};
+                    const cell_ref = XLSX.utils.encode_cell(cell_address);
+                    if (!worksheet[cell_ref]) continue;
+
+                    // Gaya Border (Garis Hitam)
+                    const borderStyle = {
+                        top: { style: "thin", color: { rgb: "000000" } },
+                        bottom: { style: "thin", color: { rgb: "000000" } },
+                        left: { style: "thin", color: { rgb: "000000" } },
+                        right: { style: "thin", color: { rgb: "000000" } }
+                    };
+
+                    if (R === 0) {
+                        // Styling untuk Baris Header (Warna Ungu & Huruf Putih Bold)
+                        worksheet[cell_ref].s = {
+                            fill: { fgColor: { rgb: "7030A0" } },
+                            font: { bold: true, color: { rgb: "FFFFFF" } },
+                            alignment: { horizontal: "center", vertical: "center" },
+                            border: borderStyle
+                        };
+                    } else {
+                        // Styling untuk Baris Data (Border & Alignment)
+                        let align = "left";
+                        // Rata tengah (Center) untuk kolom No, Total Jam, & Ketercapaian
+                        if (C === 0 || C === 4 || C === 5) {
+                            align = "center";
+                        }
+                        
+                        worksheet[cell_ref].s = {
+                            alignment: { horizontal: align, vertical: "center" },
+                            border: borderStyle
+                        };
+                    }
+                }
+            }
 
             const filterKlp = document.getElementById('filter-rekap-kelompok').value || "Semua_Kelompok";
             const fileName = `Rekap_Jam_KKN_${filterKlp.replace(/\s+/g, '_')}.xlsx`;
