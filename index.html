@@ -104,37 +104,103 @@
                 </div>
             </div>
             
-            <!-- Statistik Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500 flex items-center justify-between">
+            <!-- Statistik Kepatuhan Lapor (Publik) -->
+            <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Status Kepatuhan Lapor (Berdasarkan Akun Terdaftar)</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <!-- Kelompok Transformatif -->
+                <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-blue-500 flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-500 font-medium uppercase">Laporan Kelompok</p>
-                        <div class="flex items-center space-x-2 mt-1">
-                            <p class="text-3xl font-bold text-gray-800" id="public-stat-kelompok">0</p>
-                            <span class="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded-full" id="public-pct-kel">0%</span>
+                        <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Kelp. Transformatif (1-116)</p>
+                        <div class="mt-1">
+                            <p class="text-2xl font-bold text-gray-800" id="pub-stat-groups-trans">0</p>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <span class="text-[10px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded"><span id="pub-count-rep-groups-trans">0</span> Sudah Lapor</span>
+                                <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded" id="pub-pct-groups-trans">0%</span>
+                            </div>
                         </div>
                     </div>
-                    <i class="fa-solid fa-users text-4xl text-blue-200"></i>
+                    <i class="fa-solid fa-users text-4xl text-blue-100"></i>
                 </div>
-                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-purple-500 flex items-center justify-between">
+                <!-- Kelompok Lingkar Kampus -->
+                <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-cyan-500 flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-500 font-medium uppercase">Laporan Mahasiswa</p>
-                        <div class="flex items-center space-x-2 mt-1">
-                            <p class="text-3xl font-bold text-gray-800" id="public-stat-mahasiswa">0</p>
-                            <span class="text-xs font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded-full" id="public-pct-mhs">0%</span>
+                        <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Kelp. Lingkar Kampus</p>
+                        <div class="mt-1">
+                            <p class="text-2xl font-bold text-gray-800" id="pub-stat-groups-lingkar">0</p>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <span class="text-[10px] font-bold text-cyan-800 bg-cyan-100 px-2 py-0.5 rounded"><span id="pub-count-rep-groups-lingkar">0</span> Sudah Lapor</span>
+                                <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded" id="pub-pct-groups-lingkar">0%</span>
+                            </div>
                         </div>
                     </div>
-                    <i class="fa-solid fa-user-graduate text-4xl text-purple-200"></i>
+                    <i class="fa-solid fa-building-columns text-4xl text-cyan-100"></i>
                 </div>
-                <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500 flex items-center justify-between">
+                <!-- DPL (Dinaikkan agar sejajar) -->
+                <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-green-500 flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-500 font-medium uppercase">Laporan DPL</p>
-                        <div class="flex items-center space-x-2 mt-1">
-                            <p class="text-3xl font-bold text-gray-800" id="public-stat-dpl">0</p>
-                            <span class="text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded-full" id="public-pct-dpl">0%</span>
+                        <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Total DPL Terdaftar</p>
+                        <div class="mt-1">
+                            <p class="text-2xl font-bold text-gray-800" id="pub-stat-dpl">0</p>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded"><span id="pub-count-rep-dpl">0</span> Sudah Lapor</span>
+                                <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded" id="pub-pct-dpl">0%</span>
+                            </div>
                         </div>
                     </div>
-                    <i class="fa-solid fa-user-tie text-4xl text-green-200"></i>
+                    <i class="fa-solid fa-user-tie text-4xl text-green-100"></i>
+                </div>
+                <!-- Mahasiswa Transformatif -->
+                <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-purple-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Mhs. Transformatif</p>
+                        <div class="mt-1">
+                            <p class="text-2xl font-bold text-gray-800" id="pub-stat-mhs-trans">0</p>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <span class="text-[10px] font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded"><span id="pub-count-rep-mhs-trans">0</span> Sudah Lapor</span>
+                                <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded" id="pub-pct-mhs-trans">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-user-graduate text-4xl text-purple-100"></i>
+                </div>
+                <!-- Mahasiswa Lingkar Kampus -->
+                <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-fuchsia-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Mhs. Lingkar Kampus</p>
+                        <div class="mt-1">
+                            <p class="text-2xl font-bold text-gray-800" id="pub-stat-mhs-lingkar">0</p>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <span class="text-[10px] font-bold text-fuchsia-800 bg-fuchsia-100 px-2 py-0.5 rounded"><span id="pub-count-rep-mhs-lingkar">0</span> Sudah Lapor</span>
+                                <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded" id="pub-pct-mhs-lingkar">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-graduation-cap text-4xl text-fuchsia-100"></i>
+                </div>
+            </div>
+
+            <!-- Statistik Dokumen Laporan (Publik) -->
+            <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Total Dokumen Laporan Diterima</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+                <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-400 flex flex-col justify-center">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. Kelp. Transformatif</p>
+                    <p class="text-xl font-bold text-gray-800" id="pub-stat-rep-kel-trans">0</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-cyan-400 flex flex-col justify-center">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. Kelp. Lingkar</p>
+                    <p class="text-xl font-bold text-gray-800" id="pub-stat-rep-kel-lingkar">0</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-purple-400 flex flex-col justify-center">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. Mhs. Transformatif</p>
+                    <p class="text-xl font-bold text-gray-800" id="pub-stat-rep-mhs-trans">0</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-fuchsia-400 flex flex-col justify-center">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. Mhs. Lingkar</p>
+                    <p class="text-xl font-bold text-gray-800" id="pub-stat-rep-mhs-lingkar">0</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-green-400 flex flex-col justify-center">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Laporan DPL</p>
+                    <p class="text-xl font-bold text-gray-800" id="pub-stat-rep-dpl">0</p>
                 </div>
             </div>
 
@@ -344,12 +410,51 @@
                     <button onclick="switchAdminTab('dashboard')" id="tab-btn-dashboard" class="w-full flex items-center px-4 py-3 bg-blue-600 text-white rounded-lg transition font-medium shadow-sm">
                         <i class="fa-solid fa-chart-pie w-6 text-center"></i> Dashboard
                     </button>
-                    <button onclick="switchAdminTab('kelompok')" id="tab-btn-kelompok" class="w-full flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium">
-                        <i class="fa-solid fa-users w-6 text-center"></i> Laporan Kelompok
-                    </button>
-                    <button onclick="switchAdminTab('mahasiswa')" id="tab-btn-mahasiswa" class="w-full flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium">
-                        <i class="fa-solid fa-user-graduate w-6 text-center"></i> Laporan Mahasiswa
-                    </button>
+                    
+                    <!-- Menu Utama: Laporan Mahasiswa (Accordion) -->
+                    <div class="space-y-1">
+                        <button onclick="toggleSidebarMenu('laporan-mhs-menu', 'icon-laporan-mhs')" class="w-full flex justify-between items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium">
+                            <div class="flex items-center"><i class="fa-solid fa-folder w-6 text-center"></i> <span class="ml-1">Laporan Mahasiswa</span></div>
+                            <i id="icon-laporan-mhs" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
+                        </button>
+                        
+                        <div id="laporan-mhs-menu" class="hidden flex-col space-y-1 pl-4">
+                            
+                            <!-- Sub Menu 1: Transformatif -->
+                            <div class="space-y-1">
+                                <button onclick="toggleSidebarMenu('transformatif-menu', 'icon-transformatif')" class="w-full flex justify-between items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium text-sm">
+                                    <div class="flex items-center"><i class="fa-solid fa-layer-group w-5 text-center"></i> <span class="ml-1">Transformatif</span></div>
+                                    <i id="icon-transformatif" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
+                                </button>
+                                <div id="transformatif-menu" class="hidden flex-col space-y-1 pl-4">
+                                    <button onclick="openSubKelompok('1-116')" id="tab-btn-kelompok-reguler" class="w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition flex items-center">
+                                        <i class="fa-solid fa-users w-4 text-center mr-1"></i> Kelp. Transformatif (1-116)
+                                    </button>
+                                    <button onclick="openSubMahasiswa('1-116')" id="tab-btn-mahasiswa-reguler" class="w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition flex items-center">
+                                        <i class="fa-solid fa-user w-4 text-center mr-1"></i> Mahasiswa Transformatif
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Sub Menu 2: Lingkar Kampus -->
+                            <div class="space-y-1">
+                                <button onclick="toggleSidebarMenu('lingkar-menu', 'icon-lingkar')" class="w-full flex justify-between items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium text-sm">
+                                    <div class="flex items-center"><i class="fa-solid fa-building-columns w-5 text-center"></i> <span class="ml-1">Lingkar Kampus</span></div>
+                                    <i id="icon-lingkar" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
+                                </button>
+                                <div id="lingkar-menu" class="hidden flex-col space-y-1 pl-4">
+                                    <button onclick="openSubKelompok('Lingkar Kampus')" id="tab-btn-kelompok-lingkar" class="w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition flex items-center">
+                                        <i class="fa-solid fa-users w-4 text-center mr-1"></i> Kelompok Lingkar Kampus
+                                    </button>
+                                    <button onclick="openSubMahasiswa('Lingkar Kampus')" id="tab-btn-mahasiswa-lingkar" class="w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition flex items-center">
+                                        <i class="fa-solid fa-user w-4 text-center mr-1"></i> Mahasiswa Lingkar Kampus
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                     <button onclick="switchAdminTab('dpl')" id="tab-btn-dpl" class="w-full flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium">
                         <i class="fa-solid fa-user-tie w-6 text-center"></i> Laporan DPL
                     </button>
@@ -383,74 +488,103 @@
                         </div>
                     </div>
                     
-                    <!-- Statistik Cards -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                    <!-- Statistik Kepatuhan Lapor (DIPERBARUI) -->
+                    <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Status Kepatuhan Lapor (Berdasarkan Akun Terdaftar)</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <!-- Kelompok Transformatif -->
                         <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-blue-500 flex items-center justify-between">
                             <div>
-                                <p class="text-xs text-gray-500 font-medium uppercase">Total Kelompok</p>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Kelp. Transformatif (1-116)</p>
                                 <div class="mt-1">
-                                    <p class="text-2xl font-bold text-gray-800" id="stat-groups">0</p>
-                                    <div class="flex flex-col space-y-1 mt-2">
-                                        <span class="text-[10px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded w-max"><span id="count-rep-groups">0</span> Sudah Lapor</span>
-                                        <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded w-max" id="pct-groups">0%</span>
+                                    <p class="text-2xl font-bold text-gray-800" id="stat-groups-trans">0</p>
+                                    <div class="flex items-center space-x-2 mt-2">
+                                        <span class="text-[10px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded"><span id="count-rep-groups-trans">0</span> Sudah Lapor</span>
+                                        <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded" id="pct-groups-trans">0%</span>
                                     </div>
                                 </div>
                             </div>
-                            <i class="fa-solid fa-users text-4xl text-blue-200"></i>
+                            <i class="fa-solid fa-users text-4xl text-blue-100"></i>
                         </div>
-                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-purple-500 flex items-center justify-between">
+                        <!-- Kelompok Lingkar Kampus -->
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-cyan-500 flex items-center justify-between">
                             <div>
-                                <p class="text-xs text-gray-500 font-medium uppercase">Total Mahasiswa</p>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Kelp. Lingkar Kampus</p>
                                 <div class="mt-1">
-                                    <p class="text-2xl font-bold text-gray-800" id="stat-mhs">0</p>
-                                    <div class="flex flex-col space-y-1 mt-2">
-                                        <span class="text-[10px] font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded w-max"><span id="count-rep-mhs">0</span> Sudah Lapor</span>
-                                        <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded w-max" id="pct-mhs">0%</span>
+                                    <p class="text-2xl font-bold text-gray-800" id="stat-groups-lingkar">0</p>
+                                    <div class="flex items-center space-x-2 mt-2">
+                                        <span class="text-[10px] font-bold text-cyan-800 bg-cyan-100 px-2 py-0.5 rounded"><span id="count-rep-groups-lingkar">0</span> Sudah Lapor</span>
+                                        <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded" id="pct-groups-lingkar">0%</span>
                                     </div>
                                 </div>
                             </div>
-                            <i class="fa-solid fa-user-graduate text-4xl text-purple-200"></i>
+                            <i class="fa-solid fa-building-columns text-4xl text-cyan-100"></i>
                         </div>
+                        <!-- DPL (Dinaikkan agar sejajar) -->
                         <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-green-500 flex items-center justify-between">
                             <div>
-                                <p class="text-xs text-gray-500 font-medium uppercase">Total DPL</p>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Total DPL Terdaftar</p>
                                 <div class="mt-1">
                                     <p class="text-2xl font-bold text-gray-800" id="stat-dpl">0</p>
-                                    <div class="flex flex-col space-y-1 mt-2">
-                                        <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded w-max"><span id="count-rep-dpl">0</span> Sudah Lapor</span>
-                                        <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded w-max" id="pct-dpl">0%</span>
+                                    <div class="flex items-center space-x-2 mt-2">
+                                        <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded"><span id="count-rep-dpl">0</span> Sudah Lapor</span>
+                                        <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded" id="pct-dpl">0%</span>
                                     </div>
                                 </div>
                             </div>
-                            <i class="fa-solid fa-user-tie text-4xl text-green-200"></i>
+                            <i class="fa-solid fa-user-tie text-4xl text-green-100"></i>
                         </div>
-                        
-                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-blue-400 flex items-center justify-between">
+                        <!-- Mahasiswa Transformatif -->
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-purple-500 flex items-center justify-between">
                             <div>
-                                <p class="text-xs text-gray-500 font-medium uppercase">Lap. Kelompok</p>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Mhs. Transformatif</p>
                                 <div class="mt-1">
-                                    <p class="text-2xl font-bold text-gray-800" id="stat-rep-kel">0</p>
+                                    <p class="text-2xl font-bold text-gray-800" id="stat-mhs-trans">0</p>
+                                    <div class="flex items-center space-x-2 mt-2">
+                                        <span class="text-[10px] font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded"><span id="count-rep-mhs-trans">0</span> Sudah Lapor</span>
+                                        <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded" id="pct-mhs-trans">0%</span>
+                                    </div>
                                 </div>
                             </div>
-                            <i class="fa-solid fa-file-lines text-3xl text-blue-200"></i>
+                            <i class="fa-solid fa-user-graduate text-4xl text-purple-100"></i>
                         </div>
-                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-purple-400 flex items-center justify-between">
+                        <!-- Mahasiswa Lingkar Kampus -->
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-fuchsia-500 flex items-center justify-between">
                             <div>
-                                <p class="text-xs text-gray-500 font-medium uppercase">Lap. Mahasiswa</p>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Mhs. Lingkar Kampus</p>
                                 <div class="mt-1">
-                                    <p class="text-2xl font-bold text-gray-800" id="stat-rep-mhs">0</p>
+                                    <p class="text-2xl font-bold text-gray-800" id="stat-mhs-lingkar">0</p>
+                                    <div class="flex items-center space-x-2 mt-2">
+                                        <span class="text-[10px] font-bold text-fuchsia-800 bg-fuchsia-100 px-2 py-0.5 rounded"><span id="count-rep-mhs-lingkar">0</span> Sudah Lapor</span>
+                                        <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded" id="pct-mhs-lingkar">0%</span>
+                                    </div>
                                 </div>
                             </div>
-                            <i class="fa-solid fa-file-signature text-3xl text-purple-200"></i>
+                            <i class="fa-solid fa-graduation-cap text-4xl text-fuchsia-100"></i>
                         </div>
-                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-green-400 flex items-center justify-between">
-                            <div>
-                                <p class="text-xs text-gray-500 font-medium uppercase">Lap. DPL</p>
-                                <div class="mt-1">
-                                    <p class="text-2xl font-bold text-gray-800" id="stat-rep-dpl">0</p>
-                                </div>
-                            </div>
-                            <i class="fa-solid fa-file-contract text-3xl text-green-200"></i>
+                    </div>
+
+                    <!-- Statistik Dokumen Laporan (DIPERBARUI) -->
+                    <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Total Dokumen Laporan Diterima</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+                        <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-400 flex flex-col justify-center">
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. Kelp. Transformatif</p>
+                            <p class="text-xl font-bold text-gray-800" id="stat-rep-kel-trans">0</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-cyan-400 flex flex-col justify-center">
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. Kelp. Lingkar</p>
+                            <p class="text-xl font-bold text-gray-800" id="stat-rep-kel-lingkar">0</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-purple-400 flex flex-col justify-center">
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. Mhs. Transformatif</p>
+                            <p class="text-xl font-bold text-gray-800" id="stat-rep-mhs-trans">0</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-fuchsia-400 flex flex-col justify-center">
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. Mhs. Lingkar</p>
+                            <p class="text-xl font-bold text-gray-800" id="stat-rep-mhs-lingkar">0</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-green-400 flex flex-col justify-center">
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Laporan DPL</p>
+                            <p class="text-xl font-bold text-gray-800" id="stat-rep-dpl">0</p>
                         </div>
                     </div>
 
@@ -1849,16 +1983,74 @@
                     if (t === tabId) content.classList.remove('hidden');
                     else content.classList.add('hidden');
                 }
-                
-                const btn = document.getElementById('tab-btn-' + t);
+            });
+
+            // 1. Reset all buttons styling
+            const allBtnIds = [
+                'tab-btn-dashboard', 'tab-btn-dpl', 'tab-btn-akun',
+                'tab-btn-kelompok-reguler', 'tab-btn-kelompok-lingkar',
+                'tab-btn-mahasiswa-reguler', 'tab-btn-mahasiswa-lingkar'
+            ];
+            allBtnIds.forEach(id => {
+                const btn = document.getElementById(id);
                 if (btn) {
-                    if (t === tabId) {
-                        btn.className = 'w-full flex items-center px-4 py-3 bg-blue-600 text-white rounded-lg transition font-medium shadow-sm';
+                    btn.classList.remove('bg-blue-600', 'text-white', 'shadow-sm');
+                    if (id.startsWith('tab-btn-kelompok') || id.startsWith('tab-btn-mahasiswa')) {
+                        btn.classList.add('text-gray-400', 'hover:bg-gray-700');
                     } else {
-                        btn.className = 'w-full flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium';
+                        btn.classList.add('text-gray-300', 'hover:bg-gray-700');
                     }
                 }
             });
+
+            // 2. Determine active button ID & manage accordion states
+            let activeBtnId = 'tab-btn-' + tabId;
+            
+            if (tabId === 'kelompok' || tabId === 'mahasiswa') {
+                const searchInputId = tabId === 'kelompok' ? 'search-kelompok' : 'search-mhs';
+                const searchTxt = document.getElementById(searchInputId) ? document.getElementById(searchInputId).value.toLowerCase() : '';
+                
+                if (searchTxt === 'lingkar kampus') {
+                    activeBtnId = tabId === 'kelompok' ? 'tab-btn-kelompok-lingkar' : 'tab-btn-mahasiswa-lingkar';
+                } else {
+                    activeBtnId = tabId === 'kelompok' ? 'tab-btn-kelompok-reguler' : 'tab-btn-mahasiswa-reguler';
+                }
+                
+                // Expand parent menu (Laporan Mahasiswa)
+                const parentMenu = document.getElementById('laporan-mhs-menu');
+                const parentIcon = document.getElementById('icon-laporan-mhs');
+                if (parentMenu && parentMenu.classList.contains('hidden')) {
+                    parentMenu.classList.remove('hidden');
+                    parentMenu.classList.add('flex');
+                    if (parentIcon) parentIcon.classList.add('rotate-180');
+                }
+
+                // Expand sub menu (Transformatif atau Lingkar Kampus)
+                if (searchTxt === 'lingkar kampus') {
+                    const subMenu = document.getElementById('lingkar-menu');
+                    const subIcon = document.getElementById('icon-lingkar');
+                    if (subMenu && subMenu.classList.contains('hidden')) {
+                        subMenu.classList.remove('hidden');
+                        subMenu.classList.add('flex');
+                        if (subIcon) subIcon.classList.add('rotate-180');
+                    }
+                } else {
+                    const subMenu = document.getElementById('transformatif-menu');
+                    const subIcon = document.getElementById('icon-transformatif');
+                    if (subMenu && subMenu.classList.contains('hidden')) {
+                        subMenu.classList.remove('hidden');
+                        subMenu.classList.add('flex');
+                        if (subIcon) subIcon.classList.add('rotate-180');
+                    }
+                }
+            }
+
+            // 3. Highlight the active button
+            const activeBtn = document.getElementById(activeBtnId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-300', 'text-gray-400', 'hover:bg-gray-700');
+                activeBtn.classList.add('bg-blue-600', 'text-white', 'shadow-sm');
+            }
             
             if (tabId === 'akun') {
                 const adminAkunTableBody = document.getElementById('admin-akun-table-body');
@@ -1874,6 +2066,49 @@
                     sidebar.classList.add('-translate-x-full');
                 }
             }
+        }
+
+        // Fungsi Helper untuk membuka / menutup menu akordion Sidebar
+        function toggleSidebarMenu(menuId, iconId) {
+            const menu = document.getElementById(menuId);
+            const icon = document.getElementById(iconId);
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('flex');
+                if (icon) icon.classList.add('rotate-180');
+            } else {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+                if (icon) icon.classList.remove('rotate-180');
+            }
+        }
+
+        // Fungsi Helper untuk membuka Laporan Kelompok dengan filter otomatis
+        function openSubKelompok(filterStr) {
+            const searchInput = document.getElementById('search-kelompok');
+            if (searchInput) {
+                if (filterStr === 'Lingkar Kampus') {
+                    searchInput.value = 'Lingkar Kampus';
+                } else {
+                    searchInput.value = ''; // Mengosongkan filter mencari semua kelompok (termasuk 1-116)
+                }
+                applyAdminKelompokFilters();
+            }
+            switchAdminTab('kelompok');
+        }
+
+        // Fungsi Helper untuk membuka Laporan Mahasiswa dengan filter otomatis
+        function openSubMahasiswa(filterStr) {
+            const searchInput = document.getElementById('search-mhs');
+            if (searchInput) {
+                if (filterStr === 'Lingkar Kampus') {
+                    searchInput.value = 'Lingkar Kampus';
+                } else {
+                    searchInput.value = ''; // Mengosongkan filter mencari semua mahasiswa (termasuk reguler/transformatif)
+                }
+                applyAdminMhsFilters();
+            }
+            switchAdminTab('mahasiswa');
         }
 
         async function fetchAdminAccounts() {
@@ -2190,49 +2425,80 @@
             const publicFilterDate = document.getElementById('public-filter-date');
             const dateFilter = publicFilterDate ? publicFilterDate.value : '';
 
-            let fKel = reportsData;
-            let fMhs = mahasiswaReportsData;
-            let fDpl = dplReportsData;
+            const globalKel = dateFilter ? reportsData.filter(r => r.date === dateFilter) : reportsData;
+            const globalMhs = dateFilter ? mahasiswaReportsData.filter(r => r.tanggal === dateFilter) : mahasiswaReportsData;
+            const globalDpl = dateFilter ? dplReportsData.filter(r => r.tanggal === dateFilter) : dplReportsData;
 
-            if (dateFilter) {
-                fKel = fKel.filter(r => r.date === dateFilter);
-                fMhs = fMhs.filter(r => r.tanggal === dateFilter);
-                fDpl = fDpl.filter(r => r.tanggal === dateFilter);
-            }
+            // 2. Dapatkan Semua Akun Aktif Terdaftar
+            const allGroups = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'kelompok');
+            const allMhs = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'mahasiswa');
+            const allDpls = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'dpl');
 
-            const elStatKelompok = document.getElementById('public-stat-kelompok');
-            const elStatMhs = document.getElementById('public-stat-mahasiswa');
-            const elStatDpl = document.getElementById('public-stat-dpl');
+            // [PEMISAHAN KELOMPOK TRANSFORMATIF & LINGKAR KAMPUS]
+            const isLingkar = (str) => String(str).toLowerCase().replace(/\s/g, '').includes('lingkarkampus');
+
+            const groupsTrans = allGroups.filter(g => !isLingkar(g.username) && !isLingkar(g.namaLengkap));
+            const groupsLingkar = allGroups.filter(g => isLingkar(g.username) || isLingkar(g.namaLengkap));
+            const mhsTrans = allMhs.filter(m => !isLingkar(m.kelompok));
+            const mhsLingkar = allMhs.filter(m => isLingkar(m.kelompok));
+
+            const valTotalGroupsTrans = groupsTrans.length || (USE_MOCK ? 1 : 0);
+            const valTotalGroupsLingkar = groupsLingkar.length || (USE_MOCK ? 1 : 0);
+            const valTotalMhsTrans = mhsTrans.length || (USE_MOCK ? 1 : 0);
+            const valTotalMhsLingkar = mhsLingkar.length || (USE_MOCK ? 0 : 0);
+            const valTotalDpl = allDpls.length || (USE_MOCK ? 1 : 0);
+
+            // Update Angka Statistik Utama (Total Terdaftar) pada UI
+            if (document.getElementById('pub-stat-groups-trans')) document.getElementById('pub-stat-groups-trans').innerText = valTotalGroupsTrans;
+            if (document.getElementById('pub-stat-groups-lingkar')) document.getElementById('pub-stat-groups-lingkar').innerText = valTotalGroupsLingkar;
+            if (document.getElementById('pub-stat-mhs-trans')) document.getElementById('pub-stat-mhs-trans').innerText = valTotalMhsTrans;
+            if (document.getElementById('pub-stat-mhs-lingkar')) document.getElementById('pub-stat-mhs-lingkar').innerText = valTotalMhsLingkar;
+            if (document.getElementById('pub-stat-dpl')) document.getElementById('pub-stat-dpl').innerText = valTotalDpl;
+
+            // Pemisahan Dokumen Laporan berdasarkan kategori
+            const repKelTrans = globalKel.filter(r => !isLingkar(r.group));
+            const repKelLingkar = globalKel.filter(r => isLingkar(r.group));
+            const repMhsTrans = globalMhs.filter(r => !isLingkar(r.kelompok));
+            const repMhsLingkar = globalMhs.filter(r => isLingkar(r.kelompok));
+
+            // 3. Ekstrak Username unik yang Ada di Dalam Laporan
+            const reportedGroupsTransSet = new Set(repKelTrans.map(r => String(r.group).toLowerCase().trim()));
+            const reportedGroupsLingkarSet = new Set(repKelLingkar.map(r => String(r.group).toLowerCase().trim()));
+            const reportedMhsTransSet = new Set(repMhsTrans.map(r => String(r.username).toLowerCase().trim()));
+            const reportedMhsLingkarSet = new Set(repMhsLingkar.map(r => String(r.username).toLowerCase().trim()));
+            const reportedDplsSet = new Set(globalDpl.map(r => String(r.username).toLowerCase().trim()));
+
+            // 4. Hitung Pasti "Sudah Lapor" dari Akun Terdaftar
+            const countRepGrpTrans = groupsTrans.filter(g => reportedGroupsTransSet.has(String(g.username).toLowerCase().trim())).length;
+            const countRepGrpLingkar = groupsLingkar.filter(g => reportedGroupsLingkarSet.has(String(g.username).toLowerCase().trim())).length;
+            const countRepMhsTrans = mhsTrans.filter(m => reportedMhsTransSet.has(String(m.username).toLowerCase().trim())).length;
+            const countRepMhsLingkar = mhsLingkar.filter(m => reportedMhsLingkarSet.has(String(m.username).toLowerCase().trim())).length;
+            const reportedDpls = allDpls.filter(d => reportedDplsSet.has(String(d.username).toLowerCase().trim()));
+
+            // 5. Update UI Angka "Sudah Lapor"
+            if (document.getElementById('pub-count-rep-groups-trans')) document.getElementById('pub-count-rep-groups-trans').innerText = countRepGrpTrans;
+            if (document.getElementById('pub-count-rep-groups-lingkar')) document.getElementById('pub-count-rep-groups-lingkar').innerText = countRepGrpLingkar;
+            if (document.getElementById('pub-count-rep-mhs-trans')) document.getElementById('pub-count-rep-mhs-trans').innerText = countRepMhsTrans;
+            if (document.getElementById('pub-count-rep-mhs-lingkar')) document.getElementById('pub-count-rep-mhs-lingkar').innerText = countRepMhsLingkar;
+            if (document.getElementById('pub-count-rep-dpl')) document.getElementById('pub-count-rep-dpl').innerText = reportedDpls.length;
+
+            // 6. Kalkulasi & Update Badge Persentase "Sudah Lapor"
+            const calcPct = (part, total) => total ? ((part / total) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
             
-            const elPctKel = document.getElementById('public-pct-kel');
-            const elPctMhs = document.getElementById('public-pct-mhs');
-            const elPctDpl = document.getElementById('public-pct-dpl');
+            if (document.getElementById('pub-pct-groups-trans')) document.getElementById('pub-pct-groups-trans').innerText = `${calcPct(countRepGrpTrans, valTotalGroupsTrans)}%`;
+            if (document.getElementById('pub-pct-groups-lingkar')) document.getElementById('pub-pct-groups-lingkar').innerText = `${calcPct(countRepGrpLingkar, valTotalGroupsLingkar)}%`;
+            if (document.getElementById('pub-pct-mhs-trans')) document.getElementById('pub-pct-mhs-trans').innerText = `${calcPct(countRepMhsTrans, valTotalMhsTrans)}%`;
+            if (document.getElementById('pub-pct-mhs-lingkar')) document.getElementById('pub-pct-mhs-lingkar').innerText = `${calcPct(countRepMhsLingkar, valTotalMhsLingkar)}%`;
+            if (document.getElementById('pub-pct-dpl')) document.getElementById('pub-pct-dpl').innerText = `${calcPct(reportedDpls.length, valTotalDpl)}%`;
 
-            // Set Total Laporan
-            if (elStatKelompok) elStatKelompok.innerText = fKel.length;
-            if (elStatMhs) elStatMhs.innerText = fMhs.length;
-            if (elStatDpl) elStatDpl.innerText = fDpl.length;
+            // 7. Update Total Keseluruhan Dokumen Laporan
+            if (document.getElementById('pub-stat-rep-kel-trans')) document.getElementById('pub-stat-rep-kel-trans').innerText = repKelTrans.length;
+            if (document.getElementById('pub-stat-rep-kel-lingkar')) document.getElementById('pub-stat-rep-kel-lingkar').innerText = repKelLingkar.length;
+            if (document.getElementById('pub-stat-rep-mhs-trans')) document.getElementById('pub-stat-rep-mhs-trans').innerText = repMhsTrans.length;
+            if (document.getElementById('pub-stat-rep-mhs-lingkar')) document.getElementById('pub-stat-rep-mhs-lingkar').innerText = repMhsLingkar.length;
+            if (document.getElementById('pub-stat-rep-dpl')) document.getElementById('pub-stat-rep-dpl').innerText = globalDpl.length;
 
-            // [PERBAIKAN] Hitung Total Akun Terdaftar (Case Insensitive & Trim)
-            const allGroups = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'kelompok').length;
-            const allMhs = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'mahasiswa').length;
-            const allDpls = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'dpl').length;
-
-            // [PERBAIKAN] Hitung Jumlah Akun Unik yang Sudah Melapor (Case Insensitive & Trim)
-            const reportedGroups = new Set(fKel.map(r => String(r.group).toLowerCase().trim())).size;
-            const reportedMhs = new Set(fMhs.map(r => String(r.username).toLowerCase().trim())).size;
-            const reportedDpl = new Set(fDpl.map(r => String(r.username).toLowerCase().trim())).size;
-
-            // Kalkulasi Persentase (Yang Melapor / Total Terdaftar)
-            const pctKel = allGroups ? ((reportedGroups / allGroups) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
-            const pctMhs = allMhs ? ((reportedMhs / allMhs) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
-            const pctDpl = allDpls ? ((reportedDpl / allDpls) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
-
-            if (elPctKel) elPctKel.innerText = `${pctKel}% Lapor`;
-            if (elPctMhs) elPctMhs.innerText = `${pctMhs}% Lapor`;
-            if (elPctDpl) elPctDpl.innerText = `${pctDpl}% Lapor`;
-
-            renderPublicMultiChart(fKel, fMhs, fDpl);
+            renderPublicMultiChart(globalKel, globalMhs, globalDpl);
         }
 
         function resetPublicFilters() {
@@ -2401,74 +2667,94 @@
             const globalMhs = filterDate ? mahasiswaReportsData.filter(r => r.tanggal === filterDate) : mahasiswaReportsData;
             const globalDpl = filterDate ? dplReportsData.filter(r => r.tanggal === filterDate) : dplReportsData;
 
-            // [PERBAIKAN] 2. Dapatkan Semua Akun Aktif Terdaftar (Gunakan toLowerCase dan trim agar kebal typo dari Spreadsheet)
+            // 2. Dapatkan Semua Akun Aktif Terdaftar
             const allGroups = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'kelompok');
             const allMhs = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'mahasiswa');
             const allDpls = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'dpl');
 
-            const valTotalGroups = allGroups.length || (USE_MOCK ? 2 : 0);
-            const valTotalMhs = allMhs.length || (USE_MOCK ? 1 : 0);
+            // [PEMISAHAN KELOMPOK TRANSFORMATIF & LINGKAR KAMPUS]
+            // Fungsi helper agar kebal terhadap spasi/huruf kapital saat memfilter "Lingkar Kampus"
+            const isLingkar = (str) => String(str).toLowerCase().replace(/\s/g, '').includes('lingkarkampus');
+
+            const groupsTrans = allGroups.filter(g => !isLingkar(g.username) && !isLingkar(g.namaLengkap));
+            const groupsLingkar = allGroups.filter(g => isLingkar(g.username) || isLingkar(g.namaLengkap));
+            const mhsTrans = allMhs.filter(m => !isLingkar(m.kelompok));
+            const mhsLingkar = allMhs.filter(m => isLingkar(m.kelompok));
+
+            const valTotalGroupsTrans = groupsTrans.length || (USE_MOCK ? 1 : 0);
+            const valTotalGroupsLingkar = groupsLingkar.length || (USE_MOCK ? 1 : 0);
+            const valTotalMhsTrans = mhsTrans.length || (USE_MOCK ? 1 : 0);
+            const valTotalMhsLingkar = mhsLingkar.length || (USE_MOCK ? 0 : 0);
             const valTotalDpl = allDpls.length || (USE_MOCK ? 1 : 0);
 
             // Update Angka Statistik Utama (Total Terdaftar) pada UI
-            const elGroups = document.getElementById('stat-groups');
-            const elMhs = document.getElementById('stat-mhs');
-            const elDpl = document.getElementById('stat-dpl');
-            if (elGroups) elGroups.innerText = valTotalGroups;
-            if (elMhs) elMhs.innerText = valTotalMhs;
-            if (elDpl) elDpl.innerText = valTotalDpl;
+            if (document.getElementById('stat-groups-trans')) document.getElementById('stat-groups-trans').innerText = valTotalGroupsTrans;
+            if (document.getElementById('stat-groups-lingkar')) document.getElementById('stat-groups-lingkar').innerText = valTotalGroupsLingkar;
+            if (document.getElementById('stat-mhs-trans')) document.getElementById('stat-mhs-trans').innerText = valTotalMhsTrans;
+            if (document.getElementById('stat-mhs-lingkar')) document.getElementById('stat-mhs-lingkar').innerText = valTotalMhsLingkar;
+            if (document.getElementById('stat-dpl')) document.getElementById('stat-dpl').innerText = valTotalDpl;
 
-            // [PERBAIKAN] 3. Ekstrak Username yang Ada di Dalam Laporan (Case Insensitive)
-            const reportedGroupsSet = new Set(globalKel.map(r => String(r.group).toLowerCase().trim()));
-            const reportedMhsSet = new Set(globalMhs.map(r => String(r.username).toLowerCase().trim()));
+            // Pemisahan Dokumen Laporan berdasarkan kategori
+            const repKelTrans = globalKel.filter(r => !isLingkar(r.group));
+            const repKelLingkar = globalKel.filter(r => isLingkar(r.group));
+            const repMhsTrans = globalMhs.filter(r => !isLingkar(r.kelompok));
+            const repMhsLingkar = globalMhs.filter(r => isLingkar(r.kelompok));
+
+            // 3. Ekstrak Username unik yang Ada di Dalam Laporan
+            const reportedGroupsTransSet = new Set(repKelTrans.map(r => String(r.group).toLowerCase().trim()));
+            const reportedGroupsLingkarSet = new Set(repKelLingkar.map(r => String(r.group).toLowerCase().trim()));
+            const reportedMhsTransSet = new Set(repMhsTrans.map(r => String(r.username).toLowerCase().trim()));
+            const reportedMhsLingkarSet = new Set(repMhsLingkar.map(r => String(r.username).toLowerCase().trim()));
             const reportedDplsSet = new Set(globalDpl.map(r => String(r.username).toLowerCase().trim()));
 
-            // [PERBAIKAN] 4. Hitung Pasti "Sudah Lapor" dan "Belum Lapor" HANYA dari Akun Terdaftar Aktif (Case Insensitive)
-            const reportedGroups = allGroups.filter(g => reportedGroupsSet.has(String(g.username).toLowerCase().trim()));
-            const reportedMhs = allMhs.filter(m => reportedMhsSet.has(String(m.username).toLowerCase().trim()));
+            // 4. Hitung Pasti "Sudah Lapor" dari Akun Terdaftar
+            const countRepGrpTrans = groupsTrans.filter(g => reportedGroupsTransSet.has(String(g.username).toLowerCase().trim())).length;
+            const countRepGrpLingkar = groupsLingkar.filter(g => reportedGroupsLingkarSet.has(String(g.username).toLowerCase().trim())).length;
+            const countRepMhsTrans = mhsTrans.filter(m => reportedMhsTransSet.has(String(m.username).toLowerCase().trim())).length;
+            const countRepMhsLingkar = mhsLingkar.filter(m => reportedMhsLingkarSet.has(String(m.username).toLowerCase().trim())).length;
             const reportedDpls = allDpls.filter(d => reportedDplsSet.has(String(d.username).toLowerCase().trim()));
 
-            const unreportedGroups = allGroups.filter(g => !reportedGroupsSet.has(String(g.username).toLowerCase().trim()));
-            const unreportedMhs = allMhs.filter(m => !reportedMhsSet.has(String(m.username).toLowerCase().trim()));
+            // Daftar Unreported (Belum Lapor) untuk tabel peringatan di bawah & WhatsApp
+            const unreportedGroups = allGroups.filter(g => {
+                const set = isLingkar(g.username) || isLingkar(g.namaLengkap) ? reportedGroupsLingkarSet : reportedGroupsTransSet;
+                return !set.has(String(g.username).toLowerCase().trim());
+            });
+            const unreportedMhs = allMhs.filter(m => {
+                const set = isLingkar(m.kelompok) ? reportedMhsLingkarSet : reportedMhsTransSet;
+                return !set.has(String(m.username).toLowerCase().trim());
+            });
             const unreportedDpls = allDpls.filter(d => !reportedDplsSet.has(String(d.username).toLowerCase().trim()));
             
             // 5. Update UI Angka "Sudah Lapor"
-            const elCountRepGroups = document.getElementById('count-rep-groups');
-            const elCountRepMhs = document.getElementById('count-rep-mhs');
-            const elCountRepDpl = document.getElementById('count-rep-dpl');
-
-            if (elCountRepGroups) elCountRepGroups.innerText = reportedGroups.length;
-            if (elCountRepMhs) elCountRepMhs.innerText = reportedMhs.length;
-            if (elCountRepDpl) elCountRepDpl.innerText = reportedDpls.length;
+            if (document.getElementById('count-rep-groups-trans')) document.getElementById('count-rep-groups-trans').innerText = countRepGrpTrans;
+            if (document.getElementById('count-rep-groups-lingkar')) document.getElementById('count-rep-groups-lingkar').innerText = countRepGrpLingkar;
+            if (document.getElementById('count-rep-mhs-trans')) document.getElementById('count-rep-mhs-trans').innerText = countRepMhsTrans;
+            if (document.getElementById('count-rep-mhs-lingkar')) document.getElementById('count-rep-mhs-lingkar').innerText = countRepMhsLingkar;
+            if (document.getElementById('count-rep-dpl')) document.getElementById('count-rep-dpl').innerText = reportedDpls.length;
 
             // 6. Kalkulasi & Update Badge Persentase "Sudah Lapor"
-            const pctKelLapor = valTotalGroups ? ((reportedGroups.length / valTotalGroups) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
-            const pctMhsLapor = valTotalMhs ? ((reportedMhs.length / valTotalMhs) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
-            const pctDplLapor = valTotalDpl ? ((reportedDpls.length / valTotalDpl) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
+            const calcPct = (part, total) => total ? ((part / total) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
+            
+            if (document.getElementById('pct-groups-trans')) document.getElementById('pct-groups-trans').innerText = `${calcPct(countRepGrpTrans, valTotalGroupsTrans)}%`;
+            if (document.getElementById('pct-groups-lingkar')) document.getElementById('pct-groups-lingkar').innerText = `${calcPct(countRepGrpLingkar, valTotalGroupsLingkar)}%`;
+            if (document.getElementById('pct-mhs-trans')) document.getElementById('pct-mhs-trans').innerText = `${calcPct(countRepMhsTrans, valTotalMhsTrans)}%`;
+            if (document.getElementById('pct-mhs-lingkar')) document.getElementById('pct-mhs-lingkar').innerText = `${calcPct(countRepMhsLingkar, valTotalMhsLingkar)}%`;
+            if (document.getElementById('pct-dpl')) document.getElementById('pct-dpl').innerText = `${calcPct(reportedDpls.length, valTotalDpl)}%`;
 
-            const elPctGroups = document.getElementById('pct-groups');
-            const elPctMhsUser = document.getElementById('pct-mhs');
-            const elPctDplUser = document.getElementById('pct-dpl');
-
-            if (elPctGroups) elPctGroups.innerText = `${pctKelLapor}%`;
-            if (elPctMhsUser) elPctMhsUser.innerText = `${pctMhsLapor}%`;
-            if (elPctDplUser) elPctDplUser.innerText = `${pctDplLapor}%`;
-
-            // 7. Update Total Keseluruhan Dokumen Laporan (3 Kartu Laporan Bawah)
-            const elRepKel = document.getElementById('stat-rep-kel');
-            const elRepMhs = document.getElementById('stat-rep-mhs');
-            const elRepDpl = document.getElementById('stat-rep-dpl');
-            if (elRepKel) elRepKel.innerText = globalKel.length;
-            if (elRepMhs) elRepMhs.innerText = globalMhs.length;
-            if (elRepDpl) elRepDpl.innerText = globalDpl.length;
+            // 7. Update Total Keseluruhan Dokumen Laporan (Kartu Laporan Bawah)
+            if (document.getElementById('stat-rep-kel-trans')) document.getElementById('stat-rep-kel-trans').innerText = repKelTrans.length;
+            if (document.getElementById('stat-rep-kel-lingkar')) document.getElementById('stat-rep-kel-lingkar').innerText = repKelLingkar.length;
+            if (document.getElementById('stat-rep-mhs-trans')) document.getElementById('stat-rep-mhs-trans').innerText = repMhsTrans.length;
+            if (document.getElementById('stat-rep-mhs-lingkar')) document.getElementById('stat-rep-mhs-lingkar').innerText = repMhsLingkar.length;
+            if (document.getElementById('stat-rep-dpl')) document.getElementById('stat-rep-dpl').innerText = globalDpl.length;
 
             // Simpan ke variabel global untuk dikirim ke WhatsApp
             globalUnreportedKel = unreportedGroups;
             globalUnreportedMhs = unreportedMhs;
             globalUnreportedDpl = unreportedDpls;
 
-            // 8. Update UI "Belum Lapor" dan Grafik
-            updateUnreportedStatusUI(unreportedGroups, unreportedMhs, unreportedDpls, valTotalGroups, valTotalMhs, valTotalDpl);
+            // 8. Update UI "Belum Lapor" dan Grafik (Gunakan panjang Array gabungan untuk kalkulasi persentase di tabel)
+            updateUnreportedStatusUI(unreportedGroups, unreportedMhs, unreportedDpls, allGroups.length, allMhs.length, allDpls.length);
             renderAdminMultiChart(globalKel, globalMhs, globalDpl);
         }
 
