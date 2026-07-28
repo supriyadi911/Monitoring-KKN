@@ -8,6 +8,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js untuk Grafik -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- jsPDF & AutoTable untuk Cetak PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <!-- SheetJS (XLSX) untuk Unduh Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <!-- FontAwesome untuk Ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -106,7 +111,7 @@
             
             <!-- Statistik Kepatuhan Lapor (Publik) -->
             <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Status Kepatuhan Lapor (Berdasarkan Akun Terdaftar)</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <!-- Kelompok Transformatif -->
                 <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-blue-500 flex items-center justify-between">
                     <div>
@@ -120,20 +125,6 @@
                         </div>
                     </div>
                     <i class="fa-solid fa-users text-4xl text-blue-100"></i>
-                </div>
-                <!-- Kelompok Lingkar Kampus -->
-                <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-cyan-500 flex items-center justify-between">
-                    <div>
-                        <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">KKN Lingkar Kampus</p>
-                        <div class="mt-1">
-                            <p class="text-2xl font-bold text-gray-800" id="pub-stat-groups-lingkar">0</p>
-                            <div class="flex items-center space-x-2 mt-2">
-                                <span class="text-[10px] font-bold text-cyan-800 bg-cyan-100 px-2 py-0.5 rounded"><span id="pub-count-rep-groups-lingkar">0</span> Sudah Lapor</span>
-                                <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded" id="pub-pct-groups-lingkar">0%</span>
-                            </div>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-building-columns text-4xl text-cyan-100"></i>
                 </div>
                 <!-- DPL (Dinaikkan agar sejajar) -->
                 <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-green-500 flex items-center justify-between">
@@ -181,14 +172,10 @@
 
             <!-- Statistik Dokumen Laporan (Publik) -->
             <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Total Dokumen Laporan Diterima</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-400 flex flex-col justify-center">
                     <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. KKN Transformatif</p>
                     <p class="text-xl font-bold text-gray-800" id="pub-stat-rep-kel-trans">0</p>
-                </div>
-                <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-cyan-400 flex flex-col justify-center">
-                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. KKN Lingkar Kampus</p>
-                    <p class="text-xl font-bold text-gray-800" id="pub-stat-rep-kel-lingkar">0</p>
                 </div>
                 <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-purple-400 flex flex-col justify-center">
                     <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. Mhs. Transformatif</p>
@@ -411,53 +398,32 @@
                         <i class="fa-solid fa-chart-pie w-6 text-center"></i> Dashboard
                     </button>
                     
-                    <!-- Menu Utama: Laporan Mahasiswa (Accordion) -->
+                    <!-- Menu Utama: Laporan (Accordion) -->
                     <div class="space-y-1">
-                        <button onclick="toggleSidebarMenu('laporan-mhs-menu', 'icon-laporan-mhs')" class="w-full flex justify-between items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium">
-                            <div class="flex items-center"><i class="fa-solid fa-folder w-6 text-center"></i> <span class="ml-1">Laporan Mahasiswa</span></div>
-                            <i id="icon-laporan-mhs" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
+                        <button onclick="toggleSidebarMenu('laporan-menu', 'icon-laporan')" class="w-full flex justify-between items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium">
+                            <div class="flex items-center"><i class="fa-solid fa-folder-open w-6 text-center"></i> <span class="ml-1">Laporan</span></div>
+                            <i id="icon-laporan" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
                         </button>
                         
-                        <div id="laporan-mhs-menu" class="hidden flex-col space-y-1 pl-4">
-                            
-                            <!-- Sub Menu 1: Transformatif -->
-                            <div class="space-y-1">
-                                <button onclick="toggleSidebarMenu('transformatif-menu', 'icon-transformatif')" class="w-full flex justify-between items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium text-sm">
-                                    <div class="flex items-center"><i class="fa-solid fa-layer-group w-5 text-center"></i> <span class="ml-1">Transformatif</span></div>
-                                    <i id="icon-transformatif" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
-                                </button>
-                                <div id="transformatif-menu" class="hidden flex-col space-y-1 pl-4">
-                                    <button onclick="openSubKelompok('1-116')" id="tab-btn-kelompok-reguler" class="w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition flex items-center">
-                                        <i class="fa-solid fa-users w-4 text-center mr-1"></i> KKN Transformatif (1-116)
-                                    </button>
-                                    <button onclick="openSubMahasiswa('1-116')" id="tab-btn-mahasiswa-reguler" class="w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition flex items-center">
-                                        <i class="fa-solid fa-user w-4 text-center mr-1"></i> Mahasiswa Transformatif
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <!-- Sub Menu 2: Lingkar Kampus -->
-                            <div class="space-y-1">
-                                <button onclick="toggleSidebarMenu('lingkar-menu', 'icon-lingkar')" class="w-full flex justify-between items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium text-sm">
-                                    <div class="flex items-center"><i class="fa-solid fa-building-columns w-5 text-center"></i> <span class="ml-1">Lingkar Kampus</span></div>
-                                    <i id="icon-lingkar" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
-                                </button>
-                                <div id="lingkar-menu" class="hidden flex-col space-y-1 pl-4">
-                                    <button onclick="openSubKelompok('Lingkar Kampus')" id="tab-btn-kelompok-lingkar" class="w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition flex items-center">
-                                        <i class="fa-solid fa-users w-4 text-center mr-1"></i> KKN Lingkar Kampus
-                                    </button>
-                                    <button onclick="openSubMahasiswa('Lingkar Kampus')" id="tab-btn-mahasiswa-lingkar" class="w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition flex items-center">
-                                        <i class="fa-solid fa-user w-4 text-center mr-1"></i> Mahasiswa Lingkar Kampus
-                                    </button>
-                                </div>
-                            </div>
-
+                        <div id="laporan-menu" class="hidden flex-col space-y-1 pl-4">
+                            <button onclick="openSubKelompok('1-116')" id="tab-btn-kelompok-reguler" class="w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition flex items-center">
+                                <i class="fa-solid fa-users w-4 text-center mr-1"></i> KKN Transformatif (1-116)
+                            </button>
+                            <button onclick="openSubMahasiswa('1-116')" id="tab-btn-mahasiswa-reguler" class="w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition flex items-center">
+                                <i class="fa-solid fa-user-graduate w-4 text-center mr-1"></i> Mahasiswa Transformatif
+                            </button>
+                            <button onclick="openSubMahasiswa('Lingkar Kampus')" id="tab-btn-mahasiswa-lingkar" class="w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition flex items-center">
+                                <i class="fa-solid fa-building-columns w-4 text-center mr-1"></i> Mahasiswa Lingkar Kampus
+                            </button>
+                            <button onclick="switchAdminTab('rekap-jam')" id="tab-btn-rekap-jam" class="w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition flex items-center">
+                                <i class="fa-solid fa-clock w-4 text-center mr-1"></i> Rekap Jam Mahasiswa
+                            </button>
+                            <button onclick="switchAdminTab('dpl')" id="tab-btn-dpl" class="w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition flex items-center">
+                                <i class="fa-solid fa-user-tie w-4 text-center mr-1"></i> Laporan DPL
+                            </button>
                         </div>
                     </div>
 
-                    <button onclick="switchAdminTab('dpl')" id="tab-btn-dpl" class="w-full flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium">
-                        <i class="fa-solid fa-user-tie w-6 text-center"></i> Laporan DPL
-                    </button>
                     <button onclick="switchAdminTab('akun')" id="tab-btn-akun" class="w-full flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-medium">
                         <i class="fa-solid fa-users-cog w-6 text-center"></i> Pengaturan Akun
                     </button>
@@ -490,7 +456,7 @@
                     
                     <!-- Statistik Kepatuhan Lapor (DIPERBARUI) -->
                     <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Status Kepatuhan Lapor (Berdasarkan Akun Terdaftar)</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                         <!-- Kelompok Transformatif -->
                         <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-blue-500 flex items-center justify-between">
                             <div>
@@ -504,20 +470,6 @@
                                 </div>
                             </div>
                             <i class="fa-solid fa-users text-4xl text-blue-100"></i>
-                        </div>
-                        <!-- Kelompok Lingkar Kampus -->
-                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-cyan-500 flex items-center justify-between">
-                            <div>
-                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">KKN Lingkar Kampus</p>
-                                <div class="mt-1">
-                                    <p class="text-2xl font-bold text-gray-800" id="stat-groups-lingkar">0</p>
-                                    <div class="flex items-center space-x-2 mt-2">
-                                        <span class="text-[10px] font-bold text-cyan-800 bg-cyan-100 px-2 py-0.5 rounded"><span id="count-rep-groups-lingkar">0</span> Sudah Lapor</span>
-                                        <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded" id="pct-groups-lingkar">0%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <i class="fa-solid fa-building-columns text-4xl text-cyan-100"></i>
                         </div>
                         <!-- DPL (Dinaikkan agar sejajar) -->
                         <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-green-500 flex items-center justify-between">
@@ -565,14 +517,10 @@
 
                     <!-- Statistik Dokumen Laporan (DIPERBARUI) -->
                     <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Total Dokumen Laporan Diterima</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                         <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-400 flex flex-col justify-center">
                             <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. KKN Transformatif</p>
                             <p class="text-xl font-bold text-gray-800" id="stat-rep-kel-trans">0</p>
-                        </div>
-                        <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-cyan-400 flex flex-col justify-center">
-                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. KKN Lingkar Kampus</p>
-                            <p class="text-xl font-bold text-gray-800" id="stat-rep-kel-lingkar">0</p>
                         </div>
                         <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-purple-400 flex flex-col justify-center">
                             <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Lap. Mhs. Transformatif</p>
@@ -889,6 +837,63 @@
                         </div>
                         <!-- Pagination DPL -->
                         <div id="pagination-dpl" data-active="false" class="hidden flex justify-between items-center px-6 py-3 bg-gray-50 border-t"></div>
+                    </div>
+                </div>
+
+                <!-- -----------------------------------------
+                     TAB: REKAP JAM MAHASISWA
+                ------------------------------------------ -->
+                <div id="admin-tab-rekap-jam" class="hidden space-y-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-2xl font-bold text-gray-800">Rekapitulasi Jam Mahasiswa</h1>
+                    </div>
+
+                    <!-- Filter Rekap -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 border mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-bold text-gray-700 text-sm">Filter Kelompok</h3>
+                            <p class="text-xs text-gray-500">Pilih kelompok untuk melihat rekap jam anggotanya</p>
+                        </div>
+                        <div class="w-full sm:w-64">
+                            <select id="filter-rekap-kelompok" onchange="renderRekapJamMhs()" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 outline-none shadow-sm text-gray-700">
+                                <option value="">Semua Kelompok</option>
+                                <!-- Injeksi JS -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Export Data (PDF & Excel) -->
+                    <div class="flex justify-end space-x-3 mb-4">
+                        <button onclick="exportRekapExcel()" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md text-sm transition shadow-sm flex items-center">
+                            <i class="fa-solid fa-file-excel mr-2"></i> Unduh Excel
+                        </button>
+                        <button onclick="exportRekapPDF()" class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md text-sm transition shadow-sm flex items-center">
+                            <i class="fa-solid fa-file-pdf mr-2"></i> Cetak PDF
+                        </button>
+                    </div>
+
+                    <!-- Tabel Rekap -->
+                    <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
+                        <div class="px-6 py-4 border-b flex justify-between items-center bg-purple-50">
+                            <h3 class="font-bold text-purple-800">Data Total Jam Kegiatan Harian (Target: 181 Jam)</h3>
+                        </div>
+                        <div class="overflow-x-auto p-4 max-h-[600px] overflow-y-auto">
+                            <table class="w-full whitespace-nowrap">
+                                <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
+                                    <tr>
+                                        <th class="px-4 py-3 text-center w-12 font-medium rounded-tl-md">No</th>
+                                        <th class="px-4 py-3 text-left font-medium">Nama Mahasiswa</th>
+                                        <th class="px-4 py-3 text-left font-medium">Username / NIM</th>
+                                        <th class="px-4 py-3 text-left font-medium">Kelompok</th>
+                                        <th class="px-4 py-3 text-center font-medium">Total Jam</th>
+                                        <th class="px-4 py-3 text-left font-medium rounded-tr-md">Persentase Lapor</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-rekap-table-body" class="bg-white divide-y divide-gray-200 text-sm">
+                                    <!-- Data injected via JS -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -1462,6 +1467,7 @@
         let currentPageDpl = 1;
         let currentPageAkun = 1;
         let itemsPerPage = 20;
+        let currentRekapData = []; // Menyimpan data rekap saat ini untuk dicetak
 
         // Menyimpan data pengguna belum lapor untuk fitur Share WhatsApp
         let globalUnreportedKel = [];
@@ -1975,7 +1981,7 @@
         // =========================================================================
 
         function switchAdminTab(tabId) {
-            const tabs = ['dashboard', 'kelompok', 'mahasiswa', 'dpl', 'akun'];
+            const tabs = ['dashboard', 'kelompok', 'mahasiswa', 'dpl', 'akun', 'rekap-jam'];
             
             tabs.forEach(t => {
                 const content = document.getElementById('admin-tab-' + t);
@@ -1987,15 +1993,15 @@
 
             // 1. Reset all buttons styling
             const allBtnIds = [
-                'tab-btn-dashboard', 'tab-btn-dpl', 'tab-btn-akun',
-                'tab-btn-kelompok-reguler', 'tab-btn-kelompok-lingkar',
-                'tab-btn-mahasiswa-reguler', 'tab-btn-mahasiswa-lingkar'
+                'tab-btn-dashboard', 'tab-btn-akun',
+                'tab-btn-kelompok-reguler', 'tab-btn-mahasiswa-reguler', 
+                'tab-btn-mahasiswa-lingkar', 'tab-btn-dpl', 'tab-btn-rekap-jam'
             ];
             allBtnIds.forEach(id => {
                 const btn = document.getElementById(id);
                 if (btn) {
                     btn.classList.remove('bg-blue-600', 'text-white', 'shadow-sm');
-                    if (id.startsWith('tab-btn-kelompok') || id.startsWith('tab-btn-mahasiswa')) {
+                    if (['tab-btn-kelompok-reguler', 'tab-btn-mahasiswa-reguler', 'tab-btn-mahasiswa-lingkar', 'tab-btn-dpl', 'tab-btn-rekap-jam'].includes(id)) {
                         btn.classList.add('text-gray-400', 'hover:bg-gray-700');
                     } else {
                         btn.classList.add('text-gray-300', 'hover:bg-gray-700');
@@ -2006,42 +2012,31 @@
             // 2. Determine active button ID & manage accordion states
             let activeBtnId = 'tab-btn-' + tabId;
             
-            if (tabId === 'kelompok' || tabId === 'mahasiswa') {
-                const searchInputId = tabId === 'kelompok' ? 'search-kelompok' : 'search-mhs';
-                const searchTxt = document.getElementById(searchInputId) ? document.getElementById(searchInputId).value.toLowerCase() : '';
-                
-                if (searchTxt === 'lingkar kampus') {
-                    activeBtnId = tabId === 'kelompok' ? 'tab-btn-kelompok-lingkar' : 'tab-btn-mahasiswa-lingkar';
-                } else {
-                    activeBtnId = tabId === 'kelompok' ? 'tab-btn-kelompok-reguler' : 'tab-btn-mahasiswa-reguler';
+            if (tabId === 'kelompok' || tabId === 'mahasiswa' || tabId === 'dpl' || tabId === 'rekap-jam') {
+                if (tabId === 'kelompok') {
+                    activeBtnId = 'tab-btn-kelompok-reguler'; 
+                } else if (tabId === 'mahasiswa') {
+                    const searchTxt = document.getElementById('search-mhs') ? document.getElementById('search-mhs').value.toLowerCase() : '';
+                    if (searchTxt === 'lingkar kampus') {
+                        activeBtnId = 'tab-btn-mahasiswa-lingkar';
+                    } else {
+                        activeBtnId = 'tab-btn-mahasiswa-reguler';
+                    }
+                } else if (tabId === 'dpl') {
+                    activeBtnId = 'tab-btn-dpl';
+                } else if (tabId === 'rekap-jam') {
+                    activeBtnId = 'tab-btn-rekap-jam';
+                    populateRekapKelompokFilter();
+                    renderRekapJamMhs();
                 }
                 
-                // Expand parent menu (Laporan Mahasiswa)
-                const parentMenu = document.getElementById('laporan-mhs-menu');
-                const parentIcon = document.getElementById('icon-laporan-mhs');
+                // Expand parent menu (Laporan)
+                const parentMenu = document.getElementById('laporan-menu');
+                const parentIcon = document.getElementById('icon-laporan');
                 if (parentMenu && parentMenu.classList.contains('hidden')) {
                     parentMenu.classList.remove('hidden');
                     parentMenu.classList.add('flex');
                     if (parentIcon) parentIcon.classList.add('rotate-180');
-                }
-
-                // Expand sub menu (Transformatif atau Lingkar Kampus)
-                if (searchTxt === 'lingkar kampus') {
-                    const subMenu = document.getElementById('lingkar-menu');
-                    const subIcon = document.getElementById('icon-lingkar');
-                    if (subMenu && subMenu.classList.contains('hidden')) {
-                        subMenu.classList.remove('hidden');
-                        subMenu.classList.add('flex');
-                        if (subIcon) subIcon.classList.add('rotate-180');
-                    }
-                } else {
-                    const subMenu = document.getElementById('transformatif-menu');
-                    const subIcon = document.getElementById('icon-transformatif');
-                    if (subMenu && subMenu.classList.contains('hidden')) {
-                        subMenu.classList.remove('hidden');
-                        subMenu.classList.add('flex');
-                        if (subIcon) subIcon.classList.add('rotate-180');
-                    }
                 }
             }
 
@@ -2654,6 +2649,13 @@
             applyAdminMhsFilters();
             applyAdminDplFilters();
             
+            // Perbarui Tabel Rekap Jam Jika sedang aktif/terbuka
+            const rekapTab = document.getElementById('admin-tab-rekap-jam');
+            if (rekapTab && !rekapTab.classList.contains('hidden')) {
+                populateRekapKelompokFilter();
+                renderRekapJamMhs();
+            }
+
             // Eksekusi pembaruan dashboard global (Kartu, Badge, & Chart)
             updateAdminGlobalStats();
         }
@@ -2957,6 +2959,234 @@
             currentPageAkun = 1;
             applyFilters();
             if (accountsData.length > 0) applyAdminAkunFilters();
+        }
+
+        // =========================================================================
+        // FUNGSI REKAP JAM MAHASISWA
+        // =========================================================================
+        function populateRekapKelompokFilter() {
+            const select = document.getElementById('filter-rekap-kelompok');
+            if (!select) return;
+
+            const currentVal = select.value;
+            select.innerHTML = '<option value="">Semua Kelompok</option>';
+
+            const mhsAccounts = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'mahasiswa');
+            const kelompokSet = new Set();
+            mhsAccounts.forEach(m => {
+                if (m.kelompok && m.kelompok !== '-') kelompokSet.add(m.kelompok);
+            });
+
+            // Fallback: ambil juga dari role "kelompok" jika belum ada mahasiswanya
+            const kelAccounts = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'kelompok');
+            kelAccounts.forEach(k => {
+                if (k.namaLengkap && k.namaLengkap !== '-') kelompokSet.add(k.namaLengkap);
+            });
+
+            // [PERBAIKAN] Pengurutan Angka Alami (Natural Sort) agar Kelompok 10 ada setelah Kelompok 9
+            const kelompokArr = Array.from(kelompokSet).sort((a, b) => {
+                return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+            });
+
+            kelompokArr.forEach(k => {
+                const opt = document.createElement('option');
+                opt.value = k;
+                opt.innerText = k;
+                select.appendChild(opt);
+            });
+            
+            if (kelompokArr.includes(currentVal)) {
+                select.value = currentVal;
+            } else {
+                select.value = '';
+            }
+        }
+
+        function renderRekapJamMhs() {
+            const tbody = document.getElementById('admin-rekap-table-body');
+            const selectEl = document.getElementById('filter-rekap-kelompok');
+            if (!tbody || !selectEl) return;
+
+            const selectedKelompok = selectEl.value.toLowerCase().trim();
+            let mhsAccounts = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'mahasiswa');
+
+            if (selectedKelompok) {
+                mhsAccounts = mhsAccounts.filter(m => String(m.kelompok).toLowerCase().trim() === selectedKelompok);
+            }
+
+            if (mhsAccounts.length === 0) {
+                currentRekapData = []; // Kosongkan data global
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-gray-500">Tidak ada data mahasiswa pada kelompok yang dipilih.</td></tr>';
+                return;
+            }
+
+            // Hitung total jam untuk masing-masing mahasiswa
+            const MAX_JAM = 181;
+            const rekapData = mhsAccounts.map(m => {
+                const username = String(m.username).toLowerCase().trim();
+                const reports = mahasiswaReportsData.filter(r => String(r.username).toLowerCase().trim() === username);
+                
+                let totalJam = 0;
+                reports.forEach(r => {
+                    totalJam += Number(r.keluhan || 0);
+                });
+                return { ...m, totalJam };
+            });
+
+            // Urutkan berdasarkan Nama secara Ascending
+            rekapData.sort((a, b) => (a.namaLengkap || a.username).localeCompare(b.namaLengkap || b.username));
+            currentRekapData = rekapData; // Simpan ke variabel global untuk dicetak
+
+            tbody.innerHTML = '';
+            rekapData.forEach((m, index) => {
+                const tr = document.createElement('tr');
+                const pct = ((m.totalJam / MAX_JAM) * 100);
+                const pctFormatted = pct.toFixed(2).replace('.', ',');
+                
+                // Warnai Progress Bar sesuai persentase pencapaian
+                let badgeColor = 'bg-red-100 text-red-800';
+                let barColor = 'bg-red-500';
+                
+                if (pct >= 100) {
+                    badgeColor = 'bg-green-100 text-green-800';
+                    barColor = 'bg-green-500';
+                } else if (pct >= 75) {
+                    badgeColor = 'bg-blue-100 text-blue-800';
+                    barColor = 'bg-blue-500';
+                } else if (pct >= 40) {
+                    badgeColor = 'bg-yellow-100 text-yellow-800';
+                    barColor = 'bg-yellow-500';
+                }
+
+                // Capping UI Bar Max 100%
+                const barWidth = pct > 100 ? 100 : pct;
+
+                tr.innerHTML = `
+                    <td class="px-4 py-3 text-center text-gray-500">${index + 1}</td>
+                    <td class="px-4 py-3 font-medium text-gray-800">${m.namaLengkap || m.username}</td>
+                    <td class="px-4 py-3 text-gray-600">
+                        <div class="text-xs font-semibold text-gray-500 mb-0.5">@${m.username}</div>
+                        <div>${m.nip || '-'}</div>
+                    </td>
+                    <td class="px-4 py-3 text-gray-600">${m.kelompok || '-'}</td>
+                    <td class="px-4 py-3 text-center">
+                        <span class="font-bold text-lg text-purple-700 bg-purple-50 px-3 py-1 rounded border border-purple-100">${m.totalJam}</span>
+                    </td>
+                    <td class="px-4 py-3">
+                        <div class="flex items-center space-x-3 w-48">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 shadow-inner overflow-hidden">
+                                <div class="${barColor} h-2.5 rounded-full transition-all duration-700 ease-out" style="width: ${barWidth}%"></div>
+                            </div>
+                            <span class="px-2 py-0.5 inline-flex text-xs font-bold rounded shadow-sm ${badgeColor} whitespace-nowrap min-w-[65px] justify-center">
+                                ${pctFormatted}%
+                            </span>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // =========================================================================
+        // FUNGSI EKSPOR REKAP JAM (EXCEL & PDF)
+        // =========================================================================
+        
+        function exportRekapExcel() {
+            if (!currentRekapData || currentRekapData.length === 0) {
+                alert("Tidak ada data untuk diekspor!");
+                return;
+            }
+            
+            const dataToExport = currentRekapData.map((m, i) => {
+                const pct = ((m.totalJam / 181) * 100);
+                return {
+                    "No": i + 1,
+                    "Nama Mahasiswa": m.namaLengkap || m.username,
+                    "NIM / NPM": m.nip || '-',
+                    "Kelompok KKN": m.kelompok || '-',
+                    "Total Jam Harian": m.totalJam,
+                    "Persentase Ketercapaian": pct.toFixed(2).replace('.', ',') + '%'
+                };
+            });
+
+            const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Rekap_Jam_Mahasiswa");
+            
+            // Atur lebar kolom Excel
+            worksheet['!cols'] = [ {wch:5}, {wch:30}, {wch:15}, {wch:25}, {wch:15}, {wch:20} ];
+
+            const filterKlp = document.getElementById('filter-rekap-kelompok').value || "Semua_Kelompok";
+            const fileName = `Rekap_Jam_KKN_${filterKlp.replace(/\s+/g, '_')}.xlsx`;
+            
+            XLSX.writeFile(workbook, fileName);
+        }
+
+        function exportRekapPDF() {
+            if (!currentRekapData || currentRekapData.length === 0) {
+                alert("Tidak ada data untuk dicetak!");
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4'); // Kertas A4 Potret
+            
+            // Header / Kop Laporan
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.text("REKAPITULASI TOTAL JAM KEGIATAN MAHASISWA KKN", 105, 18, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.text("UNIVERSITAS ISLAM NEGERI RADEN INTAN LAMPUNG", 105, 25, { align: 'center' });
+            
+            // Garis Pembatas
+            doc.setLineWidth(0.5);
+            doc.line(14, 30, 196, 30);
+            
+            // Info Filter & Tanggal
+            const filterKlp = document.getElementById('filter-rekap-kelompok').value || "Semua Kelompok";
+            const printDate = new Date().toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' }) + ' WIB';
+            
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Kelompok Filter : ${filterKlp}`, 14, 38);
+            doc.text(`Waktu Cetak     : ${printDate}`, 14, 43);
+            
+            // Persiapan Kolom Tabel
+            const tableColumn = ["No", "Nama Mahasiswa", "NIM", "Kelompok", "Total Jam", "Ketercapaian"];
+            const tableRows = [];
+            
+            currentRekapData.forEach((m, i) => {
+                const pct = ((m.totalJam / 181) * 100).toFixed(2).replace('.', ',') + '%';
+                tableRows.push([
+                    i + 1,
+                    m.namaLengkap || m.username,
+                    m.nip || '-',
+                    m.kelompok || '-',
+                    m.totalJam + " Jam",
+                    pct
+                ]);
+            });
+            
+            // Cetak Tabel
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 48,
+                theme: 'grid',
+                styles: { fontSize: 9, cellPadding: 3 },
+                headStyles: { fillColor: [107, 33, 168], textColor: [255, 255, 255] }, // Warna Ungu (Purple-800) selaras dengan UI
+                columnStyles: {
+                    0: { halign: 'center', cellWidth: 10 },
+                    2: { halign: 'center' },
+                    4: { halign: 'center', fontStyle: 'bold' },
+                    5: { halign: 'center', fontStyle: 'bold' }
+                }
+            });
+            
+            // Eksekusi Unduh
+            const fileName = `Rekap_Jam_KKN_${filterKlp.replace(/\s+/g, '_')}.pdf`;
+            doc.save(fileName);
         }
 
         function handleSort(type, col) {
