@@ -882,11 +882,11 @@
                                 <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
                                     <tr>
                                         <th class="px-4 py-3 text-center w-12 font-medium rounded-tl-md">No</th>
-                                        <th class="px-4 py-3 text-left font-medium">Nama Mahasiswa</th>
-                                        <th class="px-4 py-3 text-left font-medium">Username / NIM</th>
-                                        <th class="px-4 py-3 text-left font-medium">Kelompok</th>
-                                        <th class="px-4 py-3 text-center font-medium">Total Jam</th>
-                                        <th class="px-4 py-3 text-left font-medium rounded-tr-md">Persentase Lapor</th>
+                                        <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Rekap', 'namaLengkap')">Nama Mahasiswa <i id="sort-Rekap-namaLengkap" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Rekap', 'username')">Username / NIM <i id="sort-Rekap-username" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Rekap', 'kelompok')">Kelompok <i id="sort-Rekap-kelompok" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-4 py-3 text-center font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Rekap', 'totalJam')">Total Jam <i id="sort-Rekap-totalJam" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-4 py-3 text-left font-medium rounded-tr-md cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Rekap', 'pct')">Persentase Lapor <i id="sort-Rekap-pct" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-rekap-table-body" class="bg-white divide-y divide-gray-200 text-sm">
@@ -1475,7 +1475,8 @@
             Kel: { col: 'date', dir: 'desc' },
             Mhs: { col: 'tanggal', dir: 'desc' },
             Dpl: { col: 'tanggal', dir: 'desc' },
-            Akun: { col: 'username', dir: 'asc' }
+            Akun: { col: 'username', dir: 'asc' },
+            Rekap: { col: 'namaLengkap', dir: 'asc' }
         };
 
         const mockUsers = {
@@ -3027,36 +3028,53 @@
                 reports.forEach(r => {
                     totalJam += Number(r.keluhan || 0);
                 });
-                return { ...m, totalJam };
+                const pct = ((totalJam / MAX_JAM) * 100);
+                return { ...m, totalJam, pct };
             });
 
-            // Urutkan berdasarkan Nama secara Ascending
-            rekapData.sort((a, b) => (a.namaLengkap || a.username).localeCompare(b.namaLengkap || b.username));
+            // Urutkan berdasarkan state sort Rekap
+            const { col, dir } = sortState['Rekap'];
+            rekapData.sort((a, b) => {
+                let valA = a[col];
+                let valB = b[col];
+                
+                if (col === 'namaLengkap') {
+                    valA = String(a.namaLengkap || a.username || '').toLowerCase();
+                    valB = String(b.namaLengkap || b.username || '').toLowerCase();
+                } else if (col === 'username' || col === 'kelompok') {
+                    valA = String(valA || '').toLowerCase();
+                    valB = String(valB || '').toLowerCase();
+                }
+
+                if (valA < valB) return dir === 'asc' ? -1 : 1;
+                if (valA > valB) return dir === 'asc' ? 1 : -1;
+                return 0;
+            });
+
             currentRekapData = rekapData; // Simpan ke variabel global untuk dicetak
 
             tbody.innerHTML = '';
             rekapData.forEach((m, index) => {
                 const tr = document.createElement('tr');
-                const pct = ((m.totalJam / MAX_JAM) * 100);
-                const pctFormatted = pct.toFixed(2).replace('.', ',');
+                const pctFormatted = m.pct.toFixed(2).replace('.', ',');
                 
                 // Warnai Progress Bar sesuai persentase pencapaian
                 let badgeColor = 'bg-red-100 text-red-800';
                 let barColor = 'bg-red-500';
                 
-                if (pct >= 100) {
+                if (m.pct >= 100) {
                     badgeColor = 'bg-green-100 text-green-800';
                     barColor = 'bg-green-500';
-                } else if (pct >= 75) {
+                } else if (m.pct >= 75) {
                     badgeColor = 'bg-blue-100 text-blue-800';
                     barColor = 'bg-blue-500';
-                } else if (pct >= 40) {
+                } else if (m.pct >= 40) {
                     badgeColor = 'bg-yellow-100 text-yellow-800';
                     barColor = 'bg-yellow-500';
                 }
 
                 // Capping UI Bar Max 100%
-                const barWidth = pct > 100 ? 100 : pct;
+                const barWidth = m.pct > 100 ? 100 : m.pct;
 
                 tr.innerHTML = `
                     <td class="px-4 py-3 text-center text-gray-500">${index + 1}</td>
@@ -3253,6 +3271,7 @@
             if (type === 'Mhs') renderAdminTableMahasiswa(filteredDataMhs);
             if (type === 'Dpl') renderAdminTableDpl(filteredDataDpl);
             if (type === 'Akun') renderAdminTableAkun();
+            if (type === 'Rekap') renderRekapJamMhs();
         }
 
         function sortData(data, type) {
