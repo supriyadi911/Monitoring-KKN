@@ -1432,6 +1432,7 @@
                                     <th class="px-4 py-3 text-left w-1/2">Jenis & Deskripsi Kegiatan</th>
                                     <th class="px-4 py-3 text-center">Durasi (Jam)</th>
                                     <th class="px-4 py-3 text-center">Bukti Foto</th>
+                                    <th class="px-4 py-3 text-center bg-purple-100 text-purple-800 rounded-tr-md">Aksi (Diakui)</th>
                                 </tr>
                             </thead>
                             <tbody id="detail-rekap-table-body" class="divide-y divide-gray-200">
@@ -3053,7 +3054,7 @@
                 return;
             }
 
-            // Hitung total jam untuk masing-masing mahasiswa
+            // Hitung total jam untuk masing-masing mahasiswa (Hanya akumulasi nilai positif/diakui)
             const MAX_JAM = 181;
             const rekapData = mhsAccounts.map(m => {
                 const username = String(m.username).toLowerCase().trim();
@@ -3061,7 +3062,8 @@
                 
                 let totalJam = 0;
                 reports.forEach(r => {
-                    totalJam += Number(r.keluhan || 0);
+                    const jamNum = Number(r.keluhan || 0);
+                    if (jamNum > 0) totalJam += jamNum; // Hanya jumlahkan jam yang diakui
                 });
                 const pct = ((totalJam / MAX_JAM) * 100);
                 return { ...m, totalJam, pct };
@@ -3142,7 +3144,7 @@
             });
         }
 
-        // FUNGSI POPUP RINCIAN KEGIATAN MAHASISWA
+        // FUNGSI POPUP RINCIAN KEGIATAN MAHASISWA & TOGGLE PENGAKUAN
         function showDetailRekapMhs(username) {
             const mhs = accountsData.find(a => String(a.role).toLowerCase().trim() === 'mahasiswa' && String(a.username).toLowerCase().trim() === String(username).toLowerCase().trim());
             if (!mhs) return;
@@ -3154,7 +3156,12 @@
 
             const infoDiv = document.getElementById('detail-rekap-mhs-info');
             if(infoDiv) {
-                let totalDurasi = reports.reduce((sum, r) => sum + Number(r.keluhan || 0), 0);
+                // Hitung kembali dari array karena bisa saja ada perubahan on the fly
+                let totalDurasi = reports.reduce((sum, r) => {
+                    const jam = Number(r.keluhan || 0);
+                    return sum + (jam > 0 ? jam : 0);
+                }, 0);
+                
                 infoDiv.innerHTML = `
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div><span class="block text-xs text-gray-500 uppercase font-semibold">Nama Mahasiswa</span> <span class="font-bold text-gray-800">${mhs.namaLengkap || mhs.username}</span></div>
@@ -3169,11 +3176,18 @@
             if(tbody) {
                 tbody.innerHTML = '';
                 if (reports.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">Belum ada riwayat kegiatan harian yang dilaporkan.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">Belum ada riwayat kegiatan harian yang dilaporkan.</td></tr>';
                 } else {
                     reports.forEach((r, idx) => {
                         const tr = document.createElement('tr');
                         const snippet = r.deskripsi ? r.deskripsi : '-';
+                        
+                        // Logika Jam Diakui atau Tidak Diakui (Negatif)
+                        const jamNum = Number(r.keluhan || 0);
+                        const isDiakui = jamNum > 0;
+                        const absJam = Math.abs(jamNum);
+                        const jamDisplay = isDiakui ? `${absJam}` : `<span class="text-red-500">${absJam}</span> <span class="text-xs text-red-600 block mt-1 font-bold">(Ditolak)</span>`;
+
                         tr.innerHTML = `
                             <td class="px-4 py-3 text-center text-gray-500">${idx + 1}</td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-800 font-medium">${r.tanggal}</td>
@@ -3181,11 +3195,18 @@
                                 <div class="font-bold text-purple-700 mb-1">${r.rencana}</div>
                                 <div class="text-sm whitespace-pre-wrap leading-relaxed text-gray-600">${snippet}</div>
                             </td>
-                            <td class="px-4 py-3 text-center font-bold text-gray-800 bg-gray-50">
-                                ${r.keluhan} Jam
+                            <td class="px-4 py-3 text-center font-bold bg-gray-50 text-gray-800">
+                                ${jamDisplay} Jam
                             </td>
                             <td class="px-4 py-3 text-center">
                                 ${r.foto ? `<a href="${r.foto}" target="_blank" class="text-purple-600 hover:text-purple-800 bg-purple-100 hover:bg-purple-200 px-3 py-1.5 rounded-full inline-block transition text-xs font-semibold shadow-sm"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Lihat Foto</a>` : '<span class="text-gray-400 text-xs italic">Tidak ada foto</span>'}
+                            </td>
+                            <td class="px-4 py-3 text-center bg-gray-50 border-l border-gray-100">
+                                <label class="inline-flex items-center cursor-pointer group" title="${isDiakui ? 'Klik untuk MENOLAK jam ini' : 'Klik untuk MENGAKUI jam ini'}">
+                                    <input type="checkbox" class="w-5 h-5 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 cursor-pointer transition shadow-sm" 
+                                        ${isDiakui ? 'checked' : ''} 
+                                        onchange="togglePengakuanJam('${r.id}', this.checked, '${username}')">
+                                </label>
                             </td>
                         `;
                         tbody.appendChild(tr);
@@ -3195,6 +3216,45 @@
 
             const modal = document.getElementById('detail-rekap-modal');
             if (modal) modal.classList.remove('hidden');
+        }
+
+        async function togglePengakuanJam(reportId, isChecked, username) {
+            const r = mahasiswaReportsData.find(x => String(x.id) === String(reportId));
+            if (!r) return;
+            
+            // Konversi nilai jam menjadi negatif jika ditolak, dan positif jika disetujui (diakui)
+            const absJam = Math.abs(Number(r.keluhan || 0));
+            const newKeluhan = isChecked ? absJam : -absJam;
+            
+            // Update UI Frontend secara langsung (Optimistic Update) agar terasa cepat
+            r.keluhan = newKeluhan; 
+            showDetailRekapMhs(username); 
+            renderRekapJamMhs();
+            applyAdminMhsFilters(); // Perbarui juga tabel besar di background
+            
+            try {
+                if (!USE_MOCK) {
+                    const payload = {
+                        id: r.id,
+                        username: r.username,
+                        kelompok: r.kelompok,
+                        tanggal: r.tanggal,
+                        rencana: r.rencana,
+                        deskripsi: r.deskripsi || '-',
+                        keluhan: newKeluhan, 
+                        foto: r.foto,
+                        timestamp: r.timestamp 
+                    };
+                    // Kirim pembaruan senyap ke Google Apps Script backend
+                    fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'editMahasiswaReport', data: payload }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    }); 
+                }
+            } catch (e) {
+                console.error("Gagal menyinkronkan status pengakuan jam ke server.", e);
+            }
         }
 
         function closeDetailRekapModal() {
@@ -3505,6 +3565,13 @@
 
             pageData.forEach(r => {
                 const tr = document.createElement('tr');
+                const jamNum = Number(r.keluhan || 0);
+                const absJam = Math.abs(jamNum);
+                const isDiakui = jamNum > 0;
+                const jamStatusHtml = isDiakui 
+                    ? `<div class="text-xs text-purple-600 mt-1 font-bold">Durasi: ${absJam} Jam</div>`
+                    : `<div class="text-xs text-red-500 mt-1">Durasi: ${absJam} Jam</div> <span class="text-[10px] text-red-600 font-bold">(Ditolak)</span>`;
+
                 tr.innerHTML = `
                     <td class="px-6 py-4 text-center">
                         <input type="checkbox" class="row-checkbox-admin-mhs" value="${r.id}" onchange="updateBulkActionStateAdminMhs()">
@@ -3519,10 +3586,10 @@
                     <td class="px-6 py-4">
                         <div class="text-sm font-semibold text-gray-800" title="${r.rencana}">${r.rencana}</div>
                         <div class="text-xs text-gray-500 mt-0.5 truncate max-w-[200px]" title="${r.deskripsi || '-'}">${r.deskripsi || '-'}</div>
-                        <div class="text-xs text-purple-600 mt-1">Durasi: ${r.keluhan} Jam</div>
+                        ${jamStatusHtml}
                     </td>
                     <td class="px-6 py-4 text-center space-x-2">
-                        <a href="${r.foto}" target="_blank" class="text-purple-500 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 p-2 rounded-full inline-block transition" title="Lihat Foto"><i class="fa-solid fa-image"></i></a>
+                        ${r.foto ? `<a href="${r.foto}" target="_blank" class="text-purple-500 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 p-2 rounded-full inline-block transition" title="Lihat Foto"><i class="fa-solid fa-image"></i></a>` : ''}
                         <button type="button" onclick="deleteMahasiswaReport('${r.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 `;
@@ -4098,7 +4165,11 @@
             const sortedData = myReports.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
 
             sortedData.forEach(r => {
-                totalJam += Number(r.keluhan || 0); 
+                const jamNum = Number(r.keluhan || 0);
+                const isDiakui = jamNum > 0;
+                const absJam = Math.abs(jamNum);
+                
+                if (isDiakui) totalJam += absJam; 
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -4110,7 +4181,7 @@
                     <td class="px-4 py-3 text-gray-700">
                         <div class="font-medium max-w-[200px] truncate" title="${r.rencana}">${r.rencana}</div>
                         <div class="text-xs text-gray-500 mt-0.5 max-w-[200px] truncate" title="${r.deskripsi || '-'}">${r.deskripsi || '-'}</div>
-                        <div class="text-xs text-purple-600 mt-1">${r.keluhan} Jam</div>
+                        <div class="text-xs mt-1 font-bold ${isDiakui ? 'text-purple-600' : 'text-red-500'}">Durasi: ${absJam} Jam ${!isDiakui ? '<span class="font-bold text-[10px] ml-1 text-red-600">(Ditolak)</span>' : ''}</div>
                     </td>
                     <td class="px-4 py-3 text-center">
                         <a href="${r.foto}" target="_blank" class="text-purple-500 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 p-2 rounded-full inline-block transition" title="Lihat Foto"><i class="fa-solid fa-image"></i></a>
@@ -4124,10 +4195,11 @@
             });
 
             if (tfoot) {
+                const pctString = ((totalJam / 181) * 100).toFixed(1).replace('.', ',');
                 tfoot.innerHTML = `
                     <tr>
                         <td colspan="3" class="px-4 py-3 text-right font-bold text-gray-800">Total Akumulasi Waktu:</td>
-                        <td colspan="3" class="px-4 py-3 font-bold text-purple-700 text-base">${totalJam} Jam dari target 181 jam </td>
+                        <td colspan="3" class="px-4 py-3 font-bold text-purple-700 text-base">${totalJam} Jam (${pctString}%) dari target 181 jam </td>
                     </tr>
                 `;
             }
@@ -4212,7 +4284,8 @@
             if (mhsJenis) mhsJenis.value = r.rencana;
             if (mhsDeskripsi) mhsDeskripsi.value = r.deskripsi || '';
             if (mhsTanggal) mhsTanggal.value = r.tanggal;
-            if (mhsJam) mhsJam.value = r.keluhan;
+            // Jika diedit oleh mahasiswa, ubah nilainya menjadi positif lagi (jika sebelumnya negatif/ditolak)
+            if (mhsJam) mhsJam.value = Math.abs(Number(r.keluhan || 0));
             if (mhsFoto) mhsFoto.value = r.foto;
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
