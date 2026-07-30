@@ -886,7 +886,8 @@
                                         <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Rekap', 'username')">Username / NIM <i id="sort-Rekap-username" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Rekap', 'kelompok')">Kelompok <i id="sort-Rekap-kelompok" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-4 py-3 text-center font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Rekap', 'totalJam')">Total Jam <i id="sort-Rekap-totalJam" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
-                                        <th class="px-4 py-3 text-left font-medium rounded-tr-md cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Rekap', 'pct')">Persentase Lapor <i id="sort-Rekap-pct" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Rekap', 'pct')">Persentase Lapor <i id="sort-Rekap-pct" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-4 py-3 text-center font-medium rounded-tr-md">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-rekap-table-body" class="bg-white divide-y divide-gray-200 text-sm">
@@ -1407,6 +1408,40 @@
                             <button type="submit" id="btn-submit-profile-dpl" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm transition">Simpan Perubahan</button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Detail Rincian Jam Mahasiswa -->
+        <div id="detail-rekap-modal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl overflow-hidden flex flex-col max-h-[90vh]">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-purple-50">
+                    <h3 class="font-bold text-purple-800 text-lg">Rincian Kegiatan Harian Mahasiswa</h3>
+                    <button onclick="closeDetailRekapModal()" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div class="p-6 overflow-y-auto flex-1 bg-white">
+                    <div id="detail-rekap-mhs-info" class="mb-4 text-sm text-gray-700 bg-gray-50 p-4 rounded border border-gray-200">
+                        <!-- Info Mahasiswa akan diinjeksi via JS -->
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-100 text-gray-600 sticky top-0 shadow-sm">
+                                <tr>
+                                    <th class="px-4 py-3 text-center w-10">No</th>
+                                    <th class="px-4 py-3 text-left whitespace-nowrap">Tanggal</th>
+                                    <th class="px-4 py-3 text-left w-1/2">Jenis & Deskripsi Kegiatan</th>
+                                    <th class="px-4 py-3 text-center">Durasi (Jam)</th>
+                                    <th class="px-4 py-3 text-center">Bukti Foto</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detail-rekap-table-body" class="divide-y divide-gray-200">
+                                <!-- Data rincian diinjeksi via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 text-right">
+                    <button onclick="closeDetailRekapModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 text-sm rounded transition">Tutup</button>
                 </div>
             </div>
         </div>
@@ -3097,9 +3132,74 @@
                             </span>
                         </div>
                     </td>
+                    <td class="px-4 py-3 text-center">
+                        <button type="button" onclick="showDetailRekapMhs('${m.username}')" class="text-purple-600 hover:text-purple-800 bg-purple-50 hover:bg-purple-100 p-2 rounded-full transition shadow-sm" title="Lihat Rincian Kegiatan Mahasiswa">
+                            <i class="fa-solid fa-list-check"></i>
+                        </button>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        // FUNGSI POPUP RINCIAN KEGIATAN MAHASISWA
+        function showDetailRekapMhs(username) {
+            const mhs = accountsData.find(a => String(a.role).toLowerCase().trim() === 'mahasiswa' && String(a.username).toLowerCase().trim() === String(username).toLowerCase().trim());
+            if (!mhs) return;
+
+            const reports = mahasiswaReportsData.filter(r => String(r.username).toLowerCase().trim() === String(username).toLowerCase().trim());
+            
+            // Urutkan laporan dari tanggal terbaru ke terlama
+            reports.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal)); 
+
+            const infoDiv = document.getElementById('detail-rekap-mhs-info');
+            if(infoDiv) {
+                let totalDurasi = reports.reduce((sum, r) => sum + Number(r.keluhan || 0), 0);
+                infoDiv.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div><span class="block text-xs text-gray-500 uppercase font-semibold">Nama Mahasiswa</span> <span class="font-bold text-gray-800">${mhs.namaLengkap || mhs.username}</span></div>
+                        <div><span class="block text-xs text-gray-500 uppercase font-semibold">NIM / Username</span> <span class="font-bold text-gray-800">${mhs.nip || '-'} <span class="font-normal text-sm text-gray-500">(@${mhs.username})</span></span></div>
+                        <div><span class="block text-xs text-gray-500 uppercase font-semibold">Kelompok KKN</span> <span class="font-bold text-gray-800">${mhs.kelompok || '-'}</span></div>
+                        <div><span class="block text-xs text-gray-500 uppercase font-semibold">Total Capaian</span> <span class="font-bold text-purple-700">${totalDurasi} Jam <span class="text-gray-500 font-normal text-xs">(Target 181)</span></span></div>
+                    </div>
+                `;
+            }
+
+            const tbody = document.getElementById('detail-rekap-table-body');
+            if(tbody) {
+                tbody.innerHTML = '';
+                if (reports.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">Belum ada riwayat kegiatan harian yang dilaporkan.</td></tr>';
+                } else {
+                    reports.forEach((r, idx) => {
+                        const tr = document.createElement('tr');
+                        const snippet = r.deskripsi ? r.deskripsi : '-';
+                        tr.innerHTML = `
+                            <td class="px-4 py-3 text-center text-gray-500">${idx + 1}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-gray-800 font-medium">${r.tanggal}</td>
+                            <td class="px-4 py-3 text-gray-700">
+                                <div class="font-bold text-purple-700 mb-1">${r.rencana}</div>
+                                <div class="text-sm whitespace-pre-wrap leading-relaxed text-gray-600">${snippet}</div>
+                            </td>
+                            <td class="px-4 py-3 text-center font-bold text-gray-800 bg-gray-50">
+                                ${r.keluhan} Jam
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                ${r.foto ? `<a href="${r.foto}" target="_blank" class="text-purple-600 hover:text-purple-800 bg-purple-100 hover:bg-purple-200 px-3 py-1.5 rounded-full inline-block transition text-xs font-semibold shadow-sm"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Lihat Foto</a>` : '<span class="text-gray-400 text-xs italic">Tidak ada foto</span>'}
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            }
+
+            const modal = document.getElementById('detail-rekap-modal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeDetailRekapModal() {
+            const modal = document.getElementById('detail-rekap-modal');
+            if (modal) modal.classList.add('hidden');
         }
 
         // =========================================================================
