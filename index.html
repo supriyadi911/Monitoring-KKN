@@ -1845,6 +1845,23 @@
                             sidebar.classList.remove('-translate-x-full');
                         }
                     }
+
+                    // --- LOGIKA RESTRIKSI AKUN ADMIN VERIFIKATOR ---
+                    const lowerUsername = currentUser.username.toLowerCase();
+                    const isRestrictedAdmin = lowerUsername === 'ver1ok' || lowerUsername === 'ver2ok' || lowerUsername === 'ver3ok';
+                    const btnKelReg = document.getElementById('tab-btn-kelompok-reguler');
+                    const btnMhsReg = document.getElementById('tab-btn-mahasiswa-reguler');
+                    const btnMhsLingkar = document.getElementById('tab-btn-mahasiswa-lingkar');
+                    const btnDpl = document.getElementById('tab-btn-dpl');
+                    const btnAkun = document.getElementById('tab-btn-akun');
+                    
+                    if (btnKelReg) btnKelReg.style.display = isRestrictedAdmin ? 'none' : 'flex';
+                    if (btnMhsReg) btnMhsReg.style.display = isRestrictedAdmin ? 'none' : 'flex';
+                    if (btnMhsLingkar) btnMhsLingkar.style.display = isRestrictedAdmin ? 'none' : 'flex';
+                    if (btnDpl) btnDpl.style.display = isRestrictedAdmin ? 'none' : 'flex';
+                    if (btnAkun) btnAkun.style.display = isRestrictedAdmin ? 'none' : 'flex';
+                    // ---------------------------------------------
+
                     switchAdminTab('dashboard'); 
                 } else if (userRole === 'dpl') {
                     if (elements.dplPage) elements.dplPage.classList.remove('hidden');
@@ -2699,14 +2716,43 @@
             const filterDate = filterInput ? filterInput.value : '';
             
             // 1. Dapatkan Data Laporan Sesuai Filter Tanggal Global
-            const globalKel = filterDate ? reportsData.filter(r => r.date === filterDate) : reportsData;
-            const globalMhs = filterDate ? mahasiswaReportsData.filter(r => r.tanggal === filterDate) : mahasiswaReportsData;
-            const globalDpl = filterDate ? dplReportsData.filter(r => r.tanggal === filterDate) : dplReportsData;
+            let globalKel = filterDate ? reportsData.filter(r => r.date === filterDate) : reportsData;
+            let globalMhs = filterDate ? mahasiswaReportsData.filter(r => r.tanggal === filterDate) : mahasiswaReportsData;
+            let globalDpl = filterDate ? dplReportsData.filter(r => r.tanggal === filterDate) : dplReportsData;
 
             // 2. Dapatkan Semua Akun Aktif Terdaftar
-            const allGroups = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'kelompok');
-            const allMhs = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'mahasiswa');
-            const allDpls = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'dpl');
+            let allGroups = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'kelompok');
+            let allMhs = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'mahasiswa');
+            let allDpls = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'dpl');
+
+            // --- LOGIKA RESTRIKSI FILTER DATA KHUSUS ADMIN VERIFIKATOR ---
+            if (currentUser && (currentUser.username.toLowerCase() === 'ver1ok' || currentUser.username.toLowerCase() === 'ver2ok' || currentUser.username.toLowerCase() === 'ver3ok')) {
+                const adminUname = currentUser.username.toLowerCase();
+                const isKelTarget = (str) => {
+                    const match = String(str || '').match(/kelompok\s*(\d+)/i);
+                    if (match) {
+                        const num = parseInt(match[1], 10);
+                        if (adminUname === 'ver1ok') return num >= 1 && num <= 40;
+                        if (adminUname === 'ver2ok') return num >= 41 && num <= 80;
+                        if (adminUname === 'ver3ok') return num >= 81 && num <= 116;
+                    }
+                    return false;
+                };
+
+                globalKel = globalKel.filter(r => isKelTarget(r.group));
+                globalMhs = globalMhs.filter(r => isKelTarget(r.kelompok));
+                allGroups = allGroups.filter(g => isKelTarget(g.username) || isKelTarget(g.namaLengkap));
+                allMhs = allMhs.filter(m => isKelTarget(m.kelompok));
+                
+                // DPL difilter jika kelompok yang dibimbingnya ada yang termasuk target
+                const handlesKelTarget = (dplKlp) => {
+                     if (!dplKlp) return false;
+                     return String(dplKlp).split(',').some(k => isKelTarget(k.trim()));
+                };
+                allDpls = allDpls.filter(d => handlesKelTarget(d.kelompok));
+                globalDpl = globalDpl.filter(r => handlesKelTarget(r.kelompok));
+            }
+            // -----------------------------------------------------------
 
             // [PEMISAHAN KELOMPOK TRANSFORMATIF & LINGKAR KAMPUS]
             // Fungsi helper agar kebal terhadap spasi/huruf kapital saat memfilter "Lingkar Kampus"
@@ -3018,9 +3064,25 @@
             });
 
             // [PERBAIKAN] Pengurutan Angka Alami (Natural Sort) agar Kelompok 10 ada setelah Kelompok 9
-            const kelompokArr = Array.from(kelompokSet).sort((a, b) => {
+            let kelompokArr = Array.from(kelompokSet).sort((a, b) => {
                 return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
             });
+
+            // --- LOGIKA RESTRIKSI DROPDOWN KHUSUS ADMIN VERIFIKATOR ---
+            if (currentUser && (currentUser.username.toLowerCase() === 'ver1ok' || currentUser.username.toLowerCase() === 'ver2ok' || currentUser.username.toLowerCase() === 'ver3ok')) {
+                const adminUname = currentUser.username.toLowerCase();
+                kelompokArr = kelompokArr.filter(k => {
+                    const match = String(k).match(/kelompok\s*(\d+)/i);
+                    if (match) {
+                        const num = parseInt(match[1], 10);
+                        if (adminUname === 'ver1ok') return num >= 1 && num <= 40;
+                        if (adminUname === 'ver2ok') return num >= 41 && num <= 80;
+                        if (adminUname === 'ver3ok') return num >= 81 && num <= 116;
+                    }
+                    return false;
+                });
+            }
+            // --------------------------------------------------------
 
             kelompokArr.forEach(k => {
                 const opt = document.createElement('option');
@@ -3048,9 +3110,25 @@
                 mhsAccounts = mhsAccounts.filter(m => String(m.kelompok).toLowerCase().trim() === selectedKelompok);
             }
 
+            // --- LOGIKA RESTRIKSI DATA TABEL KHUSUS ADMIN VERIFIKATOR ---
+            if (currentUser && (currentUser.username.toLowerCase() === 'ver1ok' || currentUser.username.toLowerCase() === 'ver2ok' || currentUser.username.toLowerCase() === 'ver3ok')) {
+                const adminUname = currentUser.username.toLowerCase();
+                mhsAccounts = mhsAccounts.filter(m => {
+                    const match = String(m.kelompok || '').match(/kelompok\s*(\d+)/i);
+                    if (match) {
+                        const num = parseInt(match[1], 10);
+                        if (adminUname === 'ver1ok') return num >= 1 && num <= 40;
+                        if (adminUname === 'ver2ok') return num >= 41 && num <= 80;
+                        if (adminUname === 'ver3ok') return num >= 81 && num <= 116;
+                    }
+                    return false;
+                });
+            }
+            // ---------------------------------------------------------
+
             if (mhsAccounts.length === 0) {
                 currentRekapData = []; // Kosongkan data global
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-gray-500">Tidak ada data mahasiswa pada kelompok yang dipilih.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-gray-500">Tidak ada data mahasiswa pada kelompok yang dipilih.</td></tr>';
                 return;
             }
 
