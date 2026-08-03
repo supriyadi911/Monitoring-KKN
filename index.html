@@ -439,6 +439,29 @@
                 <div id="admin-tab-dashboard" class="space-y-6">
                     <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard Monitor Admin</h1>
                     
+                    <!-- Kartu Info Verifikator (Khusus Akun Ver1ok, Ver2ok, Ver3ok) -->
+                    <div id="verifier-info-card" class="hidden bg-white rounded-lg shadow-sm p-6 border-t-4 border-blue-500 mb-6 relative">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="bg-blue-100 p-3 rounded-full text-blue-600">
+                                <i class="fa-solid fa-user-check text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 text-lg" id="verif-nama">Nama Verifikator</h3>
+                                <p class="text-sm text-gray-500">Tim Verifikator KKN</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+                            <div class="border-b md:border-b-0 pb-2 md:pb-0">
+                                <span class="block text-xs text-gray-400 uppercase font-semibold">Kelompok Yang Diverifikasi</span>
+                                <span id="verif-cakupan" class="font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded text-base border border-blue-100">-</span>
+                            </div>
+                            <div>
+                                <span class="block text-xs text-gray-400 uppercase font-semibold">Kontak (WA)</span>
+                                <span id="verif-kontak" class="font-semibold text-gray-800 text-base">-</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Filter Data Global (Dipindah ke Paling Atas) -->
                     <div class="bg-white rounded-lg shadow-sm p-6 border mb-6">
                         <h3 class="font-bold text-gray-700 mb-2">Filter Data Global</h3>
@@ -1860,6 +1883,27 @@
                     if (btnMhsLingkar) btnMhsLingkar.style.display = isRestrictedAdmin ? 'none' : 'flex';
                     if (btnDpl) btnDpl.style.display = isRestrictedAdmin ? 'none' : 'flex';
                     if (btnAkun) btnAkun.style.display = isRestrictedAdmin ? 'none' : 'flex';
+
+                    // Pengaturan Tampilan Kartu Informasi Verifikator
+                    const verifCard = document.getElementById('verifier-info-card');
+                    if (isRestrictedAdmin) {
+                        if (verifCard) verifCard.classList.remove('hidden');
+                        const verifNama = document.getElementById('verif-nama');
+                        const verifCakupan = document.getElementById('verif-cakupan');
+                        const verifKontak = document.getElementById('verif-kontak');
+                        
+                        if (verifNama) verifNama.innerText = currentUser.namaLengkap && currentUser.namaLengkap !== '-' ? currentUser.namaLengkap : currentUser.username.toUpperCase();
+                        if (verifKontak) verifKontak.innerText = currentUser.kontak && currentUser.kontak !== '-' ? currentUser.kontak : 'Belum diatur';
+                        
+                        if (verifCakupan) {
+                            if (lowerUsername === 'ver1ok') verifCakupan.innerText = 'Kelompok 1 - 40';
+                            else if (lowerUsername === 'ver2ok') verifCakupan.innerText = 'Kelompok 41 - 80';
+                            else if (lowerUsername === 'ver3ok') verifCakupan.innerText = 'Kelompok 81 - 116';
+                        }
+                    } else {
+                        // Sembunyikan untuk Admin Utama (Master)
+                        if (verifCard) verifCard.classList.add('hidden');
+                    }
                     // ---------------------------------------------
 
                     switchAdminTab('dashboard'); 
