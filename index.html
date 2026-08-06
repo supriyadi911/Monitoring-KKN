@@ -570,6 +570,44 @@
                         </div>
                     </div>
 
+                    <!-- Statistik Verifikasi Laporan Mahasiswa (BARU) -->
+                    <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Status Verifikasi Laporan Harian Mahasiswa</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                        <!-- Total Laporan Mahasiswa -->
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-purple-500 flex items-center justify-between">
+                            <div>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Total Laporan Mahasiswa</p>
+                                <div class="mt-1">
+                                    <p class="text-3xl font-bold text-gray-800" id="stat-mhs-total-reports">0</p>
+                                    <p class="text-[10px] text-gray-400 font-medium mt-1">Seluruh laporan yang masuk</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-file-lines text-4xl text-purple-100"></i>
+                        </div>
+                        <!-- Laporan Diverifikasi -->
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-blue-500 flex items-center justify-between">
+                            <div>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Laporan Diverifikasi</p>
+                                <div class="mt-1 flex flex-col items-start">
+                                    <p class="text-3xl font-bold text-gray-800" id="stat-mhs-verified">0</p>
+                                    <span class="text-[11px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded mt-2"><span id="pct-mhs-verified">0%</span> dari total</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-check-double text-4xl text-blue-100"></i>
+                        </div>
+                        <!-- Laporan Ditolak -->
+                        <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-red-500 flex items-center justify-between">
+                            <div>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Laporan Ditolak</p>
+                                <div class="mt-1 flex flex-col items-start">
+                                    <p class="text-3xl font-bold text-gray-800" id="stat-mhs-rejected">0</p>
+                                    <span class="text-[11px] font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded mt-2"><span id="pct-mhs-rejected">0%</span> dari total</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-ban text-4xl text-red-100"></i>
+                        </div>
+                    </div>
+
                     <!-- Grafik Distribusi (Full Width) -->
                     <div class="bg-white rounded-lg shadow-sm p-6 border mb-8">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
@@ -1136,11 +1174,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
                     <div class="border-b md:border-b-0 pb-2 md:pb-0">
                         <span class="block text-xs text-gray-400 uppercase font-semibold">Anggota Kelompok</span>
-                        <span id="group-card-members" class="font-semibold text-gray-800 text-base">Memuat anggota kelompok...</span>
+                        <div id="group-card-members" class="mt-1">Memuat anggota kelompok...</div>
                     </div>
                     <div>
                         <span class="block text-xs text-gray-400 uppercase font-semibold">Dosen Pembimbing (DPL)</span>
-                        <span id="group-card-dpl" class="font-semibold text-gray-800 text-base">Memuat nama DPL...</span>
+                        <span id="group-card-dpl" class="font-semibold text-gray-800 text-base block mt-1">Memuat nama DPL...</span>
                     </div>
                 </div>
             </div>
@@ -1767,8 +1805,16 @@
                     }
                 } else {
                     const res = await fetch(`${SCRIPT_URL}?action=login&username=${u}&password=${p}&_t=${Date.now()}`);
-                    const data = await res.json();
-                    if(data.success && data.user.role.toLowerCase().trim() === r.toLowerCase().trim()) {
+                    const text = await res.text(); // Proteksi parsing JSON
+                    let data;
+                    try {
+                        data = JSON.parse(text);
+                    } catch(e) {
+                        console.error("Respon bukan JSON:", text);
+                        throw new Error("Format respon server tidak valid. Pastikan Deploy GAS diatur ke 'Anyone'.");
+                    }
+                    
+                    if(data && data.success && data.user.role.toLowerCase().trim() === r.toLowerCase().trim()) {
                         user = data.user;
                     }
                 }
@@ -2169,10 +2215,21 @@
                         fetch(`${SCRIPT_URL}?action=getAccounts&_t=${_t}`, { cache: 'no-store' })
                     ]);
                     
-                    const data1 = await res1.json();
-                    const data2 = await res2.json();
-                    const data3 = await res3.json();
-                    const data4 = await res4.json();
+                    // Helper agar sistem tidak crash saat server Google mengembalikan HTML Error
+                    const safeJson = async (response) => {
+                        const text = await response.text();
+                        try {
+                            return JSON.parse(text);
+                        } catch (e) {
+                            console.error("Gagal parsing JSON, respon server:", text.substring(0, 100) + "...");
+                            throw new Error("Izin akses Google Apps Script ditolak. Pastikan Who has access diset ke 'Anyone'.");
+                        }
+                    };
+                    
+                    const data1 = await safeJson(res1);
+                    const data2 = await safeJson(res2);
+                    const data3 = await safeJson(res3);
+                    const data4 = await safeJson(res4);
                     
                     reportsData = data1.reports || [];
                     dplReportsData = data2.reports || [];
@@ -2374,9 +2431,14 @@
                     accountsData = Object.values(mockUsers);
                 } else {
                     const res = await fetch(`${SCRIPT_URL}?action=getAccounts&_t=${new Date().getTime()}`);
-                    const data = await res.json();
-                    if(data.success) {
-                        accountsData = data.accounts;
+                    const text = await res.text();
+                    try {
+                        const data = JSON.parse(text);
+                        if(data.success) {
+                            accountsData = data.accounts;
+                        }
+                    } catch(e) {
+                        throw new Error("Respon server bukan JSON (Periksa izin Deploy GAS).");
                     }
                 }
                 applyAdminAkunFilters();
@@ -2384,7 +2446,7 @@
                 console.error("Gagal memuat akun:", err);
                 const adminAkunTableBody = document.getElementById('admin-akun-table-body');
                 if (adminAkunTableBody) {
-                    adminAkunTableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-red-500">Gagal memuat data akun. Periksa koneksi internet Anda.</td></tr>';
+                    adminAkunTableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-red-500">${err.message || "Gagal memuat data akun. Periksa koneksi internet Anda."}</td></tr>`;
                 }
             }
         }
@@ -3090,6 +3152,20 @@
             if (document.getElementById('stat-rep-mhs-trans')) document.getElementById('stat-rep-mhs-trans').innerText = repMhsTrans.length;
             if (document.getElementById('stat-rep-mhs-lingkar')) document.getElementById('stat-rep-mhs-lingkar').innerText = repMhsLingkar.length;
             if (document.getElementById('stat-rep-dpl')) document.getElementById('stat-rep-dpl').innerText = globalDpl.length;
+
+            // 7.1 Kalkulasi & Update Statistik Verifikasi Laporan Mahasiswa (Baru)
+            const totalMhsReports = globalMhs.length;
+            const verifiedMhsReports = globalMhs.filter(r => isVerified(r.deskripsi)).length;
+            const rejectedMhsReports = globalMhs.filter(r => Number(r.keluhan || 0) < 0).length;
+            
+            const pctVerified = totalMhsReports ? ((verifiedMhsReports / totalMhsReports) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
+            const pctRejected = totalMhsReports ? ((rejectedMhsReports / totalMhsReports) * 100).toFixed(1).replace('.', ',').replace(',0', '') : 0;
+
+            if (document.getElementById('stat-mhs-total-reports')) document.getElementById('stat-mhs-total-reports').innerText = totalMhsReports;
+            if (document.getElementById('stat-mhs-verified')) document.getElementById('stat-mhs-verified').innerText = verifiedMhsReports;
+            if (document.getElementById('stat-mhs-rejected')) document.getElementById('stat-mhs-rejected').innerText = rejectedMhsReports;
+            if (document.getElementById('pct-mhs-verified')) document.getElementById('pct-mhs-verified').innerText = `${pctVerified}%`;
+            if (document.getElementById('pct-mhs-rejected')) document.getElementById('pct-mhs-rejected').innerText = `${pctRejected}%`;
 
             // Simpan ke variabel global untuk dikirim ke WhatsApp
             globalUnreportedKel = unreportedGroups;
@@ -4979,9 +5055,17 @@
                 return userKlp === groupName || userKlp === groupUsername;
             });
             
+            // Mengurutkan anggota berdasarkan abjad (A-Z)
+            members.sort((a, b) => {
+                const namaA = a.namaLengkap || a.username || '';
+                const namaB = b.namaLengkap || b.username || '';
+                return namaA.localeCompare(namaB);
+            });
+            
+            // Format tampilan menjadi list bernomor (ordered list)
             const memberNames = members.length > 0 
-                ? members.map(m => m.namaLengkap).join(', ') 
-                : 'Belum ada anggota mahasiswa terdaftar';
+                ? '<ol class="list-decimal pl-4 space-y-1 text-sm font-medium text-gray-700">' + members.map(m => `<li>${m.namaLengkap || m.username}</li>`).join('') + '</ol>' 
+                : '<span class="text-gray-500 italic text-sm">Belum ada anggota mahasiswa terdaftar</span>';
             
             const dplUsers = accountsData.filter(u => {
                 if (u.role !== 'dpl') return false;
@@ -5001,7 +5085,7 @@
             const elGrpDpl = document.getElementById('group-card-dpl');
 
             if (elGrpName) elGrpName.innerText = currentUser.namaLengkap || currentUser.username;
-            if (elGrpMembers) elGrpMembers.innerText = memberNames;
+            if (elGrpMembers) elGrpMembers.innerHTML = memberNames;
             if (elGrpDpl) elGrpDpl.innerText = dplNames;
         }
 
