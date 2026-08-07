@@ -3505,9 +3505,9 @@
 
             if (searchTxt) {
                 mhsAccounts = mhsAccounts.filter(m => 
-                    (m.namaLengkap || '').toLowerCase().includes(searchTxt) ||
-                    (m.username || '').toLowerCase().includes(searchTxt) ||
-                    (m.nip || '').toLowerCase().includes(searchTxt)
+                    String(m.namaLengkap || '').toLowerCase().includes(searchTxt) ||
+                    String(m.username || '').toLowerCase().includes(searchTxt) ||
+                    String(m.nip || '').toLowerCase().includes(searchTxt)
                 );
             }
 
