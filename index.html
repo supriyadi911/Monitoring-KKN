@@ -4800,18 +4800,19 @@
                 const jamNum = Number(r.keluhan || 0);
                 const isDiakui = jamNum > 0;
                 const absJam = Math.abs(jamNum);
+                const isTerverifikasi = isVerified(r.deskripsi);
                 
                 if (isDiakui) totalJam += absJam; 
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="px-4 py-3 text-center">
-                        <input type="checkbox" class="row-checkbox-mhs" value="${r.id}" onchange="updateBulkActionStateMhs()">
+                        ${isTerverifikasi ? '<i class="fa-solid fa-lock text-gray-300 text-sm" title="Terkunci (Diverifikasi)"></i>' : `<input type="checkbox" class="row-checkbox-mhs" value="${r.id}" onchange="updateBulkActionStateMhs()">`}
                     </td>
                     <td class="px-4 py-3 whitespace-nowrap text-gray-600">${r.tanggal}</td>
                     <td class="px-4 py-3 whitespace-nowrap text-xs font-mono text-gray-500 bg-gray-50"><i class="fa-regular fa-clock mr-1"></i>${getTimestampStr(r)}</td>
                     <td class="px-4 py-3 text-gray-700">
-                        <div class="font-medium max-w-[200px] truncate" title="${r.rencana}">${r.rencana} ${isVerified(r.deskripsi) ? '<span class="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold ml-1"><i class="fa-solid fa-check"></i> Diverifikasi</span>' : ''}</div>
+                        <div class="font-medium max-w-[200px] truncate" title="${r.rencana}">${r.rencana} ${isTerverifikasi ? '<span class="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold ml-1"><i class="fa-solid fa-check"></i> Diverifikasi</span>' : ''}</div>
                         <div class="text-xs text-gray-500 mt-0.5 max-w-[200px] truncate" title="${cleanDeskripsi(r.deskripsi) || '-'}">${cleanDeskripsi(r.deskripsi) || '-'}</div>
                         <div class="text-xs mt-1 font-bold ${isDiakui ? 'text-purple-600' : 'text-red-500'}">Durasi: ${absJam} Jam ${!isDiakui ? '<span class="font-bold text-[10px] ml-1 text-red-600">(Ditolak)</span>' : ''}</div>
                     </td>
@@ -4819,8 +4820,12 @@
                         <a href="${r.foto}" target="_blank" class="text-purple-500 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 p-2 rounded-full inline-block transition" title="Lihat Foto"><i class="fa-solid fa-image"></i></a>
                     </td>
                     <td class="px-4 py-3 text-center space-x-2">
-                        <button type="button" onclick="editMahasiswaReport('${r.id}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button type="button" onclick="deleteMahasiswaReport('${r.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                        ${isTerverifikasi ? 
+                            '<span class="text-xs text-gray-500 font-semibold italic bg-gray-100 border border-gray-200 px-2 py-1.5 rounded shadow-sm inline-block"><i class="fa-solid fa-lock mr-1"></i> Terkunci</span>' 
+                            : 
+                            `<button type="button" onclick="editMahasiswaReport('${r.id}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                             <button type="button" onclick="deleteMahasiswaReport('${r.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>`
+                        }
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -4913,6 +4918,11 @@
             const r = mahasiswaReportsData.find(x => String(x.id) === String(id));
             if(!r) return;
 
+            if (isVerified(r.deskripsi)) {
+                alert("Akses Ditolak: Laporan yang sudah diverifikasi telah dikunci dan tidak dapat diedit lagi.");
+                return;
+            }
+
             const formTitle = document.getElementById('mhs-form-title');
             const reportId = document.getElementById('mhs-report-id');
             const mhsJenis = document.getElementById('mhs-jenis');
@@ -4934,6 +4944,12 @@
         }
 
         async function deleteMahasiswaReport(id, btnElement) {
+            const r = mahasiswaReportsData.find(x => String(x.id) === String(id));
+            if (r && isVerified(r.deskripsi)) {
+                alert("Akses Ditolak: Laporan yang sudah diverifikasi telah dikunci dan tidak dapat dihapus.");
+                return;
+            }
+
             if(!confirm("Apakah Anda yakin ingin menghapus laporan mahasiswa ini?")) return;
 
             let originalIcon = '';
