@@ -1742,6 +1742,7 @@
             'kelompok12': { username: 'kelompok12', password: '1234', role: 'kelompok', namaLengkap: 'Kelompok 12', nip: '-', dpl: '-', lokasi: 'Desa Suka Maju' },
             'kelompok1': { username: 'kelompok1', password: '1234', role: 'kelompok', namaLengkap: 'Kelompok 1', nip: '-', dpl: '-', lokasi: 'Desa Suka Maju' },
             'kelompok2': { username: 'kelompok2', password: '1234', role: 'kelompok', namaLengkap: 'Kelompok 2', nip: '-', dpl: '-', lokasi: 'Desa Suka Mundur' },
+            'ver4ok': { username: 'ver4ok', password: 'Ver4ok', role: 'admin', namaLengkap: 'Verifikator Lingkar Kampus', kontak: '-' },
             'dosen1': { username: 'dosen1', password: '1234', role: 'dpl', namaLengkap: 'Dr. Supriyadi, M.Pd.', nip: '198001012005011001', fakultas: 'Tarbiyah dan Keguruan', kelompok: 'Kelompok 12, Kelompok 1, Kelompok 13', kontak: '0823-7196-2881' },
             'mahasiswa1': { username: 'mahasiswa1', password: '1234', role: 'mahasiswa', namaLengkap: 'Andi Saputra', nip: '1911010001', kelompok: 'Kelompok 12', lokasi: 'Desa Suka Maju, Kec. Kalianda', dpl: 'Dr. Supriyadi, M.Pd.' },
             'mahasiswa2': { username: 'mahasiswa2', password: '1234', role: 'mahasiswa', namaLengkap: 'Budi Santoso', nip: '1911010002', kelompok: 'Kelompok 12', lokasi: 'Desa Suka Maju, Kec. Kalianda', dpl: 'Dr. Supriyadi, M.Pd.' }
@@ -2078,7 +2079,7 @@
 
                     // --- LOGIKA RESTRIKSI AKUN ADMIN VERIFIKATOR ---
                     const lowerUsername = currentUser.username.toLowerCase();
-                    const isRestrictedAdmin = lowerUsername === 'ver1ok' || lowerUsername === 'ver2ok' || lowerUsername === 'ver3ok';
+                    const isRestrictedAdmin = lowerUsername === 'ver1ok' || lowerUsername === 'ver2ok' || lowerUsername === 'ver3ok' || lowerUsername === 'ver4ok';
                     const btnKelReg = document.getElementById('tab-btn-kelompok-reguler');
                     const btnMhsReg = document.getElementById('tab-btn-mahasiswa-reguler');
                     const btnMhsLingkar = document.getElementById('tab-btn-mahasiswa-lingkar');
@@ -2106,6 +2107,7 @@
                             if (lowerUsername === 'ver1ok') verifCakupan.innerText = 'Kelompok 1 - 40';
                             else if (lowerUsername === 'ver2ok') verifCakupan.innerText = 'Kelompok 41 - 80';
                             else if (lowerUsername === 'ver3ok') verifCakupan.innerText = 'Kelompok 81 - 116';
+                            else if (lowerUsername === 'ver4ok') verifCakupan.innerText = 'Kelompok Lingkar Kampus';
                         }
                     } else {
                         // Sembunyikan untuk Admin Utama (Master)
@@ -2981,9 +2983,12 @@
         // FUNGSI BANTUAN UNTUK MENDAPATKAN DATA MAHASISWA SESUAI RESTRIKSI VERIFIKATOR
         function getRestrictedMhsReports() {
             let data = mahasiswaReportsData;
-            if (currentUser && (currentUser.username.toLowerCase() === 'ver1ok' || currentUser.username.toLowerCase() === 'ver2ok' || currentUser.username.toLowerCase() === 'ver3ok')) {
+            if (currentUser && (currentUser.username.toLowerCase() === 'ver1ok' || currentUser.username.toLowerCase() === 'ver2ok' || currentUser.username.toLowerCase() === 'ver3ok' || currentUser.username.toLowerCase() === 'ver4ok')) {
                 const adminUname = currentUser.username.toLowerCase();
                 data = data.filter(m => {
+                    if (adminUname === 'ver4ok') {
+                        return String(m.kelompok || '').toLowerCase().replace(/\s/g, '').includes('lingkarkampus');
+                    }
                     const match = String(m.kelompok || '').match(/kelompok\s*(\d+)/i);
                     if (match) {
                         const num = parseInt(match[1], 10);
@@ -3060,9 +3065,12 @@
             let allDpls = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'dpl');
 
             // --- LOGIKA RESTRIKSI FILTER DATA KHUSUS ADMIN VERIFIKATOR ---
-            if (currentUser && (currentUser.username.toLowerCase() === 'ver1ok' || currentUser.username.toLowerCase() === 'ver2ok' || currentUser.username.toLowerCase() === 'ver3ok')) {
+            if (currentUser && (currentUser.username.toLowerCase() === 'ver1ok' || currentUser.username.toLowerCase() === 'ver2ok' || currentUser.username.toLowerCase() === 'ver3ok' || currentUser.username.toLowerCase() === 'ver4ok')) {
                 const adminUname = currentUser.username.toLowerCase();
                 const isKelTarget = (str) => {
+                    if (adminUname === 'ver4ok') {
+                        return String(str || '').toLowerCase().replace(/\s/g, '').includes('lingkarkampus');
+                    }
                     const match = String(str || '').match(/kelompok\s*(\d+)/i);
                     if (match) {
                         const num = parseInt(match[1], 10);
@@ -3477,9 +3485,12 @@
             });
 
             // --- LOGIKA RESTRIKSI DROPDOWN KHUSUS ADMIN VERIFIKATOR ---
-            if (currentUser && (currentUser.username.toLowerCase() === 'ver1ok' || currentUser.username.toLowerCase() === 'ver2ok' || currentUser.username.toLowerCase() === 'ver3ok')) {
+            if (currentUser && (currentUser.username.toLowerCase() === 'ver1ok' || currentUser.username.toLowerCase() === 'ver2ok' || currentUser.username.toLowerCase() === 'ver3ok' || currentUser.username.toLowerCase() === 'ver4ok')) {
                 const adminUname = currentUser.username.toLowerCase();
                 kelompokArr = kelompokArr.filter(k => {
+                    if (adminUname === 'ver4ok') {
+                        return String(k || '').toLowerCase().replace(/\s/g, '').includes('lingkarkampus');
+                    }
                     const match = String(k).match(/kelompok\s*(\d+)/i);
                     if (match) {
                         const num = parseInt(match[1], 10);
@@ -3529,9 +3540,12 @@
             }
 
             // --- LOGIKA RESTRIKSI DATA TABEL KHUSUS ADMIN VERIFIKATOR ---
-            if (currentUser && (currentUser.username.toLowerCase() === 'ver1ok' || currentUser.username.toLowerCase() === 'ver2ok' || currentUser.username.toLowerCase() === 'ver3ok')) {
+            if (currentUser && (currentUser.username.toLowerCase() === 'ver1ok' || currentUser.username.toLowerCase() === 'ver2ok' || currentUser.username.toLowerCase() === 'ver3ok' || currentUser.username.toLowerCase() === 'ver4ok')) {
                 const adminUname = currentUser.username.toLowerCase();
                 mhsAccounts = mhsAccounts.filter(m => {
+                    if (adminUname === 'ver4ok') {
+                        return String(m.kelompok || '').toLowerCase().replace(/\s/g, '').includes('lingkarkampus');
+                    }
                     const match = String(m.kelompok || '').match(/kelompok\s*(\d+)/i);
                     if (match) {
                         const num = parseInt(match[1], 10);
