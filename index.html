@@ -727,7 +727,7 @@
                             <select id="filter-jenis-kelompok" onchange="applyAdminKelompokFilters()" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none shadow-sm text-gray-700">
                                 <option value="">Semua Jenis Laporan</option>
                                 <option value="Lomba Jingle KKN UINRIL">Lomba Jingle KKN UINRIL</option>
-                                <option value="Lomba Green Neighborhood (Lingkungan Hijau, Bersih, dan Sehat)">Lomba Green Neighborhood</option>
+                                <option value="Program Unggulan Kelompok">Program Unggulan Kelompok</option>
                                 <option value="Kegiatan Harian">Kegiatan Harian</option>
                                 <option value="Laporan Akhir KKN">Laporan Akhir KKN</option>
                                 <option value="Draft Artikel KKN">Draft Artikel KKN</option>
@@ -1206,7 +1206,7 @@
                             <select id="form-jenis-laporan" required onchange="toggleGroupFormFields()" class="w-full border rounded p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
                                 <option value="" disabled selected>-- Pilih Jenis Laporan --</option>
                                 <option value="Lomba Jingle KKN UINRIL">Lomba Jingle KKN UINRIL</option>
-                                <option value="Lomba Green Neighborhood (Lingkungan Hijau, Bersih, dan Sehat)">Lomba Green Neighborhood (Lingkungan Hijau, Bersih, dan Sehat)</option>
+                                <option value="Program Unggulan Kelompok">Program Unggulan Kelompok</option>
                                 <option value="Kegiatan Harian">Kegiatan Harian</option>
                                 <option value="Laporan Akhir KKN">Laporan Akhir KKN</option>
                                 <option value="Draft Artikel KKN">Draft Artikel KKN</option>
@@ -5160,10 +5160,10 @@
                 if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat mengenai Jingle KKN yang dibuat...";
                 if (linkLabel) linkLabel.innerText = "Link Video Lomba (YouTube/Instagram/Drive) *";
                 if (linkInput) linkInput.placeholder = "https://...";
-            } else if (jenis === "Lomba Green Neighborhood (Lingkungan Hijau, Bersih, dan Sehat)") {
-                if (descLabel) descLabel.innerText = "Deskripsi Program / Kegiatan Lingkungan *";
-                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat mengenai program Green Neighborhood yang dijalankan...";
-                if (linkLabel) linkLabel.innerText = "Link Bukti / Dokumentasi Lomba (Drive/Sosmed) *";
+            } else if (jenis === "Program Unggulan Kelompok") {
+                if (descLabel) descLabel.innerText = "Deskripsi Program Unggulan *";
+                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat mengenai Program Unggulan Kelompok yang dijalankan...";
+                if (linkLabel) linkLabel.innerText = "Link Bukti / Dokumentasi (Drive/Sosmed) *";
                 if (linkInput) linkInput.placeholder = "https://...";
             }
         }
