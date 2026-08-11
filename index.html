@@ -3279,14 +3279,20 @@
             
             // Logika Diterima vs Ditolak
             const rejectedMhsReports = globalMhs.filter(r => Number(r.keluhan || 0) < 0).length;
-            const acceptedMhsReports = totalMhsReports - rejectedMhsReports;
+            
+            // Diterima = Wajib diakui (jam >= 0) DAN diverifikasi
+            const acceptedMhsReports = globalMhs.filter(r => Number(r.keluhan || 0) >= 0 && isVerified(r.deskripsi)).length;
+            
+            // Total Kelayakan untuk kalkulasi persentase (agar Diterima + Ditolak = 100%)
+            const totalKelayakan = acceptedMhsReports + rejectedMhsReports;
 
             const formatPct = (val) => val.toFixed(1).replace('.0', '').replace('.', ',');
 
             const pctVerifiedRaw = totalMhsReports ? (verifiedMhsReports / totalMhsReports) * 100 : 0;
             const pctUnverifiedRaw = totalMhsReports ? (unverifiedMhsReports / totalMhsReports) * 100 : 0;
-            const pctAcceptedRaw = totalMhsReports ? (acceptedMhsReports / totalMhsReports) * 100 : 0;
-            const pctRejectedRaw = totalMhsReports ? (rejectedMhsReports / totalMhsReports) * 100 : 0;
+            
+            const pctAcceptedRaw = totalKelayakan ? (acceptedMhsReports / totalKelayakan) * 100 : 0;
+            const pctRejectedRaw = totalKelayakan ? (rejectedMhsReports / totalKelayakan) * 100 : 0;
 
             // Update UI Total Laporan
             if (document.getElementById('stat-mhs-total-reports')) document.getElementById('stat-mhs-total-reports').innerText = totalMhsReports;
