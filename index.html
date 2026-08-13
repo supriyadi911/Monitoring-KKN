@@ -68,6 +68,42 @@
         </div>
     </div>
 
+    <!-- ==============================
+         DNS INFO MODAL
+    =============================== -->
+    <div id="dns-info-modal" class="fixed inset-0 z-[9998] hidden bg-black bg-opacity-50 flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform transition-transform scale-95 duration-300">
+            <div class="px-6 py-4 border-b border-gray-200 bg-blue-50 flex items-center">
+                <i class="fa-solid fa-wifi text-blue-600 text-2xl mr-3"></i>
+                <h3 class="font-bold text-blue-800 text-lg">Informasi Koneksi</h3>
+            </div>
+            <div class="p-6 text-gray-700 text-sm">
+                <p class="mb-4 font-medium text-red-600 bg-red-50 p-2 rounded border border-red-100">
+                    <i class="fa-solid fa-triangle-exclamation mr-1"></i> Agar koneksi ke database lancar dan tidak diblokir oleh provider internet (terutama pengguna seluler), silakan atur <strong>DNS Pribadi (Private DNS)</strong> di HP Anda.
+                </p>
+                <ol class="list-decimal pl-5 mb-6 space-y-2 font-medium text-gray-600">
+                    <li>Buka <strong class="text-gray-800">Pengaturan</strong> HP (Settings).</li>
+                    <li>Cari menu <strong class="text-gray-800">Koneksi / Jaringan</strong>.</li>
+                    <li>Cari pengaturan <strong class="text-gray-800">DNS Pribadi</strong> (Private DNS).</li>
+                    <li>Pilih "Host penyedia DNS Pribadi" dan ketik: <br> 
+                        <span class="bg-blue-50 px-2 py-1 rounded text-blue-700 font-bold font-mono tracking-wide mt-1.5 mb-1 inline-block border border-blue-200 select-all">dns.google.com</span>
+                    </li>
+                    <li>Lalu klik <strong>Simpan</strong>.</li>
+                </ol>
+                
+                <div class="flex items-center mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition">
+                    <input type="checkbox" id="dns-checkbox" class="w-5 h-5 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 cursor-pointer">
+                    <label for="dns-checkbox" class="ml-3 text-sm font-semibold text-gray-700 cursor-pointer select-none flex-1">Saya telah mengatur DNS (Jangan tampilkan lagi)</label>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 text-right">
+                <button onclick="closeDnsModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 text-sm rounded-lg transition duration-200 shadow-md w-full sm:w-auto">
+                    Tutup & Lanjutkan
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Navbar -->
     <nav class="bg-blue-700 text-white shadow-md w-full z-10 sticky top-0 hidden" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1932,15 +1968,51 @@
                 loadDataFromServer(); // Tarik data untuk statistik publik
             }
 
-            // 4. Hilangkan Splash Screen
+            // 4. Hilangkan Splash Screen & Munculkan DNS Modal jika diperlukan
             const splash = document.getElementById('splash-screen');
             if (splash) {
                 splash.classList.add('opacity-0', 'invisible', 'scale-105');
                 setTimeout(() => {
                     splash.remove(); 
+                    showDnsModalIfNeeded();
                 }, 700);
             }
         };
+
+        // =========================================================================
+        // FUNGSI MODAL INFORMASI DNS
+        // =========================================================================
+        function showDnsModalIfNeeded() {
+            const dnsChecked = localStorage.getItem('kkn_dns_checked');
+            if (dnsChecked !== 'true') {
+                const modal = document.getElementById('dns-info-modal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    // Beri sedikit jeda agar transisi CSS Tailwind dapat berjalan
+                    setTimeout(() => {
+                        modal.classList.remove('opacity-0');
+                        modal.children[0].classList.remove('scale-95');
+                    }, 10);
+                }
+            }
+        }
+
+        function closeDnsModal() {
+            const checkbox = document.getElementById('dns-checkbox');
+            if (checkbox && checkbox.checked) {
+                localStorage.setItem('kkn_dns_checked', 'true');
+            }
+            
+            const modal = document.getElementById('dns-info-modal');
+            if (modal) {
+                modal.classList.add('opacity-0');
+                modal.children[0].classList.add('scale-95');
+                // Hilangkan modal dari DOM setelah animasi transisi selesai (300ms)
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+        }
 
         async function handleLogin(e) {
             e.preventDefault();
