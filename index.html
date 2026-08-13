@@ -1874,6 +1874,7 @@
         // INITIALIZATION & ROUTING
         // =========================================================================
         window.onload = async () => {
+            // 1. Cek Sesi Tersimpan di Browser (localStorage)
             const session = localStorage.getItem('kkn_session');
             if (session) {
                 currentUser = JSON.parse(session);
@@ -1882,17 +1883,22 @@
                 }
             }
 
-            const splashTimeout = new Promise(resolve => setTimeout(resolve, 1500));
-            const dataLoadPromise = loadDataFromServer();
-            
-            await Promise.all([splashTimeout, dataLoadPromise]);
+            // 2. Animasi Splash Screen (Dipercepat menjadi 800ms)
+            const splashTimeout = new Promise(resolve => setTimeout(resolve, 800));
+            await splashTimeout;
 
+            // 3. Logika Bypass Login Cepat (Fast Routing)
             if (currentUser) {
-                routeUser();
+                // Jika sesi ada, LANGSUNG masuk ke Dashboard (UI tampil instan)
+                // Data dari server akan ditarik secara diam-diam di latar belakang
+                routeUser(); 
             } else {
+                // Jika tidak ada sesi, tampilkan halaman awal (publik)
                 showPublicPage();
+                loadDataFromServer(); // Tarik data untuk statistik publik
             }
 
+            // 4. Hilangkan Splash Screen
             const splash = document.getElementById('splash-screen');
             if (splash) {
                 splash.classList.add('opacity-0', 'invisible', 'scale-105');
