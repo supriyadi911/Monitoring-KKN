@@ -1761,6 +1761,40 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // =========================================================================
+        // PATCH JARINGAN SELULER (IM3, TELKOMSEL, DLL) - AUTO RETRY & REDIRECT
+        // =========================================================================
+        const originalFetch = window.fetch;
+        window.fetch = async function(url, options = {}) {
+            // Paksa redirect 'follow' agar tidak diblokir Transparent Proxy provider seluler
+            options.redirect = 'follow';
+            
+            const maxRetries = 3;
+            let backoff = 1200; // Mulai dengan jeda 1.2 detik sebelum mencoba lagi
+
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await originalFetch(url, options);
+                    
+                    // Terkadang provider seluler memblokir dengan status 502/503 atau CORS gagal
+                    if (!response.ok && response.type !== 'opaque' && response.status >= 500) {
+                        throw new Error(`Koneksi dicegat provider (Status: ${response.status})`);
+                    }
+                    
+                    return response; // Berhasil terhubung!
+                } catch (err) {
+                    console.warn(`[Jaringan] Terputus dari database. Mencoba ulang (${i + 1}/${maxRetries})...`, err);
+                    
+                    // Jika ini adalah percobaan terakhir, biarkan error muncul ke permukaan (UI)
+                    if (i === maxRetries - 1) throw err; 
+                    
+                    // Istirahatkan jaringan sejenak sebelum mencoba lagi (Exponential Backoff)
+                    await new Promise(resolve => setTimeout(resolve, backoff));
+                    backoff *= 1.5; // Jeda bertambah lama: 1.2s -> 1.8s -> 2.7s
+                }
+            }
+        };
+
+        // =========================================================================
         // KEAMANAN LANJUTAN (ANTI-INSPECT & OBFUSCATION)
         // =========================================================================
         
