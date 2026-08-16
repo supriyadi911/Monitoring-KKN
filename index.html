@@ -113,22 +113,24 @@
                     <button id="btn-sidebar-toggle" onclick="toggleSidebar()" class="hidden mr-4 text-white hover:text-gray-300 focus:outline-none transition">
                         <i class="fa-solid fa-bars text-xl"></i>
                     </button>
-                    <i class="fa-solid fa-map-location-dot mr-2"></i> SIM KKN
+                    <i class="fa-solid fa-map-location-dot mr-2"></i> <span class="hidden sm:inline">SIM KKN</span>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <!-- Status Koneksi (Admin/Kelompok) -->
-                    <div class="hidden sm:flex items-center text-xs font-medium px-2 py-1 bg-blue-800 rounded-full border border-blue-600" title="Status Koneksi Database">
-                        <i class="fa-solid fa-circle text-gray-400 text-[10px] mr-1" id="nav-conn-icon"></i> <span id="nav-conn-text">Memeriksa...</span>
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    
+                    <span id="nav-username" class="font-medium hidden lg:block text-sm mr-2 truncate max-w-[150px]"></span>
+                    
+                    <!-- Status Koneksi (Semua Akun) -->
+                    <div class="flex items-center text-[10px] sm:text-xs font-medium px-2.5 py-1.5 sm:px-3 sm:py-1 bg-blue-800/80 rounded-full border border-blue-500 shadow-inner" title="Status Koneksi Database">
+                        <i class="fa-solid fa-circle text-gray-400 text-[10px] mr-1 sm:mr-1.5" id="nav-conn-icon"></i> 
+                        <span id="nav-conn-text" class="hidden sm:inline">Memeriksa...</span>
                     </div>
                     
-                    <span id="nav-username" class="font-medium hidden sm:block"></span>
-                    
-                    <button onclick="refreshData(this)" class="bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded-md text-sm font-medium transition duration-150 shadow-sm border border-blue-500" title="Segarkan Data dari Database">
-                        <i class="fa-solid fa-rotate-right"></i> <span class="hidden sm:inline">Refresh</span>
+                    <button onclick="refreshData(this)" class="bg-blue-600 hover:bg-blue-500 px-3 py-1.5 sm:px-3 sm:py-1 rounded-md text-sm font-medium transition duration-150 shadow-sm border border-blue-500 flex items-center" title="Segarkan Data dari Database">
+                        <i class="fa-solid fa-rotate-right sm:mr-1.5"></i> <span class="hidden sm:inline">Refresh</span>
                     </button>
                     
-                    <button onclick="logout()" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded-md text-sm font-medium transition duration-150">
-                        <i class="fa-solid fa-sign-out-alt"></i> Keluar
+                    <button onclick="logout()" class="bg-red-500 hover:bg-red-600 px-3 py-1.5 sm:px-3 sm:py-1 rounded-md text-sm font-medium transition duration-150 flex items-center" title="Keluar">
+                        <i class="fa-solid fa-sign-out-alt sm:mr-1.5"></i> <span class="hidden sm:inline">Keluar</span>
                     </button>
                 </div>
             </div>
@@ -3225,6 +3227,76 @@
             if (publicChartInstance) publicChartInstance.destroy();
 
             publicChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } 
+                }
+            });
+        }
+
+        function renderAdminDashboard() {
+            applyFilters();
+        }
+
+        function renderAdminMultiChart(dataKel, dataMhs, dataDpl) {
+            const canvas = document.getElementById('reportChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+            
+            const filterVal = document.getElementById('admin-chart-filter') ? document.getElementById('admin-chart-filter').value : 'semua';
+            
+            const counts = { kel: {}, mhs: {}, dpl: {} };
+            const allDates = new Set();
+
+            if (filterVal === 'semua' || filterVal === 'kelompok') {
+                dataKel.forEach(r => { counts.kel[r.date] = (counts.kel[r.date] || 0) + 1; allDates.add(r.date); });
+            }
+            if (filterVal === 'semua' || filterVal === 'mahasiswa') {
+                dataMhs.forEach(r => { counts.mhs[r.tanggal] = (counts.mhs[r.tanggal] || 0) + 1; allDates.add(r.tanggal); });
+            }
+            if (filterVal === 'semua' || filterVal === 'dpl') {
+                dataDpl.forEach(r => { counts.dpl[r.tanggal] = (counts.dpl[r.tanggal] || 0) + 1; allDates.add(r.tanggal); });
+            }
+
+            const labels = Array.from(allDates).sort();
+            const valKel = labels.map(d => counts.kel[d] || 0);
+            const valMhs = labels.map(d => counts.mhs[d] || 0);
+            const valDpl = labels.map(d => counts.dpl[d] || 0);
+            
+            const datasets = [];
+            
+            if (filterVal === 'semua' || filterVal === 'kelompok') {
+                datasets.push({
+                    label: 'Laporan Kelompok', data: valKel,
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 2, tension: 0.3, fill: true, pointRadius: 4, pointBackgroundColor: 'rgba(59, 130, 246, 1)'
+                });
+            }
+            if (filterVal === 'semua' || filterVal === 'mahasiswa') {
+                datasets.push({
+                    label: 'Laporan Mahasiswa', data: valMhs,
+                    backgroundColor: 'rgba(168, 85, 247, 0.2)', borderColor: 'rgba(168, 85, 247, 1)',
+                    borderWidth: 2, tension: 0.3, fill: true, pointRadius: 4, pointBackgroundColor: 'rgba(168, 85, 247, 1)'
+                });
+            }
+            if (filterVal === 'semua' || filterVal === 'dpl') {
+                datasets.push({
+                    label: 'Laporan DPL', data: valDpl,
+                    backgroundColor: 'rgba(34, 197, 94, 0.2)', borderColor: 'rgba(34, 197, 94, 1)',
+                    borderWidth: 2, tension: 0.3, fill: true, pointRadius: 4, pointBackgroundColor: 'rgba(34, 197, 94, 1)'
+                });
+            }
+
+            if (adminChartInstance) adminChartInstance.destroy();
+
+            adminChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
