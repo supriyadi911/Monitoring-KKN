@@ -270,8 +270,12 @@
                     <h3 class="font-bold text-gray-700 mb-4">Filter Data</h3>
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-sm text-gray-600">Tanggal</label>
-                            <input type="date" id="public-filter-date" class="mt-1 w-full border rounded-md p-2 text-sm" onchange="applyPublicFilters()">
+                            <label class="block text-sm text-gray-600 mb-1">Tanggal Kegiatan</label>
+                            <input type="date" id="public-filter-date" class="w-full border rounded-md p-2 text-sm" onchange="applyPublicFilters()">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">Tanggal Pengiriman (Server)</label>
+                            <input type="date" id="public-filter-timestamp" class="w-full border rounded-md p-2 text-sm" onchange="applyPublicFilters()">
                         </div>
                         <button onclick="resetPublicFilters()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-md text-sm transition mt-4">
                             Reset Filter
@@ -538,11 +542,15 @@
                     <!-- Filter Data Global (Dipindah ke Paling Atas) -->
                     <div class="bg-white rounded-lg shadow-sm p-6 border mb-6">
                         <h3 class="font-bold text-gray-700 mb-2">Filter Data Global</h3>
-                        <p class="text-xs text-gray-500 mb-4">Pilih tanggal untuk memfilter statistik, grafik, dan tabel secara keseluruhan.</p>
+                        <p class="text-xs text-gray-500 mb-4">Pilih tanggal kegiatan atau pengiriman untuk memfilter statistik, grafik, dan tabel secara keseluruhan.</p>
                         <div class="flex flex-col sm:flex-row gap-4 items-end">
                             <div class="flex-1 w-full">
-                                <label class="block text-sm text-gray-600 font-medium mb-1">Tanggal Laporan</label>
-                                <input type="date" id="filter-date" class="global-date-input w-full border rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate(this.value)">
+                                <label class="block text-sm text-gray-600 font-medium mb-1">Tanggal Kegiatan</label>
+                                <input type="date" id="filter-date" class="global-date-input w-full border rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate('date', this.value)">
+                            </div>
+                            <div class="flex-1 w-full">
+                                <label class="block text-sm text-gray-600 font-medium mb-1">Tanggal Pengiriman</label>
+                                <input type="date" id="filter-timestamp" class="global-timestamp-input w-full border rounded-md p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate('timestamp', this.value)">
                             </div>
                             <button onclick="resetFilters()" class="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2.5 px-6 rounded-md text-sm transition">
                                 <i class="fa-solid fa-rotate-right mr-1"></i> Reset Filter
@@ -790,11 +798,18 @@
                     <div class="bg-white rounded-lg shadow-sm p-4 border mb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div>
                             <h3 class="font-bold text-gray-700 text-sm">Filter Data Global</h3>
-                            <p class="text-xs text-gray-500">Filter berdasarkan tanggal laporan</p>
+                            <p class="text-xs text-gray-500">Filter berdasarkan tanggal laporan & pengiriman</p>
                         </div>
-                        <div class="flex w-full sm:w-auto gap-2">
-                            <input type="date" class="global-date-input flex-1 border rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate(this.value)">
-                            <button onclick="resetFilters()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-3 rounded-md text-sm transition" title="Reset Filter">
+                        <div class="flex flex-col sm:flex-row w-full sm:w-auto gap-2">
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <span class="text-xs text-gray-500 font-semibold w-24">Kegiatan:</span>
+                                <input type="date" class="global-date-input flex-1 border rounded-md p-1.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate('date', this.value)">
+                            </div>
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <span class="text-xs text-gray-500 font-semibold w-24">Pengiriman:</span>
+                                <input type="date" class="global-timestamp-input flex-1 border rounded-md p-1.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate('timestamp', this.value)">
+                            </div>
+                            <button onclick="resetFilters()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-1.5 px-3 rounded-md text-sm transition" title="Reset Filter">
                                 <i class="fa-solid fa-rotate-right"></i>
                             </button>
                         </div>
@@ -867,11 +882,18 @@
                     <div class="bg-white rounded-lg shadow-sm p-4 border mb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div>
                             <h3 class="font-bold text-gray-700 text-sm">Filter Data Global</h3>
-                            <p class="text-xs text-gray-500">Filter berdasarkan tanggal laporan</p>
+                            <p class="text-xs text-gray-500">Filter berdasarkan tanggal laporan & pengiriman</p>
                         </div>
-                        <div class="flex w-full sm:w-auto gap-2">
-                            <input type="date" class="global-date-input flex-1 border rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate(this.value)">
-                            <button onclick="resetFilters()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-3 rounded-md text-sm transition" title="Reset Filter">
+                        <div class="flex flex-col sm:flex-row w-full sm:w-auto gap-2">
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <span class="text-xs text-gray-500 font-semibold w-24">Kegiatan:</span>
+                                <input type="date" class="global-date-input flex-1 border rounded-md p-1.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate('date', this.value)">
+                            </div>
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <span class="text-xs text-gray-500 font-semibold w-24">Pengiriman:</span>
+                                <input type="date" class="global-timestamp-input flex-1 border rounded-md p-1.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate('timestamp', this.value)">
+                            </div>
+                            <button onclick="resetFilters()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-1.5 px-3 rounded-md text-sm transition" title="Reset Filter">
                                 <i class="fa-solid fa-rotate-right"></i>
                             </button>
                         </div>
@@ -1110,11 +1132,18 @@
                     <div class="bg-white rounded-lg shadow-sm p-4 border mb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div>
                             <h3 class="font-bold text-gray-700 text-sm">Filter Data Global</h3>
-                            <p class="text-xs text-gray-500">Filter berdasarkan tanggal laporan</p>
+                            <p class="text-xs text-gray-500">Filter berdasarkan tanggal laporan & pengiriman</p>
                         </div>
-                        <div class="flex w-full sm:w-auto gap-2">
-                            <input type="date" class="global-date-input flex-1 border rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate(this.value)">
-                            <button onclick="resetFilters()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-3 rounded-md text-sm transition" title="Reset Filter">
+                        <div class="flex flex-col sm:flex-row w-full sm:w-auto gap-2">
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <span class="text-xs text-gray-500 font-semibold w-24">Kegiatan:</span>
+                                <input type="date" class="global-date-input flex-1 border rounded-md p-1.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate('date', this.value)">
+                            </div>
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <span class="text-xs text-gray-500 font-semibold w-24">Pengiriman:</span>
+                                <input type="date" class="global-timestamp-input flex-1 border rounded-md p-1.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none" onchange="updateGlobalDate('timestamp', this.value)">
+                            </div>
+                            <button onclick="resetFilters()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-1.5 px-3 rounded-md text-sm transition" title="Reset Filter">
                                 <i class="fa-solid fa-rotate-right"></i>
                             </button>
                         </div>
@@ -1889,6 +1918,30 @@
         let currentPageAkun = 1;
         let itemsPerPage = 20;
         let currentRekapData = []; // Menyimpan data rekap saat ini untuk dicetak
+
+        // Fungsi Helper untuk Parsing dan Mencocokkan Tanggal Timestamp server dengan Input Date YYYY-MM-DD
+        function matchTimestampDate(rawTimestamp, filterYMD) {
+            if (!filterYMD) return true;
+            if (!rawTimestamp || rawTimestamp === '-' || rawTimestamp.includes('Kosong')) return false;
+            
+            // Format yang diharapkan dari spreadsheet: "DD/MM/YYYY, HH:mm WIB"
+            const match = String(rawTimestamp).match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+            if (match) {
+                let dd = match[1].padStart(2, '0');
+                let mm = match[2].padStart(2, '0');
+                let yyyy = match[3];
+                
+                // Terkadang jika format dari server terbalik menjadi YYYY-MM-DD
+                if (match[1].length === 4) {
+                    yyyy = match[1];
+                    mm = match[2].padStart(2, '0');
+                    dd = match[3].padStart(2, '0');
+                }
+                const rowYMD = `${yyyy}-${mm}-${dd}`;
+                return rowYMD === filterYMD;
+            }
+            return false;
+        }
 
         // Fungsi Helper untuk Verifikasi Laporan tanpa ubah GAS (Piggyback Method)
         function cleanDeskripsi(desc) {
@@ -3023,11 +3076,21 @@
 
         function applyPublicFilters() {
             const publicFilterDate = document.getElementById('public-filter-date');
+            const publicFilterTimestamp = document.getElementById('public-filter-timestamp');
             const dateFilter = publicFilterDate ? publicFilterDate.value : '';
+            const timestampFilter = publicFilterTimestamp ? publicFilterTimestamp.value : '';
 
-            const globalKel = dateFilter ? reportsData.filter(r => r.date === dateFilter) : reportsData;
-            const globalMhs = dateFilter ? mahasiswaReportsData.filter(r => r.tanggal === dateFilter) : mahasiswaReportsData;
-            const globalDpl = dateFilter ? dplReportsData.filter(r => r.tanggal === dateFilter) : dplReportsData;
+            // Helper untuk mengecek apakah sebuah baris lolos dari kedua filter (Kegiatan & Pengiriman)
+            const isMatchFilters = (item, dateField) => {
+                let match = true;
+                if (dateFilter && item[dateField] !== dateFilter) match = false;
+                if (timestampFilter && !matchTimestampDate(item.timestamp, timestampFilter)) match = false;
+                return match;
+            };
+
+            const globalKel = reportsData.filter(r => isMatchFilters(r, 'date'));
+            const globalMhs = mahasiswaReportsData.filter(r => isMatchFilters(r, 'tanggal'));
+            const globalDpl = dplReportsData.filter(r => isMatchFilters(r, 'tanggal'));
 
             // 2. Dapatkan Semua Akun Aktif Terdaftar
             const allGroups = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'kelompok');
@@ -3103,7 +3166,9 @@
 
         function resetPublicFilters() {
             const publicFilterDate = document.getElementById('public-filter-date');
+            const publicFilterTimestamp = document.getElementById('public-filter-timestamp');
             if (publicFilterDate) publicFilterDate.value = '';
+            if (publicFilterTimestamp) publicFilterTimestamp.value = '';
             applyPublicFilters();
         }
         
@@ -3173,78 +3238,12 @@
             });
         }
 
-        function renderAdminDashboard() {
-            applyFilters(); 
-        }
-
-        function renderAdminMultiChart(dataKel, dataMhs, dataDpl) {
-            const canvas = document.getElementById('reportChart');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            if (!ctx) return;
-            
-            const filterVal = document.getElementById('admin-chart-filter') ? document.getElementById('admin-chart-filter').value : 'semua';
-            
-            const counts = { kel: {}, mhs: {}, dpl: {} };
-            const allDates = new Set();
-
-            if (filterVal === 'semua' || filterVal === 'kelompok') {
-                dataKel.forEach(r => { counts.kel[r.date] = (counts.kel[r.date] || 0) + 1; allDates.add(r.date); });
+        function updateGlobalDate(type, val) {
+            if (type === 'date') {
+                document.querySelectorAll('.global-date-input').forEach(el => el.value = val);
+            } else if (type === 'timestamp') {
+                document.querySelectorAll('.global-timestamp-input').forEach(el => el.value = val);
             }
-            if (filterVal === 'semua' || filterVal === 'mahasiswa') {
-                dataMhs.forEach(r => { counts.mhs[r.tanggal] = (counts.mhs[r.tanggal] || 0) + 1; allDates.add(r.tanggal); });
-            }
-            if (filterVal === 'semua' || filterVal === 'dpl') {
-                dataDpl.forEach(r => { counts.dpl[r.tanggal] = (counts.dpl[r.tanggal] || 0) + 1; allDates.add(r.tanggal); });
-            }
-
-            const labels = Array.from(allDates).sort();
-            const valKel = labels.map(d => counts.kel[d] || 0);
-            const valMhs = labels.map(d => counts.mhs[d] || 0);
-            const valDpl = labels.map(d => counts.dpl[d] || 0);
-            
-            const datasets = [];
-            
-            if (filterVal === 'semua' || filterVal === 'kelompok') {
-                datasets.push({
-                    label: 'Laporan Kelompok', data: valKel,
-                    backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: 'rgba(59, 130, 246, 1)',
-                    borderWidth: 2, tension: 0.3, fill: true, pointRadius: 4, pointBackgroundColor: 'rgba(59, 130, 246, 1)'
-                });
-            }
-            if (filterVal === 'semua' || filterVal === 'mahasiswa') {
-                datasets.push({
-                    label: 'Laporan Mahasiswa', data: valMhs,
-                    backgroundColor: 'rgba(168, 85, 247, 0.2)', borderColor: 'rgba(168, 85, 247, 1)',
-                    borderWidth: 2, tension: 0.3, fill: true, pointRadius: 4, pointBackgroundColor: 'rgba(168, 85, 247, 1)'
-                });
-            }
-            if (filterVal === 'semua' || filterVal === 'dpl') {
-                datasets.push({
-                    label: 'Laporan DPL', data: valDpl,
-                    backgroundColor: 'rgba(34, 197, 94, 0.2)', borderColor: 'rgba(34, 197, 94, 1)',
-                    borderWidth: 2, tension: 0.3, fill: true, pointRadius: 4, pointBackgroundColor: 'rgba(34, 197, 94, 1)'
-                });
-            }
-
-            if (adminChartInstance) adminChartInstance.destroy();
-
-            adminChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: datasets
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } 
-                }
-            });
-        }
-
-        function updateGlobalDate(val) {
-            document.querySelectorAll('.global-date-input').forEach(el => el.value = val);
             applyFilters();
         }
 
@@ -3325,12 +3324,22 @@
 
         function updateAdminGlobalStats() {
             const filterInput = document.querySelector('.global-date-input');
+            const filterTimestampInput = document.querySelector('.global-timestamp-input');
             const filterDate = filterInput ? filterInput.value : '';
+            const filterTimestamp = filterTimestampInput ? filterTimestampInput.value : '';
             
+            // Helper untuk mengecek apakah sebuah baris lolos dari kedua filter (Kegiatan & Pengiriman)
+            const isMatchFilters = (item, dateField) => {
+                let match = true;
+                if (filterDate && item[dateField] !== filterDate) match = false;
+                if (filterTimestamp && !matchTimestampDate(item.timestamp, filterTimestamp)) match = false;
+                return match;
+            };
+
             // 1. Dapatkan Data Laporan Sesuai Filter Tanggal Global
-            let globalKel = filterDate ? reportsData.filter(r => r.date === filterDate) : reportsData;
-            let globalMhs = filterDate ? mahasiswaReportsData.filter(r => r.tanggal === filterDate) : mahasiswaReportsData;
-            let globalDpl = filterDate ? dplReportsData.filter(r => r.tanggal === filterDate) : dplReportsData;
+            let globalKel = reportsData.filter(r => isMatchFilters(r, 'date'));
+            let globalMhs = mahasiswaReportsData.filter(r => isMatchFilters(r, 'tanggal'));
+            let globalDpl = dplReportsData.filter(r => isMatchFilters(r, 'tanggal'));
 
             // 2. Dapatkan Semua Akun Aktif Terdaftar
             let allGroups = accountsData.filter(a => String(a.role).toLowerCase().trim() === 'kelompok');
@@ -3597,13 +3606,16 @@
 
         function applyAdminKelompokFilters() {
             const filterInput = document.querySelector('.global-date-input');
+            const filterTimestampInput = document.querySelector('.global-timestamp-input');
             const filterDate = filterInput ? filterInput.value : '';
+            const filterTimestamp = filterTimestampInput ? filterTimestampInput.value : '';
             const searchTxt = document.getElementById('search-kelompok') ? document.getElementById('search-kelompok').value.toLowerCase() : '';
             const filterJenis = document.getElementById('filter-jenis-kelompok') ? document.getElementById('filter-jenis-kelompok').value : '';
 
             filteredDataKel = reportsData;
 
             if (filterDate) filteredDataKel = filteredDataKel.filter(r => r.date === filterDate);
+            if (filterTimestamp) filteredDataKel = filteredDataKel.filter(r => matchTimestampDate(r.timestamp, filterTimestamp));
             
             if (searchTxt) {
                 filteredDataKel = filteredDataKel.filter(r => 
@@ -3621,13 +3633,16 @@
 
         function applyAdminMhsFilters() {
             const filterInput = document.querySelector('.global-date-input');
+            const filterTimestampInput = document.querySelector('.global-timestamp-input');
             const filterDate = filterInput ? filterInput.value : '';
+            const filterTimestamp = filterTimestampInput ? filterTimestampInput.value : '';
             const searchTxt = document.getElementById('search-mhs') ? document.getElementById('search-mhs').value.toLowerCase() : '';
             const filterJenis = document.getElementById('filter-jenis-mhs') ? document.getElementById('filter-jenis-mhs').value : '';
 
             filteredDataMhs = mahasiswaReportsData;
 
             if (filterDate) filteredDataMhs = filteredDataMhs.filter(r => r.tanggal === filterDate);
+            if (filterTimestamp) filteredDataMhs = filteredDataMhs.filter(r => matchTimestampDate(r.timestamp, filterTimestamp));
             
             if (searchTxt) {
                 filteredDataMhs = filteredDataMhs.filter(r => 
@@ -3724,13 +3739,16 @@
 
         function applyAdminDplFilters() {
             const filterInput = document.querySelector('.global-date-input');
+            const filterTimestampInput = document.querySelector('.global-timestamp-input');
             const filterDate = filterInput ? filterInput.value : '';
+            const filterTimestamp = filterTimestampInput ? filterTimestampInput.value : '';
             const searchTxt = document.getElementById('search-dpl') ? document.getElementById('search-dpl').value.toLowerCase() : '';
             const filterJenis = document.getElementById('filter-jenis-dpl') ? document.getElementById('filter-jenis-dpl').value : '';
 
             filteredDataDpl = dplReportsData;
 
             if (filterDate) filteredDataDpl = filteredDataDpl.filter(r => r.tanggal === filterDate);
+            if (filterTimestamp) filteredDataDpl = filteredDataDpl.filter(r => matchTimestampDate(r.timestamp, filterTimestamp));
             
             if (searchTxt) {
                 filteredDataDpl = filteredDataDpl.filter(r => 
@@ -3749,6 +3767,7 @@
 
         function resetFilters() {
             document.querySelectorAll('.global-date-input').forEach(el => el.value = '');
+            document.querySelectorAll('.global-timestamp-input').forEach(el => el.value = '');
             
             if (document.getElementById('search-kelompok')) document.getElementById('search-kelompok').value = '';
             if (document.getElementById('filter-jenis-kelompok')) document.getElementById('filter-jenis-kelompok').value = '';
