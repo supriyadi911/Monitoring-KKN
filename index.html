@@ -42,8 +42,14 @@
             <h1 class="text-3xl md:text-4xl font-extrabold text-blue-800 tracking-wide drop-shadow-sm">SIM KKN</h1>
             <p class="text-gray-600 mt-2 font-semibold tracking-wider text-sm md:text-base uppercase text-center px-4">Universitas Islam Negeri<br>Raden Intan Lampung</p>
         </div>
+        
+        <!-- Timer Hitung Mundur (Splash Screen) -->
+        <div class="mt-8 flex items-center text-xs md:text-sm font-bold px-4 py-2 bg-red-100 border border-red-200 rounded-full text-red-700 shadow-sm">
+            <i class="fa-solid fa-clock mr-2 animate-pulse"></i> <span id="splash-countdown-text">Memuat timer...</span>
+        </div>
+
         <!-- Bouncing Loading Dots -->
-        <div class="mt-10 flex items-center justify-center space-x-3">
+        <div class="mt-8 flex items-center justify-center space-x-3">
             <div class="w-3.5 h-3.5 bg-blue-600 rounded-full animate-bounce shadow-sm" style="animation-delay: -0.3s"></div>
             <div class="w-3.5 h-3.5 bg-blue-600 rounded-full animate-bounce shadow-sm" style="animation-delay: -0.15s"></div>
             <div class="w-3.5 h-3.5 bg-blue-600 rounded-full animate-bounce shadow-sm"></div>
@@ -104,6 +110,36 @@
         </div>
     </div>
 
+    <!-- ==============================
+         DEADLINE INFO MODAL
+    =============================== -->
+    <div id="deadline-info-modal" class="fixed inset-0 z-[9998] hidden bg-black bg-opacity-50 flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform transition-transform scale-95 duration-300">
+            <div class="px-6 py-4 border-b border-gray-200 bg-red-50 flex items-center">
+                <i class="fa-solid fa-clock text-red-600 text-2xl mr-3"></i>
+                <h3 class="font-bold text-red-800 text-lg">Peringatan Penutupan Sistem</h3>
+            </div>
+            <div class="p-6 text-gray-700 text-sm">
+                <p class="mb-4 font-medium text-gray-800 leading-relaxed">
+                    SIM KKN akan ditutup pada tanggal <strong class="text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 whitespace-nowrap">1 September 2026, pukul 16.00 WIB</strong>.
+                </p>
+                <p class="mb-6 font-medium text-gray-600 leading-relaxed">
+                    Kepada seluruh peserta KKN dimohon segera tuntaskan laporan individu mahasiswa dan laporan kelompok sebelum batas waktu tersebut.<br><br>Terima kasih atas perhatian dan kerjasama yang baik.
+                </p>
+                
+                <div class="flex items-center mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition">
+                    <input type="checkbox" id="deadline-checkbox" class="w-5 h-5 text-red-600 bg-white border-gray-300 rounded focus:ring-red-500 cursor-pointer">
+                    <label for="deadline-checkbox" class="ml-3 text-sm font-semibold text-gray-700 cursor-pointer select-none flex-1">Saya mengerti (Jangan tampilkan lagi)</label>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 text-right">
+                <button onclick="closeDeadlineModal()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-6 text-sm rounded-lg transition duration-200 shadow-md w-full sm:w-auto">
+                    Tutup & Lanjutkan
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Navbar -->
     <nav class="bg-blue-700 text-white shadow-md w-full z-10 sticky top-0 hidden" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -119,6 +155,12 @@
                     
                     <span id="nav-username" class="font-medium hidden lg:block text-sm mr-2 truncate max-w-[150px]"></span>
                     
+                    <!-- Timer Hitung Mundur Navbar -->
+                    <div class="flex items-center text-[10px] sm:text-xs font-bold px-2 py-1.5 sm:px-3 sm:py-1 bg-red-800/80 rounded-full border border-red-500 shadow-inner text-white" title="Batas Waktu Penutupan Sistem">
+                        <i class="fa-solid fa-clock mr-1 sm:mr-1.5 animate-pulse"></i> 
+                        <span id="nav-countdown-text" class="whitespace-nowrap">Memuat timer...</span>
+                    </div>
+
                     <!-- Status Koneksi (Semua Akun) -->
                     <div class="flex items-center text-[10px] sm:text-xs font-medium px-2.5 py-1.5 sm:px-3 sm:py-1 bg-blue-800/80 rounded-full border border-blue-500 shadow-inner" title="Status Koneksi Database">
                         <i class="fa-solid fa-circle text-gray-400 text-[10px] mr-1 sm:mr-1.5" id="nav-conn-icon"></i> 
@@ -153,6 +195,13 @@
         <div id="public-page" class="hidden flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8 overflow-y-auto">
             <!-- Hero / Sambutan -->
             <div class="text-center mb-10 mt-6 bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
+                
+                <!-- Timer Hitung Mundur Publik -->
+                <div class="inline-flex items-center text-xs font-bold px-3 py-1 bg-red-50 border border-red-200 rounded-full text-red-600 mb-3 shadow-sm">
+                    <i class="fa-solid fa-clock mr-2 animate-pulse"></i> <span id="pub-countdown-text">Memuat timer...</span>
+                </div>
+                <br>
+
                 <!-- Status Koneksi Public -->
                 <div class="inline-flex items-center text-xs font-medium px-3 py-1 bg-gray-50 border rounded-full text-gray-600 mb-6 shadow-sm">
                     <i class="fa-solid fa-circle text-gray-400 text-[10px] mr-2" id="pub-conn-icon"></i> <span id="pub-conn-text">Memeriksa Database...</span>
@@ -1828,6 +1877,83 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // =========================================================================
+        // TIMER HITUNG MUNDUR (COUNTDOWN) 1 SEPT 2026, 16:00 WIB
+        // =========================================================================
+        function startCountdownTimer() {
+            // Target: 1 September 2026, 16:00:00 WIB (WIB adalah UTC+7) 
+            // Jadi 16:00 WIB = 09:00 UTC
+            const targetDate = Date.UTC(2026, 8, 1, 9, 0, 0); // Bulan 8 = September
+            
+            const updateUI = () => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                let text = "";
+                let shortText = "";
+                if (distance < 0) {
+                    text = "Sistem Telah Ditutup";
+                    shortText = "Ditutup";
+
+                    // =======================================================
+                    // LOCKING VISUAL (LANGKAH 2): Nonaktifkan Opsi Dropdown
+                    // =======================================================
+                    const lockOption = (selectId, value) => {
+                        const selectEl = document.getElementById(selectId);
+                        if (selectEl) {
+                            const option = selectEl.querySelector(`option[value="${value}"]`);
+                            if (option && !option.disabled) {
+                                option.disabled = true;
+                                option.innerText = option.innerText + " (Ditutup)";
+                            }
+                        }
+                    };
+                    
+                    // Kunci opsi di form Login
+                    lockOption('role', 'mahasiswa');
+                    lockOption('role', 'kelompok');
+                    
+                    // Kunci opsi di form Register (jika ditampilkan)
+                    lockOption('reg-role', 'mahasiswa');
+                    lockOption('reg-role', 'kelompok');
+
+                } else {
+                    const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((distance % (1000 * 60)) / 1000);
+                    text = `${d} Hari ${h} Jam ${m} Menit ${s} Detik`;
+                    shortText = `${d}h ${h}j ${m}m ${s}s`; // Format pendek untuk layar HP
+                }
+
+                const navEl = document.getElementById('nav-countdown-text');
+                const pubEl = document.getElementById('pub-countdown-text');
+                const splashEl = document.getElementById('splash-countdown-text');
+
+                // Responsif: Tampilkan format pendek di HP, panjang di PC (untuk Navbar)
+                if (navEl) {
+                    if (window.innerWidth < 768) {
+                        navEl.innerText = shortText;
+                    } else {
+                        navEl.innerText = text;
+                    }
+                }
+                
+                if (pubEl) pubEl.innerText = text;
+                if (splashEl) splashEl.innerText = text;
+
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                }
+            };
+
+            updateUI(); // Panggil sekali langsung agar tidak menunggu 1 detik pertama
+            const timerInterval = setInterval(updateUI, 1000);
+        }
+
+        // Mulai timer saat script diload
+        startCountdownTimer();
+
+        // =========================================================================
         // PATCH JARINGAN SELULER (IM3, TELKOMSEL, DLL) - AUTO RETRY & REDIRECT
         // =========================================================================
         const originalFetch = window.fetch;
@@ -2049,6 +2175,8 @@
                         modal.children[0].classList.remove('scale-95');
                     }, 10);
                 }
+            } else {
+                showDeadlineModalIfNeeded();
             }
         }
 
@@ -2063,6 +2191,42 @@
                 modal.classList.add('opacity-0');
                 modal.children[0].classList.add('scale-95');
                 // Hilangkan modal dari DOM setelah animasi transisi selesai (300ms)
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    showDeadlineModalIfNeeded();
+                }, 300);
+            }
+        }
+
+        // =========================================================================
+        // FUNGSI MODAL PERINGATAN PENUTUPAN SISTEM
+        // =========================================================================
+        function showDeadlineModalIfNeeded() {
+            if (!currentUser) return; // Hanya muncul jika sudah login (akun admin, DPL, Mahasiswa, Kelompok)
+            
+            const deadlineChecked = localStorage.getItem('kkn_deadline_checked');
+            if (deadlineChecked !== 'true') {
+                const modal = document.getElementById('deadline-info-modal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    setTimeout(() => {
+                        modal.classList.remove('opacity-0');
+                        modal.children[0].classList.remove('scale-95');
+                    }, 10);
+                }
+            }
+        }
+
+        function closeDeadlineModal() {
+            const checkbox = document.getElementById('deadline-checkbox');
+            if (checkbox && checkbox.checked) {
+                localStorage.setItem('kkn_deadline_checked', 'true');
+            }
+            
+            const modal = document.getElementById('deadline-info-modal');
+            if (modal) {
+                modal.classList.add('opacity-0');
+                modal.children[0].classList.add('scale-95');
                 setTimeout(() => {
                     modal.classList.add('hidden');
                 }, 300);
@@ -2082,6 +2246,23 @@
                 btn.disabled = true;
             }
             if (errorDiv) errorDiv.classList.add('hidden');
+
+            // =======================================================
+            // LOCKING LOGIKA (LANGKAH 1): Cegah Login Mahasiswa/Kelompok
+            // =======================================================
+            const targetDate = Date.UTC(2026, 8, 1, 9, 0, 0); // 1 Sept 2026 16:00 WIB
+            const now = new Date().getTime();
+            if (now >= targetDate && (r === 'mahasiswa' || r === 'kelompok')) {
+                if (errorDiv) {
+                    errorDiv.innerText = "Akses ditutup! Waktu laporan untuk Mahasiswa dan Kelompok telah berakhir.";
+                    errorDiv.classList.remove('hidden');
+                }
+                if (btn) {
+                    btn.innerHTML = 'Masuk';
+                    btn.disabled = false;
+                }
+                return; // Hentikan fungsi
+            }
 
             try {
                 let user;
@@ -2121,6 +2302,7 @@
                     };
                     localStorage.setItem('kkn_session', JSON.stringify(currentUser));
                     routeUser();
+                    showDeadlineModalIfNeeded();
                 } else {
                     if (errorDiv) errorDiv.classList.remove('hidden');
                 }
@@ -2145,10 +2327,29 @@
             }
             if (errorDiv) errorDiv.classList.add('hidden');
 
+            const roleValue = document.getElementById('reg-role').value.toLowerCase().trim();
+
+            // =======================================================
+            // LOCKING LOGIKA (LANGKAH 1): Cegah Register Mahasiswa/Kelompok
+            // =======================================================
+            const targetDate = Date.UTC(2026, 8, 1, 9, 0, 0); // 1 Sept 2026 16:00 WIB
+            const now = new Date().getTime();
+            if (now >= targetDate && (roleValue === 'mahasiswa' || roleValue === 'kelompok')) {
+                if (errorDiv) {
+                    errorDiv.innerText = "Pendaftaran ditutup! Waktu untuk Mahasiswa dan Kelompok telah berakhir.";
+                    errorDiv.classList.remove('hidden');
+                }
+                if (btn) {
+                    btn.innerHTML = 'Daftar Sekarang';
+                    btn.disabled = false;
+                }
+                return; // Hentikan fungsi
+            }
+
             const payload = {
                 username: document.getElementById('reg-username').value,
                 password: document.getElementById('reg-password').value,
-                role: document.getElementById('reg-role').value.toLowerCase().trim(),
+                role: roleValue,
                 namaLengkap: document.getElementById('reg-namaLengkap').value,
                 nip: document.getElementById('reg-nimNip').value, 
                 kelompok: document.getElementById('reg-kelompok').value,
