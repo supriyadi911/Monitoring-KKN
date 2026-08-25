@@ -2516,6 +2516,14 @@
             }
         }
 
+        function toggleSidebar() {
+            const sidebar = document.getElementById('admin-sidebar');
+            if (sidebar) {
+                // Mengubah (toggle) class untuk memunculkan/menyembunyikan sidebar di mobile
+                sidebar.classList.toggle('-translate-x-full');
+            }
+        }
+
         function routeUser() {
             const elements = {
                 publicPage: document.getElementById('public-page'),
