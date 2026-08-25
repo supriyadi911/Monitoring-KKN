@@ -2267,6 +2267,23 @@
                 return; // Hentikan fungsi
             }
 
+            // =======================================================
+            // LOCKING LOGIKA: Cegah Akun Terkunci (Locked Account)
+            // =======================================================
+            // Hadang di frontend berdasarkan data lokal jika akun ditandai [LOCKED]
+            const accCheck = accountsData.find(acc => acc.username.toLowerCase() === u.toLowerCase() && acc.role.toLowerCase() === r.toLowerCase());
+            if (accCheck && accCheck.password && String(accCheck.password).startsWith('[LOCKED]')) {
+                if (errorDiv) {
+                    errorDiv.innerText = "Akun ini telah dikunci (diblokir). Silakan hubungi Admin.";
+                    errorDiv.classList.remove('hidden');
+                }
+                if (btn) {
+                    btn.innerHTML = 'Masuk';
+                    btn.disabled = false;
+                }
+                return;
+            }
+
             try {
                 let user;
                 if (USE_MOCK) {
@@ -3041,8 +3058,8 @@
                 const tr = document.createElement('tr');
                 
                 // Cek apakah akun ini dikunci
-                const isLocked = u.password && u.password.startsWith('[LOCKED]');
-                const displayPass = isLocked ? u.password.replace('[LOCKED]', '') : (u.password || '-');
+                const isLocked = u.password && String(u.password).startsWith('[LOCKED]');
+                const displayPass = isLocked ? String(u.password).replace(/\[LOCKED\]/g, '') : (u.password || '-');
 
                 tr.innerHTML = `
                     <td class="px-4 py-3 text-center">
@@ -3068,7 +3085,7 @@
                         ${u.lokasi && u.lokasi !== '-' ? `<span class="truncate max-w-[150px] inline-block" title="${u.lokasi}">${u.lokasi}</span>` : '-'}
                     </td>
                     <td class="px-4 py-3 text-center space-x-2 whitespace-nowrap">
-                        <button onclick="toggleLockAccount('${u.username}', this)" class="${isLocked ? 'text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100' : 'text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100'} p-2 rounded-full transition" title="${isLocked ? 'Buka Kunci Akun' : 'Kunci Akun (Blokir Login)'}"><i class="fa-solid ${isLocked ? 'fa-lock' : 'fa-lock-open'}"></i></button>
+                        <button onclick="toggleLockAccount('${u.username}', this)" class="${isLocked ? 'text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100' : 'text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100'} p-2 rounded-full transition" title="${isLocked ? 'Buka Kunci Akun' : 'Kunci Akun (Blokir Login)'}"><i class="fa-solid ${isLocked ? 'fa-lock' : 'fa-unlock'}"></i></button>
                         <button onclick="openAccountModal('edit', '${u.username}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit Akun"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button onclick="deleteAccountAdmin('${u.username}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus Akun"><i class="fa-solid fa-trash"></i></button>
                     </td>
@@ -3088,40 +3105,75 @@
             const u = accountsData.find(x => x.username === username);
             if (!u) return;
 
-            const isLocked = u.password && u.password.startsWith('[LOCKED]');
-            const newPassword = isLocked ? u.password.replace('[LOCKED]', '') : '[LOCKED]' + (u.password || '');
+            const isLocked = u.password && String(u.password).startsWith('[LOCKED]');
+            // Hapus SEMUA tag [LOCKED] menggunakan regex agar bersih saat dibuka kuncinya
+            const newPassword = isLocked ? String(u.password).replace(/\[LOCKED\]/g, '') : '[LOCKED]' + String(u.password || '');
             
             const confirmMsg = isLocked ? `Buka kunci akun @${username}?` : `Kunci akun @${username} agar tidak bisa login?`;
             if (!confirm(confirmMsg)) return;
 
             // Optimistic update UI agar terlihat cepat
+            const originalPassword = u.password;
             u.password = newPassword;
             renderAdminTableAkun(); 
 
             try {
-                if (!USE_MOCK) {
+                if (USE_MOCK) {
+                    if(mockUsers[username]) mockUsers[username].password = newPassword;
+                } else {
+                    // Cegah nilai undefined dengan memberikan default value string kosong ('')
                     const payload = {
-                        originalUsername: u.username,
-                        username: u.username,
-                        password: newPassword,
-                        role: u.role,
-                        namaLengkap: u.namaLengkap,
-                        nip: u.nip,
-                        kelompok: u.kelompok,
-                        fakultas: u.fakultas,
-                        kontak: u.kontak,
-                        dpl: u.dpl,
-                        lokasi: u.lokasi
+                        originalUsername: u.username || '',
+                        username: u.username || '',
+                        password: newPassword || '',
+                        role: u.role || '',
+                        namaLengkap: u.namaLengkap || '',
+                        nip: u.nip || '',
+                        kelompok: u.kelompok || '',
+                        fakultas: u.fakultas || '',
+                        kontak: u.kontak || '',
+                        dpl: u.dpl || '',
+                        lokasi: u.lokasi || ''
                     };
                     
-                    fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({ action: 'updateProfile', data: payload }),
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                    });
+                    try {
+                        // TRIK BYPASS BACKEND BUG: Hapus akun lama terlebih dahulu
+                        await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'deleteAccount', username: u.username }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                        
+                        // JEDA (RACE CONDITION FIX): Beri jeda 1.2 detik agar Google Sheets benar-benar 
+                        // menghapus baris lama sebelum mendaftar yang baru.
+                        await new Promise(r => setTimeout(r, 1200));
+                        
+                        // Lalu daftarkan ulang sebagai akun baru dengan password terkunci (melewati updateProfile di backend)
+                        const res = await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'register', data: payload }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                        const resText = await res.text();
+                        
+                        let result;
+                        try {
+                            result = JSON.parse(resText);
+                        } catch (e) {
+                            throw new Error("Respon server bermasalah (bukan JSON).");
+                        }
+                        
+                        if (!result.success) throw new Error(result.error || "Gagal menyimpan ke server");
+                    } catch (e) {
+                        throw new Error(e.message || "Gagal sinkronisasi");
+                    }
                 }
             } catch (err) {
                 console.error("Gagal sinkronisasi gembok akun", err);
+                // Revert jika gagal
+                u.password = originalPassword;
+                renderAdminTableAkun();
+                alert("Gagal mengunci/membuka kunci akun: " + err.message);
             }
         }
 
@@ -3215,8 +3267,8 @@
                     if (elUsername) elUsername.value = u.username;
                     if (elPassword) {
                         // Jangan tampilkan tulisan [LOCKED] saat diedit
-                        const isLocked = u.password && u.password.startsWith('[LOCKED]');
-                        elPassword.value = isLocked ? u.password.replace('[LOCKED]', '') : (u.password || '');
+                        const isLocked = u.password && String(u.password).startsWith('[LOCKED]');
+                        elPassword.value = isLocked ? String(u.password).replace('[LOCKED]', '') : (u.password || '');
                     }
                     if (elRole) elRole.value = u.role;
                     if (elNama) elNama.value = u.namaLengkap || '';
@@ -3259,7 +3311,7 @@
             }
             
             const originalUser = accountsData.find(x => x.username === (document.getElementById('acc-original-username') ? document.getElementById('acc-original-username').value : ''));
-            const wasLocked = originalUser && originalUser.password && originalUser.password.startsWith('[LOCKED]');
+            const wasLocked = originalUser && originalUser.password && String(originalUser.password).startsWith('[LOCKED]');
             
             let finalPassword = document.getElementById('acc-password') ? document.getElementById('acc-password').value : '';
             
@@ -3298,15 +3350,33 @@
                         mockUsers[payload.username] = { ...userData, ...payload };
                     }
                 } else {
-                    const action = mode === 'add' ? 'register' : 'updateProfile';
-                    const res = await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({ action: action, data: payload }),
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                    });
-                    const textRes = await res.text();
-                    const result = JSON.parse(textRes);
-                    if(!result.success) throw new Error(result.error || "Gagal menyimpan akun.");
+                    if (mode === 'edit') {
+                        // TRIK BYPASS BACKEND BUG: Hapus akun lama terlebih dahulu
+                        await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'deleteAccount', username: payload.originalUsername }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                        
+                        // Lalu daftarkan ulang sebagai data baru
+                        const res = await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'register', data: payload }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                        const textRes = await res.text();
+                        const result = JSON.parse(textRes);
+                        if(!result.success) throw new Error(result.error || "Gagal menyimpan akun.");
+                    } else {
+                        const res = await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'register', data: payload }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                        const textRes = await res.text();
+                        const result = JSON.parse(textRes);
+                        if(!result.success) throw new Error(result.error || "Gagal menyimpan akun.");
+                    }
                 }
                 
                 alert(`Akun berhasil ${mode === 'add' ? 'dibuat' : 'diperbarui'}!`);
@@ -5620,33 +5690,56 @@
                     const u = accountsData.find(x => x.username === uname);
                     if (!u) continue;
                     
-                    const isLocked = u.password && u.password.startsWith('[LOCKED]');
-                    const newPassword = isLocked ? u.password.replace('[LOCKED]', '') : '[LOCKED]' + (u.password || '');
+                    const isLocked = u.password && String(u.password).startsWith('[LOCKED]');
+                    const newPassword = isLocked ? String(u.password).replace(/\[LOCKED\]/g, '') : '[LOCKED]' + String(u.password || '');
                     
                     // Optimistic update agar langsung berubah di UI
+                    const originalPassword = u.password;
                     u.password = newPassword;
 
-                    if (!USE_MOCK) {
+                    if (USE_MOCK) {
+                        if(mockUsers[uname]) mockUsers[uname].password = newPassword;
+                    } else {
+                        // Cegah nilai undefined
                         const payload = {
-                            originalUsername: u.username,
-                            username: u.username,
-                            password: newPassword,
-                            role: u.role,
-                            namaLengkap: u.namaLengkap,
-                            nip: u.nip,
-                            kelompok: u.kelompok,
-                            fakultas: u.fakultas,
-                            kontak: u.kontak,
-                            dpl: u.dpl,
-                            lokasi: u.lokasi
+                            originalUsername: u.username || '',
+                            username: u.username || '',
+                            password: newPassword || '',
+                            role: u.role || '',
+                            namaLengkap: u.namaLengkap || '',
+                            nip: u.nip || '',
+                            kelompok: u.kelompok || '',
+                            fakultas: u.fakultas || '',
+                            kontak: u.kontak || '',
+                            dpl: u.dpl || '',
+                            lokasi: u.lokasi || ''
                         };
                         
-                        // Menunggu (await) agar tidak terlalu menumpuk koneksi bersamaan ke Apps Script
-                        await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'updateProfile', data: payload }),
-                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                        });
+                        try {
+                            // TRIK BYPASS BACKEND BUG: Hapus akun lama terlebih dahulu
+                            await fetch(SCRIPT_URL, {
+                                method: 'POST',
+                                body: JSON.stringify({ action: 'deleteAccount', username: u.username }),
+                                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                            });
+                            
+                            // JEDA FIX RACE CONDITION MASSAL (800ms)
+                            await new Promise(r => setTimeout(r, 800));
+
+                            // Lalu daftarkan ulang sebagai akun baru dengan password terkunci
+                            const res = await fetch(SCRIPT_URL, {
+                                method: 'POST',
+                                body: JSON.stringify({ action: 'register', data: payload }),
+                                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                            });
+                            const resText = await res.text();
+                            const result = JSON.parse(resText);
+                            if (!result.success) throw new Error("Gagal mengupdate di server");
+                        } catch(e) {
+                            // Revert on error
+                            u.password = originalPassword;
+                            console.error("Gagal toggle lock untuk", uname, e);
+                        }
                     }
                 }
                 renderAdminTableAkun();
