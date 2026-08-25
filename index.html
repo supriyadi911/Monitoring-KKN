@@ -124,7 +124,7 @@
                     SIM KKN akan ditutup pada tanggal <strong class="text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 whitespace-nowrap">1 September 2026, pukul 16.00 WIB</strong>.
                 </p>
                 <p class="mb-6 font-medium text-gray-600 leading-relaxed">
-                    Kepada seluruh peserta KKN Transformatif dimohon segera tuntaskan laporan individu mahasiswa dan laporan kelompok sebelum batas waktu tersebut.<br><br>Terima kasih atas perhatian dan kerjasama yang baik.
+                    Kepada seluruh peserta KKN Transformatif dimohon segera tuntaskan laporan individu mahasiswa sebelum batas waktu tersebut. Akun Kelompok masih dapat mengakses sistem untuk pelaporan.<br><br>Terima kasih atas perhatian dan kerjasama yang baik.
                 </p>
                 
                 <div class="flex items-center mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition">
@@ -1362,12 +1362,17 @@
                     <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
                         <div class="px-6 py-4 border-b bg-gray-50 flex justify-between items-center">
                             <h3 class="font-bold text-gray-700">Daftar Akun Terdaftar</h3>
+                            <div class="flex space-x-2">
+                                <button id="btn-bulk-lock-akun" onclick="lockBulkAccountsAdmin()" class="hidden bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm transition shadow-sm"><i class="fa-solid fa-lock mr-1"></i> Kunci Terpilih</button>
+                                <button id="btn-bulk-delete-akun" onclick="deleteBulkAccountsAdmin()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition shadow-sm"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
+                            </div>
                         </div>
                         <div id="admin-akun-container" class="overflow-x-auto p-4">
                             <table class="w-full whitespace-nowrap">
                                 <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
                                     <tr>
-                                        <th class="px-4 py-3 text-left font-medium rounded-tl-md cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Akun', 'username')">Username <i id="sort-Akun-username" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-4 py-3 w-10 text-center rounded-tl-md"><input type="checkbox" id="selectAllAkun" onclick="toggleAllCheckboxesAkun(this)"></th>
+                                        <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Akun', 'username')">Username <i id="sort-Akun-username" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-4 py-3 text-left font-medium">Password</th>
                                         <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Akun', 'role')">Peran (Role) <i id="sort-Akun-role" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Akun', 'namaLengkap')">Nama Lengkap <i id="sort-Akun-namaLengkap" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
@@ -1908,13 +1913,11 @@
                         }
                     };
                     
-                    // Kunci opsi di form Login
+                    // Kunci opsi di form Login (Kelompok dibiarkan terbuka)
                     lockOption('role', 'mahasiswa');
-                    lockOption('role', 'kelompok');
                     
                     // Kunci opsi di form Register (jika ditampilkan)
                     lockOption('reg-role', 'mahasiswa');
-                    lockOption('reg-role', 'kelompok');
 
                 } else {
                     const d = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -2248,13 +2251,13 @@
             if (errorDiv) errorDiv.classList.add('hidden');
 
             // =======================================================
-            // LOCKING LOGIKA (LANGKAH 1): Cegah Login Mahasiswa/Kelompok
+            // LOCKING LOGIKA (LANGKAH 1): Cegah Login Mahasiswa
             // =======================================================
             const targetDate = Date.UTC(2026, 8, 1, 9, 0, 0); // 1 Sept 2026 16:00 WIB
             const now = new Date().getTime();
-            if (now >= targetDate && (r === 'mahasiswa' || r === 'kelompok')) {
+            if (now >= targetDate && r === 'mahasiswa') {
                 if (errorDiv) {
-                    errorDiv.innerText = "Akses ditutup! Waktu laporan untuk Mahasiswa dan Kelompok telah berakhir.";
+                    errorDiv.innerText = "Akses ditutup! Waktu laporan untuk Mahasiswa telah berakhir.";
                     errorDiv.classList.remove('hidden');
                 }
                 if (btn) {
@@ -2330,13 +2333,13 @@
             const roleValue = document.getElementById('reg-role').value.toLowerCase().trim();
 
             // =======================================================
-            // LOCKING LOGIKA (LANGKAH 1): Cegah Register Mahasiswa/Kelompok
+            // LOCKING LOGIKA (LANGKAH 1): Cegah Register Mahasiswa
             // =======================================================
             const targetDate = Date.UTC(2026, 8, 1, 9, 0, 0); // 1 Sept 2026 16:00 WIB
             const now = new Date().getTime();
-            if (now >= targetDate && (roleValue === 'mahasiswa' || roleValue === 'kelompok')) {
+            if (now >= targetDate && roleValue === 'mahasiswa') {
                 if (errorDiv) {
-                    errorDiv.innerText = "Pendaftaran ditutup! Waktu untuk Mahasiswa dan Kelompok telah berakhir.";
+                    errorDiv.innerText = "Pendaftaran ditutup! Waktu untuk Mahasiswa telah berakhir.";
                     errorDiv.classList.remove('hidden');
                 }
                 if (btn) {
@@ -3015,8 +3018,15 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             
+            const btnBulkDeleteAkun = document.getElementById('btn-bulk-delete-akun');
+            const btnBulkLockAkun = document.getElementById('btn-bulk-lock-akun');
+            if (btnBulkDeleteAkun) btnBulkDeleteAkun.classList.add('hidden');
+            if (btnBulkLockAkun) btnBulkLockAkun.classList.add('hidden');
+            const selectAllAkun = document.getElementById('selectAllAkun');
+            if (selectAllAkun) selectAllAkun.checked = false;
+            
             if(filteredDataAkun.length === 0) {
-                 tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">Tidak ada data akun yang ditemukan</td></tr>';
+                 tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-gray-500">Tidak ada data akun yang ditemukan</td></tr>';
                  renderPagination('pagination-akun', 0, 1, 'Akun');
                  return;
             }
@@ -3029,9 +3039,20 @@
             
             pageData.forEach(u => {
                 const tr = document.createElement('tr');
+                
+                // Cek apakah akun ini dikunci
+                const isLocked = u.password && u.password.startsWith('[LOCKED]');
+                const displayPass = isLocked ? u.password.replace('[LOCKED]', '') : (u.password || '-');
+
                 tr.innerHTML = `
-                    <td class="px-4 py-3 font-medium text-gray-800">${u.username}</td>
-                    <td class="px-4 py-3 text-gray-600 font-mono text-sm">${u.password}</td>
+                    <td class="px-4 py-3 text-center">
+                        <input type="checkbox" class="row-checkbox-akun" value="${u.username}" onchange="updateBulkActionStateAkun()">
+                    </td>
+                    <td class="px-4 py-3 font-medium text-gray-800">
+                        ${u.username}
+                        ${isLocked ? '<span class="ml-2 text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold whitespace-nowrap" title="Akun Terkunci"><i class="fa-solid fa-lock text-[9px]"></i> Terkunci</span>' : ''}
+                    </td>
+                    <td class="px-4 py-3 text-gray-600 font-mono text-sm">${displayPass}</td>
                     <td class="px-4 py-3 capitalize">
                         <span class="px-2 py-1 inline-flex text-xs leading-4 font-semibold rounded-full 
                         ${u.role==='admin' ? 'bg-red-100 text-red-800' : 
@@ -3046,7 +3067,8 @@
                         ${u.dpl && u.dpl !== '-' ? `DPL: <span class="font-medium text-gray-700">${u.dpl}</span><br>` : ''}
                         ${u.lokasi && u.lokasi !== '-' ? `<span class="truncate max-w-[150px] inline-block" title="${u.lokasi}">${u.lokasi}</span>` : '-'}
                     </td>
-                    <td class="px-4 py-3 text-center space-x-2">
+                    <td class="px-4 py-3 text-center space-x-2 whitespace-nowrap">
+                        <button onclick="toggleLockAccount('${u.username}', this)" class="${isLocked ? 'text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100' : 'text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100'} p-2 rounded-full transition" title="${isLocked ? 'Buka Kunci Akun' : 'Kunci Akun (Blokir Login)'}"><i class="fa-solid ${isLocked ? 'fa-lock' : 'fa-lock-open'}"></i></button>
                         <button onclick="openAccountModal('edit', '${u.username}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit Akun"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button onclick="deleteAccountAdmin('${u.username}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus Akun"><i class="fa-solid fa-trash"></i></button>
                     </td>
@@ -3055,6 +3077,52 @@
             });
             
             renderPagination('pagination-akun', totalPages, currentPageAkun, 'Akun');
+        }
+
+        async function toggleLockAccount(username, btnElement) {
+            if (username === currentUser.username) {
+                alert("Anda tidak dapat mengunci akun Anda sendiri!");
+                return;
+            }
+            
+            const u = accountsData.find(x => x.username === username);
+            if (!u) return;
+
+            const isLocked = u.password && u.password.startsWith('[LOCKED]');
+            const newPassword = isLocked ? u.password.replace('[LOCKED]', '') : '[LOCKED]' + (u.password || '');
+            
+            const confirmMsg = isLocked ? `Buka kunci akun @${username}?` : `Kunci akun @${username} agar tidak bisa login?`;
+            if (!confirm(confirmMsg)) return;
+
+            // Optimistic update UI agar terlihat cepat
+            u.password = newPassword;
+            renderAdminTableAkun(); 
+
+            try {
+                if (!USE_MOCK) {
+                    const payload = {
+                        originalUsername: u.username,
+                        username: u.username,
+                        password: newPassword,
+                        role: u.role,
+                        namaLengkap: u.namaLengkap,
+                        nip: u.nip,
+                        kelompok: u.kelompok,
+                        fakultas: u.fakultas,
+                        kontak: u.kontak,
+                        dpl: u.dpl,
+                        lokasi: u.lokasi
+                    };
+                    
+                    fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'updateProfile', data: payload }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                }
+            } catch (err) {
+                console.error("Gagal sinkronisasi gembok akun", err);
+            }
         }
 
         function handleSelectChange(fieldId) {
@@ -3145,7 +3213,11 @@
                     const elKontak = document.getElementById('acc-kontak');
 
                     if (elUsername) elUsername.value = u.username;
-                    if (elPassword) elPassword.value = u.password || '';
+                    if (elPassword) {
+                        // Jangan tampilkan tulisan [LOCKED] saat diedit
+                        const isLocked = u.password && u.password.startsWith('[LOCKED]');
+                        elPassword.value = isLocked ? u.password.replace('[LOCKED]', '') : (u.password || '');
+                    }
                     if (elRole) elRole.value = u.role;
                     if (elNama) elNama.value = u.namaLengkap || '';
                     if (elNip) elNip.value = u.nip || '';
@@ -3186,10 +3258,20 @@
                 btn.disabled = true;
             }
             
+            const originalUser = accountsData.find(x => x.username === (document.getElementById('acc-original-username') ? document.getElementById('acc-original-username').value : ''));
+            const wasLocked = originalUser && originalUser.password && originalUser.password.startsWith('[LOCKED]');
+            
+            let finalPassword = document.getElementById('acc-password') ? document.getElementById('acc-password').value : '';
+            
+            // Pertahankan status kunci jika akun ini diedit (agar tidak terbuka kuncinya secara tidak sengaja)
+            if (wasLocked && mode === 'edit') {
+                finalPassword = '[LOCKED]' + finalPassword;
+            }
+
             const payload = {
                 originalUsername: document.getElementById('acc-original-username') ? document.getElementById('acc-original-username').value : '',
                 username: document.getElementById('acc-username') ? document.getElementById('acc-username').value : '',
-                password: document.getElementById('acc-password') ? document.getElementById('acc-password').value : '',
+                password: finalPassword,
                 role: document.getElementById('acc-role') ? document.getElementById('acc-role').value : '',
                 namaLengkap: document.getElementById('acc-namaLengkap') ? document.getElementById('acc-namaLengkap').value : '',
                 nip: document.getElementById('acc-nip') ? document.getElementById('acc-nip').value : '',
@@ -5436,271 +5518,31 @@
             }
         }
 
-        // =========================================================================
-        // DASHBOARD MAHASISWA LOGIC
-        // =========================================================================
-        async function loadMahasiswaData() {
-            setConnectionStatus('loading');
-            try {
-                const mhsNama = document.getElementById('mhs-nama');
-                const mhsNim = document.getElementById('mhs-nim');
-                const mhsKelompok = document.getElementById('mhs-kelompok');
-                const mhsDpl = document.getElementById('mhs-dpl');
-                const mhsLokasi = document.getElementById('mhs-lokasi');
-
-                if (mhsNama) mhsNama.innerText = currentUser.namaLengkap;
-                if (mhsNim) mhsNim.innerText = currentUser.nim || currentUser.nip || '-';
-                if (mhsKelompok) mhsKelompok.innerText = currentUser.kelompok;
-                if (mhsDpl) mhsDpl.innerText = currentUser.dpl || '-';
-                if (mhsLokasi) mhsLokasi.innerText = currentUser.lokasi;
-
-                if (USE_MOCK) {
-                    mahasiswaReportsData = [...mockMahasiswaReports];
-                    setConnectionStatus('online');
-                } else {
-                    const res = await fetch(`${SCRIPT_URL}?action=getMahasiswaReports&_t=${new Date().getTime()}`);
-                    const data = await res.json();
-                    mahasiswaReportsData = data.reports;
-                    setConnectionStatus('online');
-                }
-                renderMahasiswaDashboard();
-            } catch (error) {
-                setConnectionStatus('offline');
-            }
-        }
-
-        function renderMahasiswaDashboard() {
-            const myReports = mahasiswaReportsData.filter(r => r.username === currentUser.username);
-            const tbody = document.getElementById('mhs-table-body');
-            const tfoot = document.getElementById('mhs-table-footer');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-            if (tfoot) tfoot.innerHTML = ''; 
-
-            const btnBulk = document.getElementById('btn-bulk-delete-mhs');
-            if (btnBulk) btnBulk.classList.add('hidden');
-            const selectAll = document.getElementById('selectAllMhs');
-            if (selectAll) selectAll.checked = false;
-
-            if (myReports.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-4 text-center text-gray-500">Belum ada riwayat kegiatan harian.</td></tr>';
-                return;
-            }
-
-            let totalJam = 0; 
-
-            const sortedData = myReports.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-
-            sortedData.forEach(r => {
-                const jamNum = Number(r.keluhan || 0);
-                const isDiakui = jamNum > 0;
-                const absJam = Math.abs(jamNum);
-                const isTerverifikasi = isVerified(r.deskripsi);
-                
-                if (isDiakui) totalJam += absJam; 
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="px-4 py-3 text-center">
-                        ${isTerverifikasi ? '<i class="fa-solid fa-lock text-gray-300 text-sm" title="Terkunci (Diverifikasi)"></i>' : `<input type="checkbox" class="row-checkbox-mhs" value="${r.id}" onchange="updateBulkActionStateMhs()">`}
-                    </td>
-                    <td class="px-4 py-3 whitespace-nowrap text-gray-600">${r.tanggal}</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-xs font-mono text-gray-500 bg-gray-50"><i class="fa-regular fa-clock mr-1"></i>${getTimestampStr(r)}</td>
-                    <td class="px-4 py-3 text-gray-700">
-                        <div class="font-medium max-w-[200px] truncate" title="${r.rencana}">${r.rencana} ${isTerverifikasi ? '<span class="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold ml-1"><i class="fa-solid fa-check"></i> Diverifikasi</span>' : ''}</div>
-                        <div class="text-xs text-gray-500 mt-0.5 max-w-[200px] truncate" title="${cleanDeskripsi(r.deskripsi) || '-'}">${cleanDeskripsi(r.deskripsi) || '-'}</div>
-                        <div class="text-xs mt-1 font-bold ${isDiakui ? 'text-purple-600' : 'text-red-500'}">Durasi: ${absJam} Jam ${!isDiakui ? '<span class="font-bold text-[10px] ml-1 text-red-600">(Ditolak)</span>' : ''}</div>
-                    </td>
-                    <td class="px-4 py-3 text-center">
-                        <a href="${r.foto}" target="_blank" class="text-purple-500 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 p-2 rounded-full inline-block transition" title="Lihat Foto"><i class="fa-solid fa-image"></i></a>
-                    </td>
-                    <td class="px-4 py-3 text-center space-x-2">
-                        ${isTerverifikasi ? 
-                            '<span class="text-xs text-gray-500 font-semibold italic bg-gray-100 border border-gray-200 px-2 py-1.5 rounded shadow-sm inline-block"><i class="fa-solid fa-lock mr-1"></i> Terkunci</span>' 
-                            : 
-                            `<button type="button" onclick="editMahasiswaReport('${r.id}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                             <button type="button" onclick="deleteMahasiswaReport('${r.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>`
-                        }
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            if (tfoot) {
-                const pctString = ((totalJam / 181) * 100).toFixed(1).replace('.', ',');
-                tfoot.innerHTML = `
-                    <tr>
-                        <td colspan="3" class="px-4 py-3 text-right font-bold text-gray-800">Total Akumulasi Waktu:</td>
-                        <td colspan="3" class="px-4 py-3 font-bold text-purple-700 text-base">${totalJam} Jam (${pctString}%) dari target 181 jam </td>
-                    </tr>
-                `;
-            }
-        }
-
-        async function submitMahasiswaReport(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit-mhs');
-            if (btn) {
-                btn.innerText = 'Menyimpan...';
-                btn.disabled = true;
-            }
-
-            const id = document.getElementById('mhs-report-id') ? document.getElementById('mhs-report-id').value : '';
-            
-            // Pertahankan status verifikasi jika laporan diedit oleh Mahasiswa
-            let finalDeskripsi = document.getElementById('mhs-deskripsi') ? document.getElementById('mhs-deskripsi').value : '';
-            if (id) {
-                const existingR = mahasiswaReportsData.find(x => String(x.id) === String(id));
-                if (existingR && isVerified(existingR.deskripsi)) {
-                    finalDeskripsi += ' [VERIFIED]'; 
-                }
-            }
-
-            const payload = {
-                id: id ? parseInt(id) : Date.now(), 
-                username: currentUser.username,
-                kelompok: currentUser.kelompok,
-                tanggal: document.getElementById('mhs-tanggal') ? document.getElementById('mhs-tanggal').value : '',
-                rencana: document.getElementById('mhs-jenis') ? document.getElementById('mhs-jenis').value : '', 
-                deskripsi: finalDeskripsi,
-                keluhan: document.getElementById('mhs-jam') ? document.getElementById('mhs-jam').value : '',  
-                foto: document.getElementById('mhs-foto') ? document.getElementById('mhs-foto').value : '',
-                timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) + ' WIB'
-            };
-
-            try {
-                if (USE_MOCK) {
-                    await new Promise(r => setTimeout(r, 600)); 
-                    if (id) {
-                        const idx = mockMahasiswaReports.findIndex(x => String(x.id) === String(id));
-                        mockMahasiswaReports[idx] = payload;
-                    } else mockMahasiswaReports.push(payload);
-                } else {
-                    const action = id ? 'editMahasiswaReport' : 'addMahasiswaReport';
-                    const res = await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({ action: action, data: payload }),
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                    });
-                    const textRes = await res.text();
-                    let result = JSON.parse(textRes);
-                    if(!result.success) throw new Error(result.error || "Gagal menyimpan");
-                }
-
-                alert("Laporan kegiatan harian berhasil disimpan!");
-                resetMahasiswaForm();
-                await loadDataFromServer(); 
-            } catch (err) {
-                alert("Terjadi kesalahan: " + err.message);
-            } finally {
-                if (btn) {
-                    btn.innerText = 'Simpan';
-                    btn.disabled = false;
-                }
-            }
-        }
-
-        function resetMahasiswaForm() {
-            const form = document.getElementById('mhs-report-form');
-            if (form) form.reset();
-            const id = document.getElementById('mhs-report-id');
-            if (id) id.value = '';
-            const formTitle = document.getElementById('mhs-form-title');
-            if (formTitle) formTitle.innerText = "Buat Laporan Harian";
-        }
-
-        function editMahasiswaReport(id) {
-            const r = mahasiswaReportsData.find(x => String(x.id) === String(id));
-            if(!r) return;
-
-            if (isVerified(r.deskripsi)) {
-                alert("Akses Ditolak: Laporan yang sudah diverifikasi telah dikunci dan tidak dapat diedit lagi.");
-                return;
-            }
-
-            const formTitle = document.getElementById('mhs-form-title');
-            const reportId = document.getElementById('mhs-report-id');
-            const mhsJenis = document.getElementById('mhs-jenis');
-            const mhsDeskripsi = document.getElementById('mhs-deskripsi');
-            const mhsTanggal = document.getElementById('mhs-tanggal');
-            const mhsJam = document.getElementById('mhs-jam');
-            const mhsFoto = document.getElementById('mhs-foto');
-
-            if (formTitle) formTitle.innerText = "Edit Laporan Harian";
-            if (reportId) reportId.value = r.id;
-            if (mhsJenis) mhsJenis.value = r.rencana;
-            if (mhsDeskripsi) mhsDeskripsi.value = cleanDeskripsi(r.deskripsi);
-            if (mhsTanggal) mhsTanggal.value = r.tanggal;
-            // Jika diedit oleh mahasiswa, ubah nilainya menjadi positif lagi (jika sebelumnya negatif/ditolak)
-            if (mhsJam) mhsJam.value = Math.abs(Number(r.keluhan || 0));
-            if (mhsFoto) mhsFoto.value = r.foto;
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        async function deleteMahasiswaReport(id, btnElement) {
-            const r = mahasiswaReportsData.find(x => String(x.id) === String(id));
-            if (r && isVerified(r.deskripsi)) {
-                alert("Akses Ditolak: Laporan yang sudah diverifikasi telah dikunci dan tidak dapat dihapus.");
-                return;
-            }
-
-            if(!confirm("Apakah Anda yakin ingin menghapus laporan mahasiswa ini?")) return;
-
-            let originalIcon = '';
-            if (btnElement) {
-                originalIcon = btnElement.innerHTML;
-                btnElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-                btnElement.disabled = true;
-            }
-
-            try {
-                if (USE_MOCK) {
-                    mockMahasiswaReports = mockMahasiswaReports.filter(x => String(x.id) !== String(id));
-                } else {
-                    const res = await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({ action: 'deleteMahasiswaReport', id: id }),
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                    });
-                    
-                    const textRes = await res.text();
-                    let result;
-                    try { result = JSON.parse(textRes); } 
-                    catch(e) { throw new Error("Terjadi masalah dengan koneksi Database."); }
-                    
-                    if(!result.success) throw new Error(result.error || "Gagal menghapus");
-                }
-                
-                await loadDataFromServer();
-            } catch (err) {
-                alert("Gagal menghapus: " + err.message);
-                if (btnElement) {
-                    btnElement.innerHTML = originalIcon;
-                    btnElement.disabled = false;
-                }
-            }
-        }
-
-        function toggleAllCheckboxesMhs(source) {
-            const checkboxes = document.querySelectorAll('.row-checkbox-mhs');
+        function toggleAllCheckboxesAkun(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox-akun');
             checkboxes.forEach(cb => cb.checked = source.checked);
-            updateBulkActionStateMhs();
+            updateBulkActionStateAkun();
         }
 
-        function updateBulkActionStateMhs() {
-            const checkboxes = document.querySelectorAll('.row-checkbox-mhs:checked');
-            const allCheckboxes = document.querySelectorAll('.row-checkbox-mhs');
-            const btn = document.getElementById('btn-bulk-delete-mhs');
-            const selectAll = document.getElementById('selectAllMhs');
+        function updateBulkActionStateAkun() {
+            const checkboxes = document.querySelectorAll('.row-checkbox-akun:checked');
+            const allCheckboxes = document.querySelectorAll('.row-checkbox-akun');
+            const btnDelete = document.getElementById('btn-bulk-delete-akun');
+            const btnLock = document.getElementById('btn-bulk-lock-akun');
+            const selectAll = document.getElementById('selectAllAkun');
 
-            if (btn) {
-                if (checkboxes.length > 0) {
-                    btn.classList.remove('hidden');
-                    btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
-                } else {
-                    btn.classList.add('hidden');
+            if (checkboxes.length > 0) {
+                if (btnDelete) {
+                    btnDelete.classList.remove('hidden');
+                    btnDelete.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus (${checkboxes.length})`;
                 }
+                if (btnLock) {
+                    btnLock.classList.remove('hidden');
+                    btnLock.innerHTML = `<i class="fa-solid fa-lock mr-1"></i> Toggle Kunci (${checkboxes.length})`;
+                }
+            } else {
+                if (btnDelete) btnDelete.classList.add('hidden');
+                if (btnLock) btnLock.classList.add('hidden');
             }
 
             if (selectAll && allCheckboxes.length > 0) {
@@ -5708,361 +5550,20 @@
             }
         }
 
-        async function deleteBulkReportsMhs() {
-            const checkedBoxes = document.querySelectorAll('.row-checkbox-mhs:checked');
-            if(checkedBoxes.length === 0) return;
+        async function deleteBulkAccountsAdmin() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox-akun:checked');
+            if (checkedBoxes.length === 0) return;
             
-            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan mahasiswa yang dipilih?`)) return;
-
-            const btn = document.getElementById('btn-bulk-delete-mhs');
-            const originalText = btn ? btn.innerHTML : 'Hapus Terpilih';
+            const usernamesToDelete = Array.from(checkedBoxes).map(cb => cb.value);
             
-            if (btn) {
-                btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
-                btn.disabled = true;
-            }
-
-            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
-
-            try {
-                if (USE_MOCK) {
-                    mockMahasiswaReports = mockMahasiswaReports.filter(x => !idsToDelete.includes(String(x.id)));
-                } else {
-                    for (const id of idsToDelete) {
-                        const res = await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'deleteMahasiswaReport', id: id }),
-                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                        });
-                        const textRes = await res.text();
-                        try {
-                            const result = JSON.parse(textRes);
-                            if(!result.success) console.error("Gagal menghapus ID:", id);
-                        } catch(e) {}
-                    }
-                }
-                await loadDataFromServer();
-            } catch (err) {
-                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
-                if (btn) btn.innerHTML = originalText;
-            } finally {
-                if (btn) btn.disabled = false;
-            }
-        }
-
-        // =========================================================================
-        // GROUP DASHBOARD LOGIC (KELOMPOK)
-        // =========================================================================
-
-        function renderGroupDataCard() {
-            if (!currentUser || !accountsData || accountsData.length === 0) return;
-            
-            const groupName = (currentUser.namaLengkap || currentUser.username).toLowerCase().trim();
-            const groupUsername = currentUser.username.toLowerCase().trim();
-            
-            const members = accountsData.filter(u => {
-                if (u.role !== 'mahasiswa') return false;
-                const userKlp = (u.kelompok || '').toLowerCase().trim();
-                return userKlp === groupName || userKlp === groupUsername;
-            });
-            
-            // Mengurutkan anggota berdasarkan abjad (A-Z)
-            members.sort((a, b) => {
-                const namaA = a.namaLengkap || a.username || '';
-                const namaB = b.namaLengkap || b.username || '';
-                return namaA.localeCompare(namaB);
-            });
-            
-            // Format tampilan menjadi list bernomor (ordered list)
-            const memberNames = members.length > 0 
-                ? '<ol class="list-decimal pl-4 space-y-1 text-sm font-medium text-gray-700">' + members.map(m => `<li>${m.namaLengkap || m.username}</li>`).join('') + '</ol>' 
-                : '<span class="text-gray-500 italic text-sm">Belum ada anggota mahasiswa terdaftar</span>';
-            
-            const dplUsers = accountsData.filter(u => {
-                if (u.role !== 'dpl') return false;
-                const dplKlp = (u.kelompok || '').toLowerCase().trim();
-                return dplKlp === groupName || 
-                       dplKlp === groupUsername || 
-                       dplKlp.split(',').map(s => s.trim()).includes(groupName) ||
-                       dplKlp.split(',').map(s => s.trim()).includes(groupUsername);
-            });
-            
-            const dplNames = dplUsers.length > 0 
-                ? dplUsers.map(d => d.namaLengkap).join(', ') 
-                : 'Belum ditugaskan';
-
-            const elGrpName = document.getElementById('group-card-name');
-            const elGrpMembers = document.getElementById('group-card-members');
-            const elGrpDpl = document.getElementById('group-card-dpl');
-
-            if (elGrpName) elGrpName.innerText = currentUser.namaLengkap || currentUser.username;
-            if (elGrpMembers) elGrpMembers.innerHTML = memberNames;
-            if (elGrpDpl) elGrpDpl.innerText = dplNames;
-        }
-
-        function toggleGroupFormFields() {
-            const formJenisLaporan = document.getElementById('form-jenis-laporan');
-            const jenis = formJenisLaporan ? formJenisLaporan.value : '';
-
-            const descLabel = document.getElementById('label-form-activity');
-            const descInput = document.getElementById('form-activity');
-            const linkLabel = document.getElementById('label-form-link');
-            const linkInput = document.getElementById('form-link-url');
-            
-            const formFieldsWrapper = document.getElementById('dynamic-form-fields');
-            
-            if (!jenis) {
-                if (formFieldsWrapper) formFieldsWrapper.classList.add('hidden');
-                return;
-            }
-            
-            if (formFieldsWrapper) formFieldsWrapper.classList.remove('hidden');
-            
-            if (jenis === "Kegiatan Harian") {
-                if (descLabel) descLabel.innerText = "Deskripsi Kegiatan Harian *";
-                if (descInput) descInput.placeholder = "Deskripsikan kegiatan harian kelompok hari ini...";
-                if (linkLabel) linkLabel.innerText = "Link Foto yang telah di unggah di instagram *";
-                if (linkInput) linkInput.placeholder = "https://www.instagram.com/p/...";
-            } else if (jenis === "Laporan Akhir KKN") {
-                if (descLabel) descLabel.innerText = "Deskripsi singkat Laporan *";
-                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat dari laporan akhir KKN kelompok...";
-                if (linkLabel) linkLabel.innerText = "Link google drive file Laporan Akhir KKN *";
-                if (linkInput) linkInput.placeholder = "https://drive.google.com/file/d/... atau https://drive.google.com/drive/folders/...";
-            } else if (jenis === "Draft Artikel KKN") {
-                if (descLabel) descLabel.innerText = "Deskripsi singkat Draft *";
-                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat dari draft artikel KKN kelompok...";
-                if (linkLabel) linkLabel.innerText = "Link google drive file Draft Artikel KKN *";
-                if (linkInput) linkInput.placeholder = "https://drive.google.com/file/d/... atau https://drive.google.com/drive/folders/...";
-            } else if (jenis === "Lomba Jingle KKN UINRIL") {
-                if (descLabel) descLabel.innerText = "Deskripsi / Judul Jingle *";
-                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat mengenai Jingle KKN yang dibuat...";
-                if (linkLabel) linkLabel.innerText = "Link Video Lomba (YouTube/Instagram/Drive) *";
-                if (linkInput) linkInput.placeholder = "https://...";
-            } else if (jenis === "Program Unggulan Kelompok") {
-                if (descLabel) descLabel.innerText = "Deskripsi Program Unggulan *";
-                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat mengenai Program Unggulan Kelompok yang dijalankan...";
-                if (linkLabel) linkLabel.innerText = "Link Bukti / Dokumentasi (Drive/Sosmed) *";
-                if (linkInput) linkInput.placeholder = "https://...";
-            }
-        }
-
-        function renderGroupDashboard() {
-            const myReports = reportsData.filter(r => r.group === currentUser.username);
-            const tbody = document.getElementById('group-table-body');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-
-            const btnBulk = document.getElementById('btn-bulk-delete');
-            if (btnBulk) btnBulk.classList.add('hidden');
-            const selectAll = document.getElementById('selectAll');
-            if (selectAll) selectAll.checked = false;
-
-            if (myReports.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Belum ada laporan kelompok yang tersimpan.</td></tr>';
+            if (usernamesToDelete.includes(currentUser.username)) {
+                alert("Peringatan: Anda memilih akun Admin yang sedang Anda gunakan untuk dihapus. Silakan hapus centang pada akun Anda terlebih dahulu.");
                 return;
             }
 
-            const sortedData = myReports.sort((a,b) => new Date(b.date) - new Date(a.date));
+            if (!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} akun yang dipilih secara permanen?`)) return;
 
-            sortedData.forEach(r => {
-                const tr = document.createElement('tr');
-                const jenisLaporan = r.korkel || "Kegiatan Harian";
-                const snippet = r.activity ? r.activity.substring(0, 30) + '...' : '-';
-                
-                tr.innerHTML = `
-                    <td class="px-4 py-2 text-center">
-                        <input type="checkbox" class="row-checkbox" value="${r.id}" onchange="updateBulkActionState()">
-                    </td>
-                    <td class="px-4 py-2 whitespace-nowrap text-gray-600">${r.date}</td>
-                    <td class="px-4 py-2 whitespace-nowrap text-xs font-mono text-gray-500 bg-gray-50"><i class="fa-regular fa-clock mr-1"></i>${getTimestampStr(r)}</td>
-                    <td class="px-4 py-2">
-                        <div class="font-semibold text-blue-600">${jenisLaporan}</div>
-                        <div class="text-xs text-gray-500 truncate max-w-[200px]" title="${r.activity}">${snippet}</div>
-                    </td>
-                    <td class="px-4 py-2 text-center space-x-2">
-                        <button type="button" onclick="editReport('${r.id}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button type="button" onclick="deleteReport('${r.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        async function submitReport(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit');
-            if (btn) {
-                btn.innerText = 'Menyimpan...';
-                btn.disabled = true;
-            }
-
-            const id = document.getElementById('report-id') ? document.getElementById('report-id').value : '';
-            const jenisLaporan = document.getElementById('form-jenis-laporan') ? document.getElementById('form-jenis-laporan').value : 'Kegiatan Harian';
-            
-            const payload = {
-                id: id ? parseInt(id) : Date.now(), 
-                group: currentUser.username,
-                korkel: jenisLaporan,
-                members: currentUser.nip || '-', 
-                location: currentUser.lokasi || '-', 
-                rawLocation: { kab: '', kec: '', desa: '', jalan: '' }, 
-                date: document.getElementById('form-date') ? document.getElementById('form-date').value : '',
-                activity: document.getElementById('form-activity') ? document.getElementById('form-activity').value : '',
-                emergency: currentUser.dpl || '-', 
-                photo: document.getElementById('form-link-url') ? document.getElementById('form-link-url').value : '',
-                timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) + ' WIB'
-            };
-
-            try {
-                if (USE_MOCK) {
-                    await new Promise(r => setTimeout(r, 600)); 
-                    if (id) {
-                        const idx = mockReports.findIndex(x => String(x.id) === String(id));
-                        mockReports[idx] = payload;
-                    } else {
-                        mockReports.push(payload);
-                    }
-                } else {
-                    const action = id ? 'editReport' : 'addReport';
-                    const res = await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({ action: action, data: payload }),
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' } 
-                    });
-                    
-                    const textRes = await res.text();
-                    let result;
-                    try { result = JSON.parse(textRes); } 
-                    catch(e) { throw new Error("Respon server salah."); }
-                    
-                    if(!result.success) throw new Error(result.error || "Gagal simpan di server");
-                }
-
-                alert("Laporan berhasil disimpan!");
-                resetForm();
-                await loadDataFromServer(); 
-
-            } catch (err) {
-                alert("Terjadi kesalahan: " + err.message);
-            } finally {
-                if (btn) {
-                    btn.innerText = 'Simpan Laporan';
-                    btn.disabled = false;
-                }
-            }
-        }
-
-        function resetForm() {
-            const form = document.getElementById('report-form');
-            if (form) form.reset();
-            const id = document.getElementById('report-id');
-            if (id) id.value = '';
-            const formTitle = document.getElementById('form-title');
-            if (formTitle) formTitle.innerText = "Buat Laporan Baru";
-            const formFieldsWrapper = document.getElementById('dynamic-form-fields');
-            if (formFieldsWrapper) formFieldsWrapper.classList.add('hidden');
-        }
-
-        function editReport(id) {
-            const r = reportsData.find(x => String(x.id) === String(id));
-            if(!r) return;
-
-            const formTitle = document.getElementById('form-title');
-            const reportId = document.getElementById('report-id');
-            const formJenisLaporan = document.getElementById('form-jenis-laporan');
-            const formDate = document.getElementById('form-date');
-            const formActivity = document.getElementById('form-activity');
-            const formLinkUrl = document.getElementById('form-link-url');
-
-            if (formTitle) formTitle.innerText = "Edit Laporan";
-            if (reportId) reportId.value = r.id;
-            if (formJenisLaporan) formJenisLaporan.value = r.korkel || "Kegiatan Harian"; 
-            toggleGroupFormFields();
-            
-            if (formDate) formDate.value = r.date;
-            if (formActivity) formActivity.value = r.activity;
-            if (formLinkUrl) formLinkUrl.value = r.photo || '';
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        async function deleteReport(id, btnElement) {
-            if(!confirm("Apakah Anda yakin ingin menghapus laporan ini?")) return;
-
-            let originalIcon = '';
-            if (btnElement) {
-                originalIcon = btnElement.innerHTML;
-                btnElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-                btnElement.disabled = true;
-            }
-
-            try {
-                if (USE_MOCK) {
-                    mockReports = mockReports.filter(x => String(x.id) !== String(id));
-                } else {
-                    const res = await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({ action: 'deleteReport', id: id }),
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                    });
-                    
-                    const textRes = await res.text();
-                    let result;
-                    try { result = JSON.parse(textRes); } 
-                    catch(e) { throw new Error("Terjadi masalah dengan koneksi Database."); }
-                    
-                    if(!result.success) throw new Error(result.error || "Akses ditolak");
-                }
-                
-                await loadDataFromServer();
-            } catch (err) {
-                alert("Gagal menghapus: " + err.message);
-                if (btnElement) {
-                    btnElement.innerHTML = originalIcon;
-                    btnElement.disabled = false;
-                }
-            }
-        }
-
-        function toggleAllCheckboxes(source) {
-            const checkboxes = document.querySelectorAll('.row-checkbox');
-            checkboxes.forEach(cb => cb.checked = source.checked);
-            updateBulkActionState();
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('admin-sidebar');
-            if (!sidebar) return;
-            sidebar.classList.toggle('-translate-x-full');
-        }
-
-        function updateBulkActionState() {
-            const checkboxes = document.querySelectorAll('.row-checkbox:checked');
-            const allCheckboxes = document.querySelectorAll('.row-checkbox');
-            const btn = document.getElementById('btn-bulk-delete');
-            const selectAll = document.getElementById('selectAll');
-
-            if (btn) {
-                if (checkboxes.length > 0) {
-                    btn.classList.remove('hidden');
-                    btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
-                } else {
-                    btn.classList.add('hidden');
-                }
-            }
-
-            if (selectAll && allCheckboxes.length > 0) {
-                 selectAll.checked = checkboxes.length === allCheckboxes.length;
-            }
-        }
-
-        async function deleteBulkReports() {
-            const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
-            if(checkedBoxes.length === 0) return;
-            
-            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan yang dipilih?`)) return;
-
-            const btn = document.getElementById('btn-bulk-delete');
+            const btn = document.getElementById('btn-bulk-delete-akun');
             const originalText = btn ? btn.innerHTML : 'Hapus Terpilih';
             
             if (btn) {
@@ -6070,230 +5571,91 @@
                 btn.disabled = true;
             }
 
-            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
-
             try {
                 if (USE_MOCK) {
-                    mockReports = mockReports.filter(x => !idsToDelete.includes(String(x.id)));
-                } else {
-                    for (const id of idsToDelete) {
-                        const res = await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'deleteReport', id: id }),
-                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                        });
-                        const textRes = await res.text();
-                        try {
-                            const result = JSON.parse(textRes);
-                            if(!result.success) console.error("Gagal menghapus ID:", id);
-                        } catch(e) {}
+                    for (const uname of usernamesToDelete) {
+                        delete mockUsers[uname];
                     }
-                }
-                await loadDataFromServer();
-            } catch (err) {
-                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
-                if (btn) btn.innerHTML = originalText;
-            } finally {
-                if (btn) btn.disabled = false;
-            }
-        }
-
-        function toggleAllCheckboxesAdmin(source) {
-            const checkboxes = document.querySelectorAll('.row-checkbox-admin');
-            checkboxes.forEach(cb => cb.checked = source.checked);
-            updateBulkActionStateAdmin();
-        }
-
-        function updateBulkActionStateAdmin() {
-            const checkboxes = document.querySelectorAll('.row-checkbox-admin:checked');
-            const allCheckboxes = document.querySelectorAll('.row-checkbox-admin');
-            const btn = document.getElementById('btn-bulk-delete-admin');
-            const selectAll = document.getElementById('selectAllAdmin');
-
-            if (btn) {
-                if (checkboxes.length > 0) {
-                    btn.classList.remove('hidden');
-                    btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
                 } else {
-                    btn.classList.add('hidden');
-                }
-            }
-
-            if (selectAll && allCheckboxes.length > 0) {
-                 selectAll.checked = checkboxes.length === allCheckboxes.length;
-            }
-        }
-
-        async function deleteBulkReportsAdmin() {
-            const checkedBoxes = document.querySelectorAll('.row-checkbox-admin:checked');
-            if(checkedBoxes.length === 0) return;
-            
-            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan KKN?`)) return;
-
-            const btn = document.getElementById('btn-bulk-delete-admin');
-            const originalText = btn ? btn.innerHTML : 'Hapus Terpilih';
-            
-            if (btn) {
-                btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
-                btn.disabled = true;
-            }
-
-            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
-
-            try {
-                if (USE_MOCK) {
-                    mockReports = mockReports.filter(x => !idsToDelete.includes(String(x.id)));
-                } else {
-                    for (const id of idsToDelete) {
-                        const res = await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'deleteReport', id: id }),
-                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                        });
-                        const textRes = await res.text();
-                        try {
-                            const result = JSON.parse(textRes);
-                            if(!result.success) console.error("Gagal menghapus ID:", id);
-                        } catch(e) {}
-                    }
-                }
-                await loadDataFromServer();
-            } catch (err) {
-                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
-                if (btn) btn.innerHTML = originalText;
-            } finally {
-                if (btn) btn.disabled = false;
-            }
-        }
-
-        function toggleAllCheckboxesAdminMhs(source) {
-            const checkboxes = document.querySelectorAll('.row-checkbox-admin-mhs');
-            checkboxes.forEach(cb => cb.checked = source.checked);
-            updateBulkActionStateAdminMhs();
-        }
-
-        function updateBulkActionStateAdminMhs() {
-            const checkboxes = document.querySelectorAll('.row-checkbox-admin-mhs:checked');
-            const allCheckboxes = document.querySelectorAll('.row-checkbox-admin-mhs');
-            const btn = document.getElementById('btn-bulk-delete-admin-mhs');
-            const selectAll = document.getElementById('selectAllAdminMhs');
-
-            if (btn) {
-                if (checkboxes.length > 0) {
-                    btn.classList.remove('hidden');
-                    btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
-                } else {
-                    btn.classList.add('hidden');
-                }
-            }
-
-            if (selectAll && allCheckboxes.length > 0) {
-                 selectAll.checked = checkboxes.length === allCheckboxes.length;
-            }
-        }
-
-        async function deleteBulkReportsAdminMhs() {
-            const checkedBoxes = document.querySelectorAll('.row-checkbox-admin-mhs:checked');
-            if(checkedBoxes.length === 0) return;
-            
-            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan mahasiswa?`)) return;
-
-            const btn = document.getElementById('btn-bulk-delete-admin-mhs');
-            const originalText = btn ? btn.innerHTML : 'Hapus Terpilih';
-            
-            if (btn) {
-                btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
-                btn.disabled = true;
-            }
-
-            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
-
-            try {
-                if (USE_MOCK) {
-                    mockMahasiswaReports = mockMahasiswaReports.filter(x => !idsToDelete.includes(String(x.id)));
-                } else {
-                    for (const id of idsToDelete) {
-                        const res = await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'deleteMahasiswaReport', id: id }),
-                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                        });
-                        const textRes = await res.text();
-                        try {
-                            const result = JSON.parse(textRes);
-                            if(!result.success) console.error("Gagal menghapus ID:", id);
-                        } catch(e) {}
-                    }
-                }
-                await loadDataFromServer();
-            } catch (err) {
-                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
-                if (btn) btn.innerHTML = originalText;
-            } finally {
-                if (btn) btn.disabled = false;
-            }
-        }
-
-        function toggleAllCheckboxesAdminDpl(source) {
-            const checkboxes = document.querySelectorAll('.row-checkbox-admin-dpl');
-            checkboxes.forEach(cb => cb.checked = source.checked);
-            updateBulkActionStateAdminDpl();
-        }
-
-        function updateBulkActionStateAdminDpl() {
-            const checkboxes = document.querySelectorAll('.row-checkbox-admin-dpl:checked');
-            const allCheckboxes = document.querySelectorAll('.row-checkbox-admin-dpl');
-            const btn = document.getElementById('btn-bulk-delete-admin-dpl');
-            const selectAll = document.getElementById('selectAllAdminDpl');
-
-            if (btn) {
-                if (checkboxes.length > 0) {
-                    btn.classList.remove('hidden');
-                    btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
-                } else {
-                    btn.classList.add('hidden');
-                }
-            }
-
-            if (selectAll && allCheckboxes.length > 0) {
-                 selectAll.checked = checkboxes.length === allCheckboxes.length;
-            }
-        }
-
-        async function deleteBulkReportsAdminDpl() {
-            const checkedBoxes = document.querySelectorAll('.row-checkbox-admin-dpl:checked');
-            if(checkedBoxes.length === 0) return;
-            
-            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan DPL?`)) return;
-
-            const btn = document.getElementById('btn-bulk-delete-admin-dpl');
-            const originalText = btn ? btn.innerHTML : 'Hapus Terpilih';
-            
-            if (btn) {
-                btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
-                btn.disabled = true;
-            }
-
-            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
-
-            try {
-                if (USE_MOCK) {
-                    mockDplReports = mockDplReports.filter(x => !idsToDelete.includes(String(x.id)));
-                } else {
-                    for (const id of idsToDelete) {
+                    for (const uname of usernamesToDelete) {
                         await fetch(SCRIPT_URL, {
                             method: 'POST',
-                            body: JSON.stringify({ action: 'deleteDplReport', id: id }),
+                            body: JSON.stringify({ action: 'deleteAccount', username: uname }),
                             headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                         });
                     }
                 }
-                await loadDataFromServer();
+                await fetchAdminAccounts(); 
             } catch (err) {
-                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
+                alert("Beberapa akun mungkin gagal dihapus. Silakan periksa kembali.");
                 if (btn) btn.innerHTML = originalText;
             } finally {
                 if (btn) btn.disabled = false;
+            }
+        }
+
+        async function lockBulkAccountsAdmin() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox-akun:checked');
+            if (checkedBoxes.length === 0) return;
+            
+            const usernamesToLock = Array.from(checkedBoxes).map(cb => cb.value);
+            
+            if (usernamesToLock.includes(currentUser.username)) {
+                alert("Peringatan: Anda memilih akun Admin yang sedang digunakan. Anda tidak dapat mengunci akun Anda sendiri.");
+                return;
+            }
+
+            if (!confirm(`Apakah Anda yakin ingin mengubah status kunci (toggle lock) untuk ${checkedBoxes.length} akun yang dipilih?`)) return;
+
+            const btn = document.getElementById('btn-bulk-lock-akun');
+            const originalText = btn ? btn.innerHTML : 'Toggle Kunci';
+            
+            if (btn) {
+                btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Memproses...`;
+                btn.disabled = true;
+            }
+
+            try {
+                for (const uname of usernamesToLock) {
+                    const u = accountsData.find(x => x.username === uname);
+                    if (!u) continue;
+                    
+                    const isLocked = u.password && u.password.startsWith('[LOCKED]');
+                    const newPassword = isLocked ? u.password.replace('[LOCKED]', '') : '[LOCKED]' + (u.password || '');
+                    
+                    // Optimistic update agar langsung berubah di UI
+                    u.password = newPassword;
+
+                    if (!USE_MOCK) {
+                        const payload = {
+                            originalUsername: u.username,
+                            username: u.username,
+                            password: newPassword,
+                            role: u.role,
+                            namaLengkap: u.namaLengkap,
+                            nip: u.nip,
+                            kelompok: u.kelompok,
+                            fakultas: u.fakultas,
+                            kontak: u.kontak,
+                            dpl: u.dpl,
+                            lokasi: u.lokasi
+                        };
+                        
+                        // Menunggu (await) agar tidak terlalu menumpuk koneksi bersamaan ke Apps Script
+                        await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'updateProfile', data: payload }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                    }
+                }
+                renderAdminTableAkun();
+            } catch (err) {
+                alert("Terjadi kesalahan saat memproses data. Silakan periksa kembali.");
+                if (btn) btn.innerHTML = originalText;
+            } finally {
+                if (btn) btn.disabled = false;
+                updateBulkActionStateAkun();
             }
         }
     </script>
