@@ -42,14 +42,8 @@
             <h1 class="text-3xl md:text-4xl font-extrabold text-blue-800 tracking-wide drop-shadow-sm">SIM KKN</h1>
             <p class="text-gray-600 mt-2 font-semibold tracking-wider text-sm md:text-base uppercase text-center px-4">Universitas Islam Negeri<br>Raden Intan Lampung</p>
         </div>
-        
-        <!-- Timer Hitung Mundur (Splash Screen) -->
-        <div class="mt-8 flex items-center text-xs md:text-sm font-bold px-4 py-2 bg-red-100 border border-red-200 rounded-full text-red-700 shadow-sm">
-            <i class="fa-solid fa-clock mr-2 animate-pulse"></i> <span id="splash-countdown-text">Memuat timer...</span>
-        </div>
-
         <!-- Bouncing Loading Dots -->
-        <div class="mt-8 flex items-center justify-center space-x-3">
+        <div class="mt-10 flex items-center justify-center space-x-3">
             <div class="w-3.5 h-3.5 bg-blue-600 rounded-full animate-bounce shadow-sm" style="animation-delay: -0.3s"></div>
             <div class="w-3.5 h-3.5 bg-blue-600 rounded-full animate-bounce shadow-sm" style="animation-delay: -0.15s"></div>
             <div class="w-3.5 h-3.5 bg-blue-600 rounded-full animate-bounce shadow-sm"></div>
@@ -121,10 +115,11 @@
             </div>
             <div class="p-6 text-gray-700 text-sm">
                 <p class="mb-4 font-medium text-gray-800 leading-relaxed">
-                    SIM KKN akan ditutup pada tanggal <strong class="text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 whitespace-nowrap">1 September 2026, pukul 16.00 WIB</strong>.
+                    Sistem Pelaporan Individu <strong>Mahasiswa</strong> akan ditutup pada <strong class="text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 whitespace-nowrap">1 September 2026, pukul 16.00 WIB</strong>.<br>
+                    Sistem Pelaporan <strong>Kelompok</strong> akan ditutup pada <strong class="text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 whitespace-nowrap">4 September 2026, pukul 16.00 WIB</strong>.
                 </p>
                 <p class="mb-6 font-medium text-gray-600 leading-relaxed">
-                    Kepada seluruh peserta KKN Transformatif dimohon segera tuntaskan laporan individu mahasiswa sebelum batas waktu tersebut. Akun Kelompok masih dapat mengakses sistem untuk pelaporan.<br><br>Terima kasih atas perhatian dan kerjasama yang baik.
+                    Kepada seluruh Mahasiswa dan Kelompok KKN dimohon segera menuntaskan seluruh laporan sebelum batas waktu tersebut.<br><br>Terima kasih atas perhatian dan kerjasama yang baik.
                 </p>
                 
                 <div class="flex items-center mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition">
@@ -155,12 +150,6 @@
                     
                     <span id="nav-username" class="font-medium hidden lg:block text-sm mr-2 truncate max-w-[150px]"></span>
                     
-                    <!-- Timer Hitung Mundur Navbar -->
-                    <div class="flex items-center text-[10px] sm:text-xs font-bold px-2 py-1.5 sm:px-3 sm:py-1 bg-red-800/80 rounded-full border border-red-500 shadow-inner text-white" title="Batas Waktu Penutupan Sistem">
-                        <i class="fa-solid fa-clock mr-1 sm:mr-1.5 animate-pulse"></i> 
-                        <span id="nav-countdown-text" class="whitespace-nowrap">Memuat timer...</span>
-                    </div>
-
                     <!-- Status Koneksi (Semua Akun) -->
                     <div class="flex items-center text-[10px] sm:text-xs font-medium px-2.5 py-1.5 sm:px-3 sm:py-1 bg-blue-800/80 rounded-full border border-blue-500 shadow-inner" title="Status Koneksi Database">
                         <i class="fa-solid fa-circle text-gray-400 text-[10px] mr-1 sm:mr-1.5" id="nav-conn-icon"></i> 
@@ -195,13 +184,6 @@
         <div id="public-page" class="hidden flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8 overflow-y-auto">
             <!-- Hero / Sambutan -->
             <div class="text-center mb-10 mt-6 bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
-                
-                <!-- Timer Hitung Mundur Publik -->
-                <div class="inline-flex items-center text-xs font-bold px-3 py-1 bg-red-50 border border-red-200 rounded-full text-red-600 mb-3 shadow-sm">
-                    <i class="fa-solid fa-clock mr-2 animate-pulse"></i> <span id="pub-countdown-text">Memuat timer...</span>
-                </div>
-                <br>
-
                 <!-- Status Koneksi Public -->
                 <div class="inline-flex items-center text-xs font-medium px-3 py-1 bg-gray-50 border rounded-full text-gray-600 mb-6 shadow-sm">
                     <i class="fa-solid fa-circle text-gray-400 text-[10px] mr-2" id="pub-conn-icon"></i> <span id="pub-conn-text">Memeriksa Database...</span>
@@ -1362,17 +1344,12 @@
                     <div class="bg-white rounded-lg shadow-sm border overflow-hidden">
                         <div class="px-6 py-4 border-b bg-gray-50 flex justify-between items-center">
                             <h3 class="font-bold text-gray-700">Daftar Akun Terdaftar</h3>
-                            <div class="flex space-x-2">
-                                <button id="btn-bulk-lock-akun" onclick="lockBulkAccountsAdmin()" class="hidden bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm transition shadow-sm"><i class="fa-solid fa-lock mr-1"></i> Kunci Terpilih</button>
-                                <button id="btn-bulk-delete-akun" onclick="deleteBulkAccountsAdmin()" class="hidden bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition shadow-sm"><i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih</button>
-                            </div>
                         </div>
                         <div id="admin-akun-container" class="overflow-x-auto p-4">
                             <table class="w-full whitespace-nowrap">
                                 <thead class="bg-gray-100 text-gray-600 text-sm sticky top-0 z-10 shadow-sm">
                                     <tr>
-                                        <th class="px-4 py-3 w-10 text-center rounded-tl-md"><input type="checkbox" id="selectAllAkun" onclick="toggleAllCheckboxesAkun(this)"></th>
-                                        <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Akun', 'username')">Username <i id="sort-Akun-username" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
+                                        <th class="px-4 py-3 text-left font-medium rounded-tl-md cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Akun', 'username')">Username <i id="sort-Akun-username" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-4 py-3 text-left font-medium">Password</th>
                                         <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Akun', 'role')">Peran (Role) <i id="sort-Akun-role" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
                                         <th class="px-4 py-3 text-left font-medium cursor-pointer hover:bg-gray-200 transition" onclick="handleSort('Akun', 'namaLengkap')">Nama Lengkap <i id="sort-Akun-namaLengkap" class="fa-solid fa-sort ml-1 text-gray-400"></i></th>
@@ -1882,81 +1859,6 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // =========================================================================
-        // TIMER HITUNG MUNDUR (COUNTDOWN) 1 SEPT 2026, 16:00 WIB
-        // =========================================================================
-        function startCountdownTimer() {
-            // Target: 1 September 2026, 16:00:00 WIB (WIB adalah UTC+7) 
-            // Jadi 16:00 WIB = 09:00 UTC
-            const targetDate = Date.UTC(2026, 8, 1, 9, 0, 0); // Bulan 8 = September
-            
-            const updateUI = () => {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
-
-                let text = "";
-                let shortText = "";
-                if (distance < 0) {
-                    text = "Sistem Telah Ditutup";
-                    shortText = "Ditutup";
-
-                    // =======================================================
-                    // LOCKING VISUAL (LANGKAH 2): Nonaktifkan Opsi Dropdown
-                    // =======================================================
-                    const lockOption = (selectId, value) => {
-                        const selectEl = document.getElementById(selectId);
-                        if (selectEl) {
-                            const option = selectEl.querySelector(`option[value="${value}"]`);
-                            if (option && !option.disabled) {
-                                option.disabled = true;
-                                option.innerText = option.innerText + " (Ditutup)";
-                            }
-                        }
-                    };
-                    
-                    // Kunci opsi di form Login (Kelompok dibiarkan terbuka)
-                    lockOption('role', 'mahasiswa');
-                    
-                    // Kunci opsi di form Register (jika ditampilkan)
-                    lockOption('reg-role', 'mahasiswa');
-
-                } else {
-                    const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-                    const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    const s = Math.floor((distance % (1000 * 60)) / 1000);
-                    text = `${d} Hari ${h} Jam ${m} Menit ${s} Detik`;
-                    shortText = `${d}h ${h}j ${m}m ${s}s`; // Format pendek untuk layar HP
-                }
-
-                const navEl = document.getElementById('nav-countdown-text');
-                const pubEl = document.getElementById('pub-countdown-text');
-                const splashEl = document.getElementById('splash-countdown-text');
-
-                // Responsif: Tampilkan format pendek di HP, panjang di PC (untuk Navbar)
-                if (navEl) {
-                    if (window.innerWidth < 768) {
-                        navEl.innerText = shortText;
-                    } else {
-                        navEl.innerText = text;
-                    }
-                }
-                
-                if (pubEl) pubEl.innerText = text;
-                if (splashEl) splashEl.innerText = text;
-
-                if (distance < 0) {
-                    clearInterval(timerInterval);
-                }
-            };
-
-            updateUI(); // Panggil sekali langsung agar tidak menunggu 1 detik pertama
-            const timerInterval = setInterval(updateUI, 1000);
-        }
-
-        // Mulai timer saat script diload
-        startCountdownTimer();
-
-        // =========================================================================
         // PATCH JARINGAN SELULER (IM3, TELKOMSEL, DLL) - AUTO RETRY & REDIRECT
         // =========================================================================
         const originalFetch = window.fetch;
@@ -2250,40 +2152,6 @@
             }
             if (errorDiv) errorDiv.classList.add('hidden');
 
-            // =======================================================
-            // LOCKING LOGIKA (LANGKAH 1): Cegah Login Mahasiswa
-            // =======================================================
-            const targetDate = Date.UTC(2026, 8, 1, 9, 0, 0); // 1 Sept 2026 16:00 WIB
-            const now = new Date().getTime();
-            if (now >= targetDate && r === 'mahasiswa') {
-                if (errorDiv) {
-                    errorDiv.innerText = "Akses ditutup! Waktu laporan untuk Mahasiswa telah berakhir.";
-                    errorDiv.classList.remove('hidden');
-                }
-                if (btn) {
-                    btn.innerHTML = 'Masuk';
-                    btn.disabled = false;
-                }
-                return; // Hentikan fungsi
-            }
-
-            // =======================================================
-            // LOCKING LOGIKA: Cegah Akun Terkunci (Locked Account)
-            // =======================================================
-            // Hadang di frontend berdasarkan data lokal jika akun ditandai [LOCKED]
-            const accCheck = accountsData.find(acc => acc.username.toLowerCase() === u.toLowerCase() && acc.role.toLowerCase() === r.toLowerCase());
-            if (accCheck && accCheck.password && String(accCheck.password).startsWith('[LOCKED]')) {
-                if (errorDiv) {
-                    errorDiv.innerText = "Akun ini telah dikunci (diblokir). Silakan hubungi Admin.";
-                    errorDiv.classList.remove('hidden');
-                }
-                if (btn) {
-                    btn.innerHTML = 'Masuk';
-                    btn.disabled = false;
-                }
-                return;
-            }
-
             try {
                 let user;
                 if (USE_MOCK) {
@@ -2308,6 +2176,36 @@
                 }
 
                 if (user) {
+                    // Cek batas waktu (Deadline) khusus Mahasiswa
+                    if (user.role.toLowerCase().trim() === 'mahasiswa') {
+                        const deadlineDate = new Date('2026-09-01T16:00:00+07:00'); // 1 September 2026, 16.00 WIB
+                        if (new Date() > deadlineDate) {
+                            if (errorDiv) {
+                                errorDiv.innerText = "Akses login ditutup! Batas waktu pelaporan individu mahasiswa telah berakhir.";
+                                errorDiv.classList.remove('hidden');
+                            }
+                            if (btn) {
+                                btn.innerHTML = 'Masuk';
+                                btn.disabled = false;
+                            }
+                            return;
+                        }
+                    } else if (user.role.toLowerCase().trim() === 'kelompok') {
+                        // Cek batas waktu (Deadline) khusus Kelompok
+                        const deadlineKelompokDate = new Date('2026-09-04T16:00:00+07:00'); // 4 September 2026, 16.00 WIB
+                        if (new Date() > deadlineKelompokDate) {
+                            if (errorDiv) {
+                                errorDiv.innerText = "Akses login ditutup! Batas waktu pelaporan kelompok telah berakhir (4 September 2026, 16.00 WIB).";
+                                errorDiv.classList.remove('hidden');
+                            }
+                            if (btn) {
+                                btn.innerHTML = 'Masuk';
+                                btn.disabled = false;
+                            }
+                            return;
+                        }
+                    }
+
                     currentUser = { 
                         username: user.username, 
                         role: user.role.toLowerCase().trim(),
@@ -2347,29 +2245,10 @@
             }
             if (errorDiv) errorDiv.classList.add('hidden');
 
-            const roleValue = document.getElementById('reg-role').value.toLowerCase().trim();
-
-            // =======================================================
-            // LOCKING LOGIKA (LANGKAH 1): Cegah Register Mahasiswa
-            // =======================================================
-            const targetDate = Date.UTC(2026, 8, 1, 9, 0, 0); // 1 Sept 2026 16:00 WIB
-            const now = new Date().getTime();
-            if (now >= targetDate && roleValue === 'mahasiswa') {
-                if (errorDiv) {
-                    errorDiv.innerText = "Pendaftaran ditutup! Waktu untuk Mahasiswa telah berakhir.";
-                    errorDiv.classList.remove('hidden');
-                }
-                if (btn) {
-                    btn.innerHTML = 'Daftar Sekarang';
-                    btn.disabled = false;
-                }
-                return; // Hentikan fungsi
-            }
-
             const payload = {
                 username: document.getElementById('reg-username').value,
                 password: document.getElementById('reg-password').value,
-                role: roleValue,
+                role: document.getElementById('reg-role').value.toLowerCase().trim(),
                 namaLengkap: document.getElementById('reg-namaLengkap').value,
                 nip: document.getElementById('reg-nimNip').value, 
                 kelompok: document.getElementById('reg-kelompok').value,
@@ -2516,14 +2395,6 @@
             }
         }
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById('admin-sidebar');
-            if (sidebar) {
-                // Mengubah (toggle) class untuk memunculkan/menyembunyikan sidebar di mobile
-                sidebar.classList.toggle('-translate-x-full');
-            }
-        }
-
         function routeUser() {
             const elements = {
                 publicPage: document.getElementById('public-page'),
@@ -2564,6 +2435,25 @@
 
             if (currentUser) {
                 const userRole = currentUser.role.toLowerCase().trim();
+                
+                // Cek batas waktu khusus Mahasiswa untuk sesi yang sudah tersimpan
+                if (userRole === 'mahasiswa') {
+                    const deadlineDate = new Date('2026-09-01T16:00:00+07:00');
+                    if (new Date() > deadlineDate) {
+                        alert("Sesi Anda telah berakhir. Batas waktu pelaporan individu mahasiswa telah ditutup (1 September 2026, 16.00 WIB).");
+                        logout();
+                        return;
+                    }
+                } else if (userRole === 'kelompok') {
+                    // Cek batas waktu khusus Kelompok untuk sesi yang sudah tersimpan
+                    const deadlineKelompokDate = new Date('2026-09-04T16:00:00+07:00');
+                    if (new Date() > deadlineKelompokDate) {
+                        alert("Sesi Anda telah berakhir. Batas waktu pelaporan kelompok telah ditutup (4 September 2026, 16.00 WIB).");
+                        logout();
+                        return;
+                    }
+                }
+
                 if (userRole === 'admin') {
                     if (elements.adminPage) {
                         elements.adminPage.classList.remove('hidden');
@@ -3043,15 +2933,8 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             
-            const btnBulkDeleteAkun = document.getElementById('btn-bulk-delete-akun');
-            const btnBulkLockAkun = document.getElementById('btn-bulk-lock-akun');
-            if (btnBulkDeleteAkun) btnBulkDeleteAkun.classList.add('hidden');
-            if (btnBulkLockAkun) btnBulkLockAkun.classList.add('hidden');
-            const selectAllAkun = document.getElementById('selectAllAkun');
-            if (selectAllAkun) selectAllAkun.checked = false;
-            
             if(filteredDataAkun.length === 0) {
-                 tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-gray-500">Tidak ada data akun yang ditemukan</td></tr>';
+                 tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">Tidak ada data akun yang ditemukan</td></tr>';
                  renderPagination('pagination-akun', 0, 1, 'Akun');
                  return;
             }
@@ -3064,20 +2947,9 @@
             
             pageData.forEach(u => {
                 const tr = document.createElement('tr');
-                
-                // Cek apakah akun ini dikunci
-                const isLocked = u.password && String(u.password).startsWith('[LOCKED]');
-                const displayPass = isLocked ? String(u.password).replace(/\[LOCKED\]/g, '') : (u.password || '-');
-
                 tr.innerHTML = `
-                    <td class="px-4 py-3 text-center">
-                        <input type="checkbox" class="row-checkbox-akun" value="${u.username}" onchange="updateBulkActionStateAkun()">
-                    </td>
-                    <td class="px-4 py-3 font-medium text-gray-800">
-                        ${u.username}
-                        ${isLocked ? '<span class="ml-2 text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold whitespace-nowrap" title="Akun Terkunci"><i class="fa-solid fa-lock text-[9px]"></i> Terkunci</span>' : ''}
-                    </td>
-                    <td class="px-4 py-3 text-gray-600 font-mono text-sm">${displayPass}</td>
+                    <td class="px-4 py-3 font-medium text-gray-800">${u.username}</td>
+                    <td class="px-4 py-3 text-gray-600 font-mono text-sm">${u.password}</td>
                     <td class="px-4 py-3 capitalize">
                         <span class="px-2 py-1 inline-flex text-xs leading-4 font-semibold rounded-full 
                         ${u.role==='admin' ? 'bg-red-100 text-red-800' : 
@@ -3092,8 +2964,7 @@
                         ${u.dpl && u.dpl !== '-' ? `DPL: <span class="font-medium text-gray-700">${u.dpl}</span><br>` : ''}
                         ${u.lokasi && u.lokasi !== '-' ? `<span class="truncate max-w-[150px] inline-block" title="${u.lokasi}">${u.lokasi}</span>` : '-'}
                     </td>
-                    <td class="px-4 py-3 text-center space-x-2 whitespace-nowrap">
-                        <button onclick="toggleLockAccount('${u.username}', this)" class="${isLocked ? 'text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100' : 'text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100'} p-2 rounded-full transition" title="${isLocked ? 'Buka Kunci Akun' : 'Kunci Akun (Blokir Login)'}"><i class="fa-solid ${isLocked ? 'fa-lock' : 'fa-unlock'}"></i></button>
+                    <td class="px-4 py-3 text-center space-x-2">
                         <button onclick="openAccountModal('edit', '${u.username}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit Akun"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button onclick="deleteAccountAdmin('${u.username}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus Akun"><i class="fa-solid fa-trash"></i></button>
                     </td>
@@ -3102,87 +2973,6 @@
             });
             
             renderPagination('pagination-akun', totalPages, currentPageAkun, 'Akun');
-        }
-
-        async function toggleLockAccount(username, btnElement) {
-            if (username === currentUser.username) {
-                alert("Anda tidak dapat mengunci akun Anda sendiri!");
-                return;
-            }
-            
-            const u = accountsData.find(x => x.username === username);
-            if (!u) return;
-
-            const isLocked = u.password && String(u.password).startsWith('[LOCKED]');
-            // Hapus SEMUA tag [LOCKED] menggunakan regex agar bersih saat dibuka kuncinya
-            const newPassword = isLocked ? String(u.password).replace(/\[LOCKED\]/g, '') : '[LOCKED]' + String(u.password || '');
-            
-            const confirmMsg = isLocked ? `Buka kunci akun @${username}?` : `Kunci akun @${username} agar tidak bisa login?`;
-            if (!confirm(confirmMsg)) return;
-
-            // Optimistic update UI agar terlihat cepat
-            const originalPassword = u.password;
-            u.password = newPassword;
-            renderAdminTableAkun(); 
-
-            try {
-                if (USE_MOCK) {
-                    if(mockUsers[username]) mockUsers[username].password = newPassword;
-                } else {
-                    // Cegah nilai undefined dengan memberikan default value string kosong ('')
-                    const payload = {
-                        originalUsername: u.username || '',
-                        username: u.username || '',
-                        password: newPassword || '',
-                        role: u.role || '',
-                        namaLengkap: u.namaLengkap || '',
-                        nip: u.nip || '',
-                        kelompok: u.kelompok || '',
-                        fakultas: u.fakultas || '',
-                        kontak: u.kontak || '',
-                        dpl: u.dpl || '',
-                        lokasi: u.lokasi || ''
-                    };
-                    
-                    try {
-                        // TRIK BYPASS BACKEND BUG: Hapus akun lama terlebih dahulu
-                        await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'deleteAccount', username: u.username }),
-                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                        });
-                        
-                        // JEDA (RACE CONDITION FIX): Beri jeda 1.2 detik agar Google Sheets benar-benar 
-                        // menghapus baris lama sebelum mendaftar yang baru.
-                        await new Promise(r => setTimeout(r, 1200));
-                        
-                        // Lalu daftarkan ulang sebagai akun baru dengan password terkunci (melewati updateProfile di backend)
-                        const res = await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'register', data: payload }),
-                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                        });
-                        const resText = await res.text();
-                        
-                        let result;
-                        try {
-                            result = JSON.parse(resText);
-                        } catch (e) {
-                            throw new Error("Respon server bermasalah (bukan JSON).");
-                        }
-                        
-                        if (!result.success) throw new Error(result.error || "Gagal menyimpan ke server");
-                    } catch (e) {
-                        throw new Error(e.message || "Gagal sinkronisasi");
-                    }
-                }
-            } catch (err) {
-                console.error("Gagal sinkronisasi gembok akun", err);
-                // Revert jika gagal
-                u.password = originalPassword;
-                renderAdminTableAkun();
-                alert("Gagal mengunci/membuka kunci akun: " + err.message);
-            }
         }
 
         function handleSelectChange(fieldId) {
@@ -3273,11 +3063,7 @@
                     const elKontak = document.getElementById('acc-kontak');
 
                     if (elUsername) elUsername.value = u.username;
-                    if (elPassword) {
-                        // Jangan tampilkan tulisan [LOCKED] saat diedit
-                        const isLocked = u.password && String(u.password).startsWith('[LOCKED]');
-                        elPassword.value = isLocked ? String(u.password).replace('[LOCKED]', '') : (u.password || '');
-                    }
+                    if (elPassword) elPassword.value = u.password || '';
                     if (elRole) elRole.value = u.role;
                     if (elNama) elNama.value = u.namaLengkap || '';
                     if (elNip) elNip.value = u.nip || '';
@@ -3318,20 +3104,10 @@
                 btn.disabled = true;
             }
             
-            const originalUser = accountsData.find(x => x.username === (document.getElementById('acc-original-username') ? document.getElementById('acc-original-username').value : ''));
-            const wasLocked = originalUser && originalUser.password && String(originalUser.password).startsWith('[LOCKED]');
-            
-            let finalPassword = document.getElementById('acc-password') ? document.getElementById('acc-password').value : '';
-            
-            // Pertahankan status kunci jika akun ini diedit (agar tidak terbuka kuncinya secara tidak sengaja)
-            if (wasLocked && mode === 'edit') {
-                finalPassword = '[LOCKED]' + finalPassword;
-            }
-
             const payload = {
                 originalUsername: document.getElementById('acc-original-username') ? document.getElementById('acc-original-username').value : '',
                 username: document.getElementById('acc-username') ? document.getElementById('acc-username').value : '',
-                password: finalPassword,
+                password: document.getElementById('acc-password') ? document.getElementById('acc-password').value : '',
                 role: document.getElementById('acc-role') ? document.getElementById('acc-role').value : '',
                 namaLengkap: document.getElementById('acc-namaLengkap') ? document.getElementById('acc-namaLengkap').value : '',
                 nip: document.getElementById('acc-nip') ? document.getElementById('acc-nip').value : '',
@@ -3358,33 +3134,15 @@
                         mockUsers[payload.username] = { ...userData, ...payload };
                     }
                 } else {
-                    if (mode === 'edit') {
-                        // TRIK BYPASS BACKEND BUG: Hapus akun lama terlebih dahulu
-                        await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'deleteAccount', username: payload.originalUsername }),
-                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                        });
-                        
-                        // Lalu daftarkan ulang sebagai data baru
-                        const res = await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'register', data: payload }),
-                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                        });
-                        const textRes = await res.text();
-                        const result = JSON.parse(textRes);
-                        if(!result.success) throw new Error(result.error || "Gagal menyimpan akun.");
-                    } else {
-                        const res = await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'register', data: payload }),
-                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                        });
-                        const textRes = await res.text();
-                        const result = JSON.parse(textRes);
-                        if(!result.success) throw new Error(result.error || "Gagal menyimpan akun.");
-                    }
+                    const action = mode === 'add' ? 'register' : 'updateProfile';
+                    const res = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: action, data: payload }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const textRes = await res.text();
+                    const result = JSON.parse(textRes);
+                    if(!result.success) throw new Error(result.error || "Gagal menyimpan akun.");
                 }
                 
                 alert(`Akun berhasil ${mode === 'add' ? 'dibuat' : 'diperbarui'}!`);
@@ -5596,178 +5354,46 @@
             }
         }
 
-        function toggleAllCheckboxesAkun(source) {
-            const checkboxes = document.querySelectorAll('.row-checkbox-akun');
-            checkboxes.forEach(cb => cb.checked = source.checked);
-            updateBulkActionStateAkun();
-        }
-
-        function updateBulkActionStateAkun() {
-            const checkboxes = document.querySelectorAll('.row-checkbox-akun:checked');
-            const allCheckboxes = document.querySelectorAll('.row-checkbox-akun');
-            const btnDelete = document.getElementById('btn-bulk-delete-akun');
-            const btnLock = document.getElementById('btn-bulk-lock-akun');
-            const selectAll = document.getElementById('selectAllAkun');
-
-            if (checkboxes.length > 0) {
-                if (btnDelete) {
-                    btnDelete.classList.remove('hidden');
-                    btnDelete.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus (${checkboxes.length})`;
-                }
-                if (btnLock) {
-                    btnLock.classList.remove('hidden');
-                    btnLock.innerHTML = `<i class="fa-solid fa-lock mr-1"></i> Toggle Kunci (${checkboxes.length})`;
-                }
-            } else {
-                if (btnDelete) btnDelete.classList.add('hidden');
-                if (btnLock) btnLock.classList.add('hidden');
-            }
-
-            if (selectAll && allCheckboxes.length > 0) {
-                 selectAll.checked = checkboxes.length === allCheckboxes.length;
-            }
-        }
-
-        async function deleteBulkAccountsAdmin() {
-            const checkedBoxes = document.querySelectorAll('.row-checkbox-akun:checked');
-            if (checkedBoxes.length === 0) return;
-            
-            const usernamesToDelete = Array.from(checkedBoxes).map(cb => cb.value);
-            
-            if (usernamesToDelete.includes(currentUser.username)) {
-                alert("Peringatan: Anda memilih akun Admin yang sedang Anda gunakan untuk dihapus. Silakan hapus centang pada akun Anda terlebih dahulu.");
-                return;
-            }
-
-            if (!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} akun yang dipilih secara permanen?`)) return;
-
-            const btn = document.getElementById('btn-bulk-delete-akun');
-            const originalText = btn ? btn.innerHTML : 'Hapus Terpilih';
-            
-            if (btn) {
-                btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
-                btn.disabled = true;
-            }
-
-            try {
-                if (USE_MOCK) {
-                    for (const uname of usernamesToDelete) {
-                        delete mockUsers[uname];
-                    }
-                } else {
-                    for (const uname of usernamesToDelete) {
-                        await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'deleteAccount', username: uname }),
-                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                        });
-                    }
-                }
-                await fetchAdminAccounts(); 
-            } catch (err) {
-                alert("Beberapa akun mungkin gagal dihapus. Silakan periksa kembali.");
-                if (btn) btn.innerHTML = originalText;
-            } finally {
-                if (btn) btn.disabled = false;
-            }
-        }
-
-        async function lockBulkAccountsAdmin() {
-            const checkedBoxes = document.querySelectorAll('.row-checkbox-akun:checked');
-            if (checkedBoxes.length === 0) return;
-            
-            const usernamesToLock = Array.from(checkedBoxes).map(cb => cb.value);
-            
-            if (usernamesToLock.includes(currentUser.username)) {
-                alert("Peringatan: Anda memilih akun Admin yang sedang digunakan. Anda tidak dapat mengunci akun Anda sendiri.");
-                return;
-            }
-
-            if (!confirm(`Apakah Anda yakin ingin mengubah status kunci (toggle lock) untuk ${checkedBoxes.length} akun yang dipilih?`)) return;
-
-            const btn = document.getElementById('btn-bulk-lock-akun');
-            const originalText = btn ? btn.innerHTML : 'Toggle Kunci';
-            
-            if (btn) {
-                btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Memproses...`;
-                btn.disabled = true;
-            }
-
-            try {
-                for (const uname of usernamesToLock) {
-                    const u = accountsData.find(x => x.username === uname);
-                    if (!u) continue;
-                    
-                    const isLocked = u.password && String(u.password).startsWith('[LOCKED]');
-                    const newPassword = isLocked ? String(u.password).replace(/\[LOCKED\]/g, '') : '[LOCKED]' + String(u.password || '');
-                    
-                    // Optimistic update agar langsung berubah di UI
-                    const originalPassword = u.password;
-                    u.password = newPassword;
-
-                    if (USE_MOCK) {
-                        if(mockUsers[uname]) mockUsers[uname].password = newPassword;
-                    } else {
-                        // Cegah nilai undefined
-                        const payload = {
-                            originalUsername: u.username || '',
-                            username: u.username || '',
-                            password: newPassword || '',
-                            role: u.role || '',
-                            namaLengkap: u.namaLengkap || '',
-                            nip: u.nip || '',
-                            kelompok: u.kelompok || '',
-                            fakultas: u.fakultas || '',
-                            kontak: u.kontak || '',
-                            dpl: u.dpl || '',
-                            lokasi: u.lokasi || ''
-                        };
-                        
-                        try {
-                            // TRIK BYPASS BACKEND BUG: Hapus akun lama terlebih dahulu
-                            await fetch(SCRIPT_URL, {
-                                method: 'POST',
-                                body: JSON.stringify({ action: 'deleteAccount', username: u.username }),
-                                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                            });
-                            
-                            // JEDA FIX RACE CONDITION MASSAL (800ms)
-                            await new Promise(r => setTimeout(r, 800));
-
-                            // Lalu daftarkan ulang sebagai akun baru dengan password terkunci
-                            const res = await fetch(SCRIPT_URL, {
-                                method: 'POST',
-                                body: JSON.stringify({ action: 'register', data: payload }),
-                                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                            });
-                            const resText = await res.text();
-                            const result = JSON.parse(resText);
-                            if (!result.success) throw new Error("Gagal mengupdate di server");
-                        } catch(e) {
-                            // Revert on error
-                            u.password = originalPassword;
-                            console.error("Gagal toggle lock untuk", uname, e);
-                        }
-                    }
-                }
-                renderAdminTableAkun();
-            } catch (err) {
-                alert("Terjadi kesalahan saat memproses data. Silakan periksa kembali.");
-                if (btn) btn.innerHTML = originalText;
-            } finally {
-                if (btn) btn.disabled = false;
-                updateBulkActionStateAkun();
-            }
-        }
-
         // =========================================================================
         // DASHBOARD MAHASISWA LOGIC
         // =========================================================================
+        async function loadMahasiswaData() {
+            setConnectionStatus('loading');
+            try {
+                const mhsNama = document.getElementById('mhs-nama');
+                const mhsNim = document.getElementById('mhs-nim');
+                const mhsKelompok = document.getElementById('mhs-kelompok');
+                const mhsDpl = document.getElementById('mhs-dpl');
+                const mhsLokasi = document.getElementById('mhs-lokasi');
+
+                if (mhsNama) mhsNama.innerText = currentUser.namaLengkap;
+                if (mhsNim) mhsNim.innerText = currentUser.nim || currentUser.nip || '-';
+                if (mhsKelompok) mhsKelompok.innerText = currentUser.kelompok;
+                if (mhsDpl) mhsDpl.innerText = currentUser.dpl || '-';
+                if (mhsLokasi) mhsLokasi.innerText = currentUser.lokasi;
+
+                if (USE_MOCK) {
+                    mahasiswaReportsData = [...mockMahasiswaReports];
+                    setConnectionStatus('online');
+                } else {
+                    const res = await fetch(`${SCRIPT_URL}?action=getMahasiswaReports&_t=${new Date().getTime()}`);
+                    const data = await res.json();
+                    mahasiswaReportsData = data.reports;
+                    setConnectionStatus('online');
+                }
+                renderMahasiswaDashboard();
+            } catch (error) {
+                setConnectionStatus('offline');
+            }
+        }
+
         function renderMahasiswaDashboard() {
             const myReports = mahasiswaReportsData.filter(r => r.username === currentUser.username);
             const tbody = document.getElementById('mhs-table-body');
+            const tfoot = document.getElementById('mhs-table-footer');
             if (!tbody) return;
             tbody.innerHTML = '';
+            if (tfoot) tfoot.innerHTML = ''; 
 
             const btnBulk = document.getElementById('btn-bulk-delete-mhs');
             if (btnBulk) btnBulk.classList.add('hidden');
@@ -5776,56 +5402,54 @@
 
             if (myReports.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-4 text-center text-gray-500">Belum ada riwayat kegiatan harian.</td></tr>';
-                const tfoot = document.getElementById('mhs-table-footer');
-                if(tfoot) tfoot.innerHTML = '';
                 return;
             }
 
+            let totalJam = 0; 
+
             const sortedData = myReports.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-            let totalJamPositif = 0;
 
             sortedData.forEach(r => {
-                const tr = document.createElement('tr');
-                
                 const jamNum = Number(r.keluhan || 0);
                 const isDiakui = jamNum > 0;
                 const absJam = Math.abs(jamNum);
+                const isTerverifikasi = isVerified(r.deskripsi);
                 
-                if (isDiakui) {
-                    totalJamPositif += absJam;
-                }
+                if (isDiakui) totalJam += absJam; 
 
-                const jamStatusHtml = isDiakui 
-                    ? `<div class="text-xs text-purple-600 mt-1 font-bold">Durasi: ${absJam} Jam</div>`
-                    : `<div class="text-xs text-red-500 mt-1">Durasi: ${absJam} Jam</div> <span class="text-[10px] text-red-600 font-bold">(Ditolak)</span>`;
-
+                const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="px-4 py-3 text-center">
-                        <input type="checkbox" class="row-checkbox-mhs" value="${r.id}" onchange="updateBulkActionStateMhs()">
+                        ${isTerverifikasi ? '<i class="fa-solid fa-lock text-gray-300 text-sm" title="Terkunci (Diverifikasi)"></i>' : `<input type="checkbox" class="row-checkbox-mhs" value="${r.id}" onchange="updateBulkActionStateMhs()">`}
                     </td>
                     <td class="px-4 py-3 whitespace-nowrap text-gray-600">${r.tanggal}</td>
                     <td class="px-4 py-3 whitespace-nowrap text-xs font-mono text-gray-500 bg-gray-50"><i class="fa-regular fa-clock mr-1"></i>${getTimestampStr(r)}</td>
-                    <td class="px-4 py-3">
-                        <div class="font-medium text-purple-600">${r.rencana} ${isVerified(r.deskripsi) ? '<i class="fa-solid fa-circle-check text-blue-500 ml-1" title="Sudah Diverifikasi"></i>' : ''}</div>
-                        <div class="text-xs text-gray-500 max-w-[200px] truncate" title="${cleanDeskripsi(r.deskripsi)}">${cleanDeskripsi(r.deskripsi)}</div>
-                        ${jamStatusHtml}
+                    <td class="px-4 py-3 text-gray-700">
+                        <div class="font-medium max-w-[200px] truncate" title="${r.rencana}">${r.rencana} ${isTerverifikasi ? '<span class="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold ml-1"><i class="fa-solid fa-check"></i> Diverifikasi</span>' : ''}</div>
+                        <div class="text-xs text-gray-500 mt-0.5 max-w-[200px] truncate" title="${cleanDeskripsi(r.deskripsi) || '-'}">${cleanDeskripsi(r.deskripsi) || '-'}</div>
+                        <div class="text-xs mt-1 font-bold ${isDiakui ? 'text-purple-600' : 'text-red-500'}">Durasi: ${absJam} Jam ${!isDiakui ? '<span class="font-bold text-[10px] ml-1 text-red-600">(Ditolak)</span>' : ''}</div>
                     </td>
                     <td class="px-4 py-3 text-center">
-                        ${r.foto ? `<a href="${r.foto}" target="_blank" class="text-purple-500 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 p-2 rounded-full inline-block transition" title="Lihat Foto"><i class="fa-solid fa-image"></i></a>` : '-'}
+                        <a href="${r.foto}" target="_blank" class="text-purple-500 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 p-2 rounded-full inline-block transition" title="Lihat Foto"><i class="fa-solid fa-image"></i></a>
                     </td>
                     <td class="px-4 py-3 text-center space-x-2">
-                        <button type="button" onclick="deleteMahasiswaReport('${r.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                        ${isTerverifikasi ? 
+                            '<span class="text-xs text-gray-500 font-semibold italic bg-gray-100 border border-gray-200 px-2 py-1.5 rounded shadow-sm inline-block"><i class="fa-solid fa-lock mr-1"></i> Terkunci</span>' 
+                            : 
+                            `<button type="button" onclick="editMahasiswaReport('${r.id}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                             <button type="button" onclick="deleteMahasiswaReport('${r.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>`
+                        }
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
 
-            const tfoot = document.getElementById('mhs-table-footer');
             if (tfoot) {
+                const pctString = ((totalJam / 181) * 100).toFixed(1).replace('.', ',');
                 tfoot.innerHTML = `
                     <tr>
-                        <td colspan="3" class="px-4 py-3 text-right font-bold text-gray-700">Total Jam Diakui:</td>
-                        <td colspan="3" class="px-4 py-3 font-bold text-purple-700 text-lg">${totalJamPositif} Jam</td>
+                        <td colspan="3" class="px-4 py-3 text-right font-bold text-gray-800">Total Akumulasi Waktu:</td>
+                        <td colspan="3" class="px-4 py-3 font-bold text-purple-700 text-base">${totalJam} Jam (${pctString}%) dari target 181 jam </td>
                     </tr>
                 `;
             }
@@ -5840,15 +5464,25 @@
             }
 
             const id = document.getElementById('mhs-report-id') ? document.getElementById('mhs-report-id').value : '';
+            
+            // Pertahankan status verifikasi jika laporan diedit oleh Mahasiswa
+            let finalDeskripsi = document.getElementById('mhs-deskripsi') ? document.getElementById('mhs-deskripsi').value : '';
+            if (id) {
+                const existingR = mahasiswaReportsData.find(x => String(x.id) === String(id));
+                if (existingR && isVerified(existingR.deskripsi)) {
+                    finalDeskripsi += ' [VERIFIED]'; 
+                }
+            }
+
             const payload = {
-                id: id ? parseInt(id) : Date.now(),
+                id: id ? parseInt(id) : Date.now(), 
                 username: currentUser.username,
                 kelompok: currentUser.kelompok,
-                tanggal: document.getElementById('mhs-tanggal').value,
-                rencana: document.getElementById('mhs-jenis').value,
-                deskripsi: document.getElementById('mhs-deskripsi').value,
-                keluhan: document.getElementById('mhs-jam').value,
-                foto: document.getElementById('mhs-foto').value,
+                tanggal: document.getElementById('mhs-tanggal') ? document.getElementById('mhs-tanggal').value : '',
+                rencana: document.getElementById('mhs-jenis') ? document.getElementById('mhs-jenis').value : '', 
+                deskripsi: finalDeskripsi,
+                keluhan: document.getElementById('mhs-jam') ? document.getElementById('mhs-jam').value : '',  
+                foto: document.getElementById('mhs-foto') ? document.getElementById('mhs-foto').value : '',
                 timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) + ' WIB'
             };
 
@@ -5856,9 +5490,9 @@
                 if (USE_MOCK) {
                     await new Promise(r => setTimeout(r, 600)); 
                     if (id) {
-                        const idx = mahasiswaReportsData.findIndex(x => String(x.id) === String(id));
-                        mahasiswaReportsData[idx] = payload;
-                    } else mahasiswaReportsData.push(payload);
+                        const idx = mockMahasiswaReports.findIndex(x => String(x.id) === String(id));
+                        mockMahasiswaReports[idx] = payload;
+                    } else mockMahasiswaReports.push(payload);
                 } else {
                     const action = id ? 'editMahasiswaReport' : 'addMahasiswaReport';
                     const res = await fetch(SCRIPT_URL, {
@@ -5870,10 +5504,11 @@
                     let result = JSON.parse(textRes);
                     if(!result.success) throw new Error(result.error || "Gagal menyimpan");
                 }
-                alert("Laporan berhasil disimpan!");
+
+                alert("Laporan kegiatan harian berhasil disimpan!");
                 resetMahasiswaForm();
-                await loadDataFromServer();
-            } catch(err) {
+                await loadDataFromServer(); 
+            } catch (err) {
                 alert("Terjadi kesalahan: " + err.message);
             } finally {
                 if (btn) {
@@ -5886,14 +5521,50 @@
         function resetMahasiswaForm() {
             const form = document.getElementById('mhs-report-form');
             if (form) form.reset();
-            const elId = document.getElementById('mhs-report-id');
-            if (elId) elId.value = '';
-            const elTitle = document.getElementById('mhs-form-title');
-            if (elTitle) elTitle.innerText = "Buat Laporan Harian";
+            const id = document.getElementById('mhs-report-id');
+            if (id) id.value = '';
+            const formTitle = document.getElementById('mhs-form-title');
+            if (formTitle) formTitle.innerText = "Buat Laporan Harian";
+        }
+
+        function editMahasiswaReport(id) {
+            const r = mahasiswaReportsData.find(x => String(x.id) === String(id));
+            if(!r) return;
+
+            if (isVerified(r.deskripsi)) {
+                alert("Akses Ditolak: Laporan yang sudah diverifikasi telah dikunci dan tidak dapat diedit lagi.");
+                return;
+            }
+
+            const formTitle = document.getElementById('mhs-form-title');
+            const reportId = document.getElementById('mhs-report-id');
+            const mhsJenis = document.getElementById('mhs-jenis');
+            const mhsDeskripsi = document.getElementById('mhs-deskripsi');
+            const mhsTanggal = document.getElementById('mhs-tanggal');
+            const mhsJam = document.getElementById('mhs-jam');
+            const mhsFoto = document.getElementById('mhs-foto');
+
+            if (formTitle) formTitle.innerText = "Edit Laporan Harian";
+            if (reportId) reportId.value = r.id;
+            if (mhsJenis) mhsJenis.value = r.rencana;
+            if (mhsDeskripsi) mhsDeskripsi.value = cleanDeskripsi(r.deskripsi);
+            if (mhsTanggal) mhsTanggal.value = r.tanggal;
+            // Jika diedit oleh mahasiswa, ubah nilainya menjadi positif lagi (jika sebelumnya negatif/ditolak)
+            if (mhsJam) mhsJam.value = Math.abs(Number(r.keluhan || 0));
+            if (mhsFoto) mhsFoto.value = r.foto;
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         async function deleteMahasiswaReport(id, btnElement) {
-            if(!confirm("Apakah Anda yakin ingin menghapus laporan ini?")) return;
+            const r = mahasiswaReportsData.find(x => String(x.id) === String(id));
+            if (r && isVerified(r.deskripsi)) {
+                alert("Akses Ditolak: Laporan yang sudah diverifikasi telah dikunci dan tidak dapat dihapus.");
+                return;
+            }
+
+            if(!confirm("Apakah Anda yakin ingin menghapus laporan mahasiswa ini?")) return;
+
             let originalIcon = '';
             if (btnElement) {
                 originalIcon = btnElement.innerHTML;
@@ -5903,16 +5574,25 @@
 
             try {
                 if (USE_MOCK) {
-                    mahasiswaReportsData = mahasiswaReportsData.filter(x => String(x.id) !== String(id));
+                    mockMahasiswaReports = mockMahasiswaReports.filter(x => String(x.id) !== String(id));
                 } else {
-                    await fetch(SCRIPT_URL, {
+                    const res = await fetch(SCRIPT_URL, {
                         method: 'POST',
                         body: JSON.stringify({ action: 'deleteMahasiswaReport', id: id }),
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                     });
+                    
+                    const textRes = await res.text();
+                    let result;
+                    try { result = JSON.parse(textRes); } 
+                    catch(e) { throw new Error("Terjadi masalah dengan koneksi Database."); }
+                    
+                    if(!result.success) throw new Error(result.error || "Gagal menghapus");
                 }
+                
                 await loadDataFromServer();
-            } catch(err) {
+            } catch (err) {
+                alert("Gagal menghapus: " + err.message);
                 if (btnElement) {
                     btnElement.innerHTML = originalIcon;
                     btnElement.disabled = false;
@@ -5949,7 +5629,8 @@
         async function deleteBulkReportsMhs() {
             const checkedBoxes = document.querySelectorAll('.row-checkbox-mhs:checked');
             if(checkedBoxes.length === 0) return;
-            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} riwayat pelaporan yang dipilih?`)) return;
+            
+            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan mahasiswa yang dipilih?`)) return;
 
             const btn = document.getElementById('btn-bulk-delete-mhs');
             const originalText = btn ? btn.innerHTML : 'Hapus Terpilih';
@@ -5963,14 +5644,19 @@
 
             try {
                 if (USE_MOCK) {
-                    mahasiswaReportsData = mahasiswaReportsData.filter(x => !idsToDelete.includes(String(x.id)));
+                    mockMahasiswaReports = mockMahasiswaReports.filter(x => !idsToDelete.includes(String(x.id)));
                 } else {
                     for (const id of idsToDelete) {
-                        await fetch(SCRIPT_URL, {
+                        const res = await fetch(SCRIPT_URL, {
                             method: 'POST',
                             body: JSON.stringify({ action: 'deleteMahasiswaReport', id: id }),
                             headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                         });
+                        const textRes = await res.text();
+                        try {
+                            const result = JSON.parse(textRes);
+                            if(!result.success) console.error("Gagal menghapus ID:", id);
+                        } catch(e) {}
                     }
                 }
                 await loadDataFromServer();
@@ -5982,33 +5668,104 @@
             }
         }
 
-        function openEditProfileModal() {
-            alert("Fitur edit profil mahasiswa akan segera tersedia.");
+        // =========================================================================
+        // GROUP DASHBOARD LOGIC (KELOMPOK)
+        // =========================================================================
+
+        function renderGroupDataCard() {
+            if (!currentUser || !accountsData || accountsData.length === 0) return;
+            
+            const groupName = (currentUser.namaLengkap || currentUser.username).toLowerCase().trim();
+            const groupUsername = currentUser.username.toLowerCase().trim();
+            
+            const members = accountsData.filter(u => {
+                if (u.role !== 'mahasiswa') return false;
+                const userKlp = (u.kelompok || '').toLowerCase().trim();
+                return userKlp === groupName || userKlp === groupUsername;
+            });
+            
+            // Mengurutkan anggota berdasarkan abjad (A-Z)
+            members.sort((a, b) => {
+                const namaA = a.namaLengkap || a.username || '';
+                const namaB = b.namaLengkap || b.username || '';
+                return namaA.localeCompare(namaB);
+            });
+            
+            // Format tampilan menjadi list bernomor (ordered list)
+            const memberNames = members.length > 0 
+                ? '<ol class="list-decimal pl-4 space-y-1 text-sm font-medium text-gray-700">' + members.map(m => `<li>${m.namaLengkap || m.username}</li>`).join('') + '</ol>' 
+                : '<span class="text-gray-500 italic text-sm">Belum ada anggota mahasiswa terdaftar</span>';
+            
+            const dplUsers = accountsData.filter(u => {
+                if (u.role !== 'dpl') return false;
+                const dplKlp = (u.kelompok || '').toLowerCase().trim();
+                return dplKlp === groupName || 
+                       dplKlp === groupUsername || 
+                       dplKlp.split(',').map(s => s.trim()).includes(groupName) ||
+                       dplKlp.split(',').map(s => s.trim()).includes(groupUsername);
+            });
+            
+            const dplNames = dplUsers.length > 0 
+                ? dplUsers.map(d => d.namaLengkap).join(', ') 
+                : 'Belum ditugaskan';
+
+            const elGrpName = document.getElementById('group-card-name');
+            const elGrpMembers = document.getElementById('group-card-members');
+            const elGrpDpl = document.getElementById('group-card-dpl');
+
+            if (elGrpName) elGrpName.innerText = currentUser.namaLengkap || currentUser.username;
+            if (elGrpMembers) elGrpMembers.innerHTML = memberNames;
+            if (elGrpDpl) elGrpDpl.innerText = dplNames;
         }
 
-        // =========================================================================
-        // DASHBOARD KELOMPOK LOGIC
-        // =========================================================================
-        function renderGroupDataCard() {
-            const titleEl = document.getElementById('group-card-name');
-            const membersEl = document.getElementById('group-card-members');
-            const dplEl = document.getElementById('group-card-dpl');
+        function toggleGroupFormFields() {
+            const formJenisLaporan = document.getElementById('form-jenis-laporan');
+            const jenis = formJenisLaporan ? formJenisLaporan.value : '';
 
-            if (titleEl) titleEl.innerText = currentUser.namaLengkap || currentUser.username;
-            if (dplEl) dplEl.innerText = currentUser.dpl || '-';
-
-            const members = accountsData.filter(a => a.role === 'mahasiswa' && a.kelompok === (currentUser.namaLengkap || currentUser.username));
-            if (membersEl) {
-                if (members.length > 0) {
-                    membersEl.innerHTML = members.map((m, i) => `<span class="inline-block bg-blue-50 border border-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs mr-1 mb-1 font-medium">${i+1}. ${m.namaLengkap}</span>`).join('');
-                } else {
-                    membersEl.innerHTML = `<span class="text-xs italic text-gray-400">Belum ada anggota terdaftar</span>`;
-                }
+            const descLabel = document.getElementById('label-form-activity');
+            const descInput = document.getElementById('form-activity');
+            const linkLabel = document.getElementById('label-form-link');
+            const linkInput = document.getElementById('form-link-url');
+            
+            const formFieldsWrapper = document.getElementById('dynamic-form-fields');
+            
+            if (!jenis) {
+                if (formFieldsWrapper) formFieldsWrapper.classList.add('hidden');
+                return;
+            }
+            
+            if (formFieldsWrapper) formFieldsWrapper.classList.remove('hidden');
+            
+            if (jenis === "Kegiatan Harian") {
+                if (descLabel) descLabel.innerText = "Deskripsi Kegiatan Harian *";
+                if (descInput) descInput.placeholder = "Deskripsikan kegiatan harian kelompok hari ini...";
+                if (linkLabel) linkLabel.innerText = "Link Foto yang telah di unggah di instagram *";
+                if (linkInput) linkInput.placeholder = "https://www.instagram.com/p/...";
+            } else if (jenis === "Laporan Akhir KKN") {
+                if (descLabel) descLabel.innerText = "Deskripsi singkat Laporan *";
+                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat dari laporan akhir KKN kelompok...";
+                if (linkLabel) linkLabel.innerText = "Link google drive file Laporan Akhir KKN *";
+                if (linkInput) linkInput.placeholder = "https://drive.google.com/file/d/... atau https://drive.google.com/drive/folders/...";
+            } else if (jenis === "Draft Artikel KKN") {
+                if (descLabel) descLabel.innerText = "Deskripsi singkat Draft *";
+                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat dari draft artikel KKN kelompok...";
+                if (linkLabel) linkLabel.innerText = "Link google drive file Draft Artikel KKN *";
+                if (linkInput) linkInput.placeholder = "https://drive.google.com/file/d/... atau https://drive.google.com/drive/folders/...";
+            } else if (jenis === "Lomba Jingle KKN UINRIL") {
+                if (descLabel) descLabel.innerText = "Deskripsi / Judul Jingle *";
+                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat mengenai Jingle KKN yang dibuat...";
+                if (linkLabel) linkLabel.innerText = "Link Video Lomba (YouTube/Instagram/Drive) *";
+                if (linkInput) linkInput.placeholder = "https://...";
+            } else if (jenis === "Program Unggulan Kelompok") {
+                if (descLabel) descLabel.innerText = "Deskripsi Program Unggulan *";
+                if (descInput) descInput.placeholder = "Tuliskan deskripsi singkat mengenai Program Unggulan Kelompok yang dijalankan...";
+                if (linkLabel) linkLabel.innerText = "Link Bukti / Dokumentasi (Drive/Sosmed) *";
+                if (linkInput) linkInput.placeholder = "https://...";
             }
         }
 
         function renderGroupDashboard() {
-            const myReports = reportsData.filter(r => r.group === currentUser.username || r.group === currentUser.namaLengkap);
+            const myReports = reportsData.filter(r => r.group === currentUser.username);
             const tbody = document.getElementById('group-table-body');
             if (!tbody) return;
             tbody.innerHTML = '';
@@ -6019,7 +5776,7 @@
             if (selectAll) selectAll.checked = false;
 
             if (myReports.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Belum ada riwayat pelaporan kelompok.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Belum ada laporan kelompok yang tersimpan.</td></tr>';
                 return;
             }
 
@@ -6027,42 +5784,26 @@
 
             sortedData.forEach(r => {
                 const tr = document.createElement('tr');
+                const jenisLaporan = r.korkel || "Kegiatan Harian";
+                const snippet = r.activity ? r.activity.substring(0, 30) + '...' : '-';
+                
                 tr.innerHTML = `
-                    <td class="px-4 py-3 text-center">
+                    <td class="px-4 py-2 text-center">
                         <input type="checkbox" class="row-checkbox" value="${r.id}" onchange="updateBulkActionState()">
                     </td>
-                    <td class="px-4 py-3 whitespace-nowrap text-gray-600">${r.date}</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-xs font-mono text-gray-500 bg-gray-50"><i class="fa-regular fa-clock mr-1"></i>${getTimestampStr(r)}</td>
-                    <td class="px-4 py-3">
-                        <div class="font-medium text-blue-600">${r.korkel || 'Kegiatan Harian'}</div>
-                        <div class="text-xs text-gray-500 max-w-[200px] truncate" title="${r.activity}">${r.activity}</div>
+                    <td class="px-4 py-2 whitespace-nowrap text-gray-600">${r.date}</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-xs font-mono text-gray-500 bg-gray-50"><i class="fa-regular fa-clock mr-1"></i>${getTimestampStr(r)}</td>
+                    <td class="px-4 py-2">
+                        <div class="font-semibold text-blue-600">${jenisLaporan}</div>
+                        <div class="text-xs text-gray-500 truncate max-w-[200px]" title="${r.activity}">${snippet}</div>
                     </td>
-                    <td class="px-4 py-3 text-center space-x-2">
-                        <button type="button" onclick="viewDetail('${r.id}')" class="text-blue-500 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 p-2 rounded-full transition" title="Lihat Detail"><i class="fa-solid fa-eye"></i></button>
+                    <td class="px-4 py-2 text-center space-x-2">
+                        <button type="button" onclick="editReport('${r.id}')" class="text-yellow-500 hover:text-yellow-700 bg-yellow-50 hover:bg-yellow-100 p-2 rounded-full transition" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button type="button" onclick="deleteReport('${r.id}', this)" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-full transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
-        }
-
-        function toggleGroupFormFields() {
-            const jenisLaporan = document.getElementById('form-jenis-laporan').value;
-            const formFieldsWrapper = document.getElementById('dynamic-form-fields');
-            const labelActivity = document.getElementById('label-form-activity');
-            const labelLink = document.getElementById('label-form-link');
-            
-            if (jenisLaporan) {
-                formFieldsWrapper.classList.remove('hidden');
-                if (labelActivity) {
-                    labelActivity.innerText = (jenisLaporan === 'Draft Artikel KKN') ? 'Ringkasan Artikel/Abstrak *' : 'Deskripsi Kegiatan *';
-                }
-                if (labelLink) {
-                    labelLink.innerText = (jenisLaporan === 'Lomba Jingle KKN UINRIL') ? 'Tautan Video (Instagram/TikTok/YouTube) *' : 'Tautan Berkas (Link Google Drive) *';
-                }
-            } else {
-                formFieldsWrapper.classList.add('hidden');
-            }
         }
 
         async function submitReport(e) {
@@ -6074,16 +5815,19 @@
             }
 
             const id = document.getElementById('report-id') ? document.getElementById('report-id').value : '';
+            const jenisLaporan = document.getElementById('form-jenis-laporan') ? document.getElementById('form-jenis-laporan').value : 'Kegiatan Harian';
+            
             const payload = {
-                id: id ? parseInt(id) : Date.now(),
-                group: currentUser.namaLengkap || currentUser.username,
-                korkel: document.getElementById('form-jenis-laporan').value,
-                members: '-',
-                location: currentUser.lokasi || '-',
-                date: document.getElementById('form-date').value,
-                activity: document.getElementById('form-activity').value,
-                emergency: currentUser.dpl || '-',
-                photo: document.getElementById('form-link-url').value,
+                id: id ? parseInt(id) : Date.now(), 
+                group: currentUser.username,
+                korkel: jenisLaporan,
+                members: currentUser.nip || '-', 
+                location: currentUser.lokasi || '-', 
+                rawLocation: { kab: '', kec: '', desa: '', jalan: '' }, 
+                date: document.getElementById('form-date') ? document.getElementById('form-date').value : '',
+                activity: document.getElementById('form-activity') ? document.getElementById('form-activity').value : '',
+                emergency: currentUser.dpl || '-', 
+                photo: document.getElementById('form-link-url') ? document.getElementById('form-link-url').value : '',
                 timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) + ' WIB'
             };
 
@@ -6091,24 +5835,32 @@
                 if (USE_MOCK) {
                     await new Promise(r => setTimeout(r, 600)); 
                     if (id) {
-                        const idx = reportsData.findIndex(x => String(x.id) === String(id));
-                        reportsData[idx] = payload;
-                    } else reportsData.push(payload);
+                        const idx = mockReports.findIndex(x => String(x.id) === String(id));
+                        mockReports[idx] = payload;
+                    } else {
+                        mockReports.push(payload);
+                    }
                 } else {
                     const action = id ? 'editReport' : 'addReport';
                     const res = await fetch(SCRIPT_URL, {
                         method: 'POST',
                         body: JSON.stringify({ action: action, data: payload }),
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' } 
                     });
+                    
                     const textRes = await res.text();
-                    let result = JSON.parse(textRes);
-                    if(!result.success) throw new Error(result.error || "Gagal menyimpan");
+                    let result;
+                    try { result = JSON.parse(textRes); } 
+                    catch(e) { throw new Error("Respon server salah."); }
+                    
+                    if(!result.success) throw new Error(result.error || "Gagal simpan di server");
                 }
+
                 alert("Laporan berhasil disimpan!");
                 resetForm();
-                await loadDataFromServer();
-            } catch(err) {
+                await loadDataFromServer(); 
+
+            } catch (err) {
                 alert("Terjadi kesalahan: " + err.message);
             } finally {
                 if (btn) {
@@ -6121,14 +5873,40 @@
         function resetForm() {
             const form = document.getElementById('report-form');
             if (form) form.reset();
-            const elId = document.getElementById('report-id');
-            if (elId) elId.value = '';
-            const wrapper = document.getElementById('dynamic-form-fields');
-            if (wrapper) wrapper.classList.add('hidden');
+            const id = document.getElementById('report-id');
+            if (id) id.value = '';
+            const formTitle = document.getElementById('form-title');
+            if (formTitle) formTitle.innerText = "Buat Laporan Baru";
+            const formFieldsWrapper = document.getElementById('dynamic-form-fields');
+            if (formFieldsWrapper) formFieldsWrapper.classList.add('hidden');
+        }
+
+        function editReport(id) {
+            const r = reportsData.find(x => String(x.id) === String(id));
+            if(!r) return;
+
+            const formTitle = document.getElementById('form-title');
+            const reportId = document.getElementById('report-id');
+            const formJenisLaporan = document.getElementById('form-jenis-laporan');
+            const formDate = document.getElementById('form-date');
+            const formActivity = document.getElementById('form-activity');
+            const formLinkUrl = document.getElementById('form-link-url');
+
+            if (formTitle) formTitle.innerText = "Edit Laporan";
+            if (reportId) reportId.value = r.id;
+            if (formJenisLaporan) formJenisLaporan.value = r.korkel || "Kegiatan Harian"; 
+            toggleGroupFormFields();
+            
+            if (formDate) formDate.value = r.date;
+            if (formActivity) formActivity.value = r.activity;
+            if (formLinkUrl) formLinkUrl.value = r.photo || '';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         async function deleteReport(id, btnElement) {
             if(!confirm("Apakah Anda yakin ingin menghapus laporan ini?")) return;
+
             let originalIcon = '';
             if (btnElement) {
                 originalIcon = btnElement.innerHTML;
@@ -6138,16 +5916,25 @@
 
             try {
                 if (USE_MOCK) {
-                    reportsData = reportsData.filter(x => String(x.id) !== String(id));
+                    mockReports = mockReports.filter(x => String(x.id) !== String(id));
                 } else {
-                    await fetch(SCRIPT_URL, {
+                    const res = await fetch(SCRIPT_URL, {
                         method: 'POST',
                         body: JSON.stringify({ action: 'deleteReport', id: id }),
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                     });
+                    
+                    const textRes = await res.text();
+                    let result;
+                    try { result = JSON.parse(textRes); } 
+                    catch(e) { throw new Error("Terjadi masalah dengan koneksi Database."); }
+                    
+                    if(!result.success) throw new Error(result.error || "Akses ditolak");
                 }
+                
                 await loadDataFromServer();
-            } catch(err) {
+            } catch (err) {
+                alert("Gagal menghapus: " + err.message);
                 if (btnElement) {
                     btnElement.innerHTML = originalIcon;
                     btnElement.disabled = false;
@@ -6159,6 +5946,12 @@
             const checkboxes = document.querySelectorAll('.row-checkbox');
             checkboxes.forEach(cb => cb.checked = source.checked);
             updateBulkActionState();
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('admin-sidebar');
+            if (!sidebar) return;
+            sidebar.classList.toggle('-translate-x-full');
         }
 
         function updateBulkActionState() {
@@ -6184,7 +5977,8 @@
         async function deleteBulkReports() {
             const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
             if(checkedBoxes.length === 0) return;
-            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} riwayat pelaporan yang dipilih?`)) return;
+            
+            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan yang dipilih?`)) return;
 
             const btn = document.getElementById('btn-bulk-delete');
             const originalText = btn ? btn.innerHTML : 'Hapus Terpilih';
@@ -6198,12 +5992,216 @@
 
             try {
                 if (USE_MOCK) {
-                    reportsData = reportsData.filter(x => !idsToDelete.includes(String(x.id)));
+                    mockReports = mockReports.filter(x => !idsToDelete.includes(String(x.id)));
+                } else {
+                    for (const id of idsToDelete) {
+                        const res = await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'deleteReport', id: id }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                        const textRes = await res.text();
+                        try {
+                            const result = JSON.parse(textRes);
+                            if(!result.success) console.error("Gagal menghapus ID:", id);
+                        } catch(e) {}
+                    }
+                }
+                await loadDataFromServer();
+            } catch (err) {
+                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
+                if (btn) btn.innerHTML = originalText;
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        function toggleAllCheckboxesAdmin(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox-admin');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+            updateBulkActionStateAdmin();
+        }
+
+        function updateBulkActionStateAdmin() {
+            const checkboxes = document.querySelectorAll('.row-checkbox-admin:checked');
+            const allCheckboxes = document.querySelectorAll('.row-checkbox-admin');
+            const btn = document.getElementById('btn-bulk-delete-admin');
+            const selectAll = document.getElementById('selectAllAdmin');
+
+            if (btn) {
+                if (checkboxes.length > 0) {
+                    btn.classList.remove('hidden');
+                    btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
+                } else {
+                    btn.classList.add('hidden');
+                }
+            }
+
+            if (selectAll && allCheckboxes.length > 0) {
+                 selectAll.checked = checkboxes.length === allCheckboxes.length;
+            }
+        }
+
+        async function deleteBulkReportsAdmin() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox-admin:checked');
+            if(checkedBoxes.length === 0) return;
+            
+            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan KKN?`)) return;
+
+            const btn = document.getElementById('btn-bulk-delete-admin');
+            const originalText = btn ? btn.innerHTML : 'Hapus Terpilih';
+            
+            if (btn) {
+                btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
+                btn.disabled = true;
+            }
+
+            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
+
+            try {
+                if (USE_MOCK) {
+                    mockReports = mockReports.filter(x => !idsToDelete.includes(String(x.id)));
+                } else {
+                    for (const id of idsToDelete) {
+                        const res = await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'deleteReport', id: id }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                        const textRes = await res.text();
+                        try {
+                            const result = JSON.parse(textRes);
+                            if(!result.success) console.error("Gagal menghapus ID:", id);
+                        } catch(e) {}
+                    }
+                }
+                await loadDataFromServer();
+            } catch (err) {
+                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
+                if (btn) btn.innerHTML = originalText;
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        function toggleAllCheckboxesAdminMhs(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox-admin-mhs');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+            updateBulkActionStateAdminMhs();
+        }
+
+        function updateBulkActionStateAdminMhs() {
+            const checkboxes = document.querySelectorAll('.row-checkbox-admin-mhs:checked');
+            const allCheckboxes = document.querySelectorAll('.row-checkbox-admin-mhs');
+            const btn = document.getElementById('btn-bulk-delete-admin-mhs');
+            const selectAll = document.getElementById('selectAllAdminMhs');
+
+            if (btn) {
+                if (checkboxes.length > 0) {
+                    btn.classList.remove('hidden');
+                    btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
+                } else {
+                    btn.classList.add('hidden');
+                }
+            }
+
+            if (selectAll && allCheckboxes.length > 0) {
+                 selectAll.checked = checkboxes.length === allCheckboxes.length;
+            }
+        }
+
+        async function deleteBulkReportsAdminMhs() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox-admin-mhs:checked');
+            if(checkedBoxes.length === 0) return;
+            
+            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan mahasiswa?`)) return;
+
+            const btn = document.getElementById('btn-bulk-delete-admin-mhs');
+            const originalText = btn ? btn.innerHTML : 'Hapus Terpilih';
+            
+            if (btn) {
+                btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
+                btn.disabled = true;
+            }
+
+            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
+
+            try {
+                if (USE_MOCK) {
+                    mockMahasiswaReports = mockMahasiswaReports.filter(x => !idsToDelete.includes(String(x.id)));
+                } else {
+                    for (const id of idsToDelete) {
+                        const res = await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'deleteMahasiswaReport', id: id }),
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                        });
+                        const textRes = await res.text();
+                        try {
+                            const result = JSON.parse(textRes);
+                            if(!result.success) console.error("Gagal menghapus ID:", id);
+                        } catch(e) {}
+                    }
+                }
+                await loadDataFromServer();
+            } catch (err) {
+                alert("Beberapa data mungkin gagal dihapus. Silakan periksa kembali.");
+                if (btn) btn.innerHTML = originalText;
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        function toggleAllCheckboxesAdminDpl(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox-admin-dpl');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+            updateBulkActionStateAdminDpl();
+        }
+
+        function updateBulkActionStateAdminDpl() {
+            const checkboxes = document.querySelectorAll('.row-checkbox-admin-dpl:checked');
+            const allCheckboxes = document.querySelectorAll('.row-checkbox-admin-dpl');
+            const btn = document.getElementById('btn-bulk-delete-admin-dpl');
+            const selectAll = document.getElementById('selectAllAdminDpl');
+
+            if (btn) {
+                if (checkboxes.length > 0) {
+                    btn.classList.remove('hidden');
+                    btn.innerHTML = `<i class="fa-solid fa-trash mr-1"></i> Hapus Terpilih (${checkboxes.length})`;
+                } else {
+                    btn.classList.add('hidden');
+                }
+            }
+
+            if (selectAll && allCheckboxes.length > 0) {
+                 selectAll.checked = checkboxes.length === allCheckboxes.length;
+            }
+        }
+
+        async function deleteBulkReportsAdminDpl() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox-admin-dpl:checked');
+            if(checkedBoxes.length === 0) return;
+            
+            if(!confirm(`Apakah Anda yakin ingin menghapus ${checkedBoxes.length} laporan DPL?`)) return;
+
+            const btn = document.getElementById('btn-bulk-delete-admin-dpl');
+            const originalText = btn ? btn.innerHTML : 'Hapus Terpilih';
+            
+            if (btn) {
+                btn.innerHTML = `<div class="spinner inline-block align-middle mr-2" style="width: 14px; height: 14px; border-width: 2px;"></div> Menghapus...`;
+                btn.disabled = true;
+            }
+
+            const idsToDelete = Array.from(checkedBoxes).map(cb => cb.value);
+
+            try {
+                if (USE_MOCK) {
+                    mockDplReports = mockDplReports.filter(x => !idsToDelete.includes(String(x.id)));
                 } else {
                     for (const id of idsToDelete) {
                         await fetch(SCRIPT_URL, {
                             method: 'POST',
-                            body: JSON.stringify({ action: 'deleteReport', id: id }),
+                            body: JSON.stringify({ action: 'deleteDplReport', id: id }),
                             headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                         });
                     }
@@ -6216,7 +6214,6 @@
                 if (btn) btn.disabled = false;
             }
         }
-
     </script>
 </body>
 </html>
